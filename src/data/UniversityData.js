@@ -80,3 +80,21 @@ export const universities = [
     image: "https://via.placeholder.com/50",
   },
 ];
+
+
+
+
+export const addUniversity = [
+  { name: 'universityName', label: 'University Name', type: 'text', placeholder: 'Enter University Name' },
+  { name: 'universityId', label: 'University Id', type: 'text', placeholder: 'Enter University Id' },
+  { name: 'universityAdmin', label: 'University Admin', type: 'text', placeholder: 'Enter Admin Name' },
+  { name: 'universityAdminEmail', label: 'University Admin Email', type: 'email', placeholder: 'Enter Admin Email' },
+  { name: 'email', label: 'Email', type: 'email', placeholder: 'Enter Email' },
+  { name: 'phoneNumber', label: 'Phone Number', type: 'text', placeholder: 'Enter Phone Number' },
+  { name: 'streetAddress', label: 'Street Address', type: 'text', placeholder: 'Enter Street Address' },
+  { name: 'city', label: 'City', type: 'text', placeholder: 'Enter City' },
+  { name: 'state', label: 'State', type: 'text', placeholder: 'Enter State' },
+  { name: 'zipcode', label: 'Zipcode', type: 'text', placeholder: 'Enter Zipcode' },
+  { name: 'password', label: 'Password', type: 'password', placeholder: 'Enter Password' },
+  { name: 'confirmPassword', label: 'Confirm Password', type: 'password', placeholder: 'Confirm Password' },
+];
