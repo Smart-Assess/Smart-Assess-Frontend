@@ -18,7 +18,7 @@ const AddUniversity = () => {
           </Box>
         </Flex>
 
-        <AddUniversityForm/>
+        <AddUniversityForm />
       </Box>
       <Footer />
     </Flex>

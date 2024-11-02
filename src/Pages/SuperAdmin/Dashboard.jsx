@@ -6,11 +6,13 @@ import HeadingButtonSection from "../../Components/Pages/HeadingButtonSection";
 import ShowTable from "../../Components/Pages/ShowTable";
 
 const Dashboard = () => {
+  
+
   return (
     <Flex direction="column">
       <Header />
       <Box flex="1" mx={12} overflowY="auto" paddingBottom="80px">
-        <HeadingButtonSection />
+        <HeadingButtonSection path="/superadmin/addUniversity" />
         <ShowTable></ShowTable>
       </Box>
       <Footer />

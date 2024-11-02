@@ -3,8 +3,11 @@ import React from "react";
 import { Box, Heading, Text, Button, Flex } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import SearchBar from "../../Components/UI/SearchBar";
+import { useNavigate } from "react-router-dom";
 
-const HeadingButtonSection = () => {
+const HeadingButtonSection = ({path}) => {
+  const nav = useNavigate();
+
   return (
     <Box my={6}>
       <Flex alignItems="center" justifyContent="space-between" my={6}>
@@ -14,7 +17,7 @@ const HeadingButtonSection = () => {
           </Heading>
           <Text color="#546881">View and Manage students here</Text>
         </Box>
-        <Button color="white" bg="#0D64C1" leftIcon={<AddIcon />}>
+        <Button color="white" onClick={()=>nav(path)} bg="#0D64C1" _hover={{bg:"#0D64C8"}} leftIcon={<AddIcon />}>
           Add New University
         </Button>
       </Flex>

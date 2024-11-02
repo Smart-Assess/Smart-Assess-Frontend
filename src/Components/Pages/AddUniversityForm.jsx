@@ -11,12 +11,13 @@ import {
 } from "@chakra-ui/react";
 import { FiUpload } from "react-icons/fi";
 
-import FormInput from "./../UI/FormInput"
+import FormInput from "./../UI/FormInput";
 import { addUniversity } from "../../data/UniversityData";
+import { useNavigate } from "react-router-dom";
 
 function AddUniversityForm() {
   const methods = useForm();
-
+  const nav = useNavigate();
   const onSubmit = (data) => {
     console.log("Form Data:", data);
   };
@@ -75,7 +76,7 @@ function AddUniversityForm() {
                 </SimpleGrid>
 
                 <Box display="flex" justifyContent="flex-end" mt="6">
-                  <Button variant="outline" colorScheme="gray" mr="4">
+                  <Button onClick={()=>nav('/superadmin/Dashboard')} variant="outline" colorScheme="gray" mr="4">
                     Cancel
                   </Button>
                   <Button type="submit" colorScheme="blue">

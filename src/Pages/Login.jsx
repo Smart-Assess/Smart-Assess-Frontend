@@ -13,6 +13,7 @@ import {
 import React from "react";
 import { useForm } from "react-hook-form";
 import logo from "./../assets/images/Logo.png";
+import { useNavigate } from "react-router-dom";
 const Login = () => {
   const {
     register,
@@ -24,6 +25,7 @@ const Login = () => {
     console.log(data);
   };
 
+  const nav=useNavigate()
   
   return (
     <>
@@ -43,7 +45,7 @@ const Login = () => {
           mb="4"
           fontWeight={"500"}
         >
-          Welcome Back!
+          Welcome Back!!
         </Heading>
         <form onSubmit={handleSubmit(onSubmit)}>
           <FormControl isInvalid={errors.email}>
@@ -76,7 +78,7 @@ const Login = () => {
             </FormErrorMessage>
           </FormControl>
 
-          <Button mt="6" colorScheme="blue" type="submit" width="full">
+          <Button onClick={()=>nav('/superadmin/Dashboard')} mt="6" colorScheme="blue" type="submit" width="full">
             Login
           </Button>
         </form>
