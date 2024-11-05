@@ -5,7 +5,7 @@ import { AddIcon } from "@chakra-ui/icons";
 import SearchBar from "../../Components/UI/SearchBar";
 import { useNavigate } from "react-router-dom";
 
-const HeadingButtonSection = ({path}) => {
+const HeadingButtonSection = ({path,content}) => {
   const nav = useNavigate();
 
   return (
@@ -18,7 +18,7 @@ const HeadingButtonSection = ({path}) => {
           <Text color="#546881">View and Manage students here</Text>
         </Box>
         <Button color="white" onClick={()=>nav(path)} bg="#0D64C1" _hover={{bg:"#0D64C8"}} leftIcon={<AddIcon />}>
-          Add New University
+          {content}
         </Button>
       </Flex>
       <Flex>

@@ -12,7 +12,7 @@ const Dashboard = () => {
     <Flex direction="column">
       <Header />
       <Box flex="1" mx={12} overflowY="auto" paddingBottom="80px">
-        <HeadingButtonSection path="/superadmin/addUniversity" />
+        <HeadingButtonSection path="/superadmin/addUniversity" content="Add new University" />
         <ShowTable></ShowTable>
       </Box>
       <Footer />
