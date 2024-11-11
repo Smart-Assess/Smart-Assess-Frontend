@@ -1,11 +1,10 @@
-// UniversitySection.js
 import React from "react";
 import { Box, Heading, Text, Button, Flex } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import SearchBar from "../../Components/UI/SearchBar";
 import { useNavigate } from "react-router-dom";
 
-const HeadingButtonSection = ({path,content}) => {
+const HeadingButtonSection = ({ path, headingText,bodyText,buttonText, showButton = true, showSearchBar = true, showIcon = true}) => {
   const nav = useNavigate();
 
   return (
@@ -13,17 +12,28 @@ const HeadingButtonSection = ({path,content}) => {
       <Flex alignItems="center" justifyContent="space-between" my={6}>
         <Box>
           <Heading color="#3D4C5E" fontSize="32px" fontWeight="500">
-            Universities
+            {headingText}
           </Heading>
-          <Text color="#546881">View and Manage students here</Text>
+          <Text color="#546881">{bodyText}</Text>
         </Box>
-        <Button color="white" onClick={()=>nav(path)} bg="#0D64C1" _hover={{bg:"#0D64C8"}} leftIcon={<AddIcon />}>
-          {content}
-        </Button>
+        {showButton && (
+  <Button
+    color="white"
+    onClick={() => nav(path)}
+    bg="#0D64C1"
+    _hover={{ bg: "#0D64C8" }}
+    leftIcon={showIcon ? <AddIcon /> : null} // Conditionally render the icon
+  >
+    {buttonText}
+  </Button>
+)}
+
       </Flex>
-      <Flex>
-        <SearchBar />
-      </Flex>
+      {showSearchBar && (
+        <Flex>
+          <SearchBar />
+        </Flex>
+      )}
     </Box>
   );
 };

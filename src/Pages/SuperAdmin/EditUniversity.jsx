@@ -1,9 +1,10 @@
 import React from 'react';
-import { Box, Flex, Heading, Text, Divider } from "@chakra-ui/react";
+import { Box, Flex, Heading, Divider } from "@chakra-ui/react";
 import Header from "../../Components/Pages/Header";
 import Footer from "../../Components/Pages/Footer";
 import EditButtonSection from "../../Components/Pages/EditButtonSection";
 import EditUniversityForm from '../../Components/Pages/EditUniversityForm';
+import Uni from "./../../assets/images/Uni.png";
 
 const EditUniversity = () => {
   return (
@@ -18,7 +19,7 @@ const EditUniversity = () => {
             <Text color="#546881">Add the required information below</Text>
           </Box> */}
         </Flex>
-        <EditButtonSection />
+        <EditButtonSection image={Uni} heading={"International University"} showAddButton={false} />
         
         {/* Divider line with customized thickness and width */}
         <Divider borderColor="#3D4C5E" borderWidth="1px" width="100%" marginY={4} />
