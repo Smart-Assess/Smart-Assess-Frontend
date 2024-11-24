@@ -2,9 +2,9 @@ import React from "react";
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import Header from "../../Components/Pages/Header";
 import Footer from "../../Components/Pages/Footer";
-import AddUniversityForm from "../../Components/Pages/AddUniversityForm";
+import StudentForm from "../../Components/Pages/StudentForm";
 
-const AddUniversity = () => {
+const AddStudent = () => {
   return (
     <Flex direction="column">
       <Header />
@@ -12,17 +12,17 @@ const AddUniversity = () => {
         <Flex alignItems="center" justifyContent="space-between" my={6}>
           <Box>
             <Heading color="#3D4C5E" fontSize="32px" fontWeight="500">
-              Add University
+              Add Student
             </Heading>
             <Text color="#546881">Add the required information below</Text>
           </Box>
         </Flex>
 
-        <AddUniversityForm showUpload={true} />
+        <StudentForm show={true} />
       </Box>
       <Footer />
     </Flex>
   );
 };
 
-export default AddUniversity;
+export default AddStudent;

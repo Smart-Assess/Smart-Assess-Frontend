@@ -3,10 +3,10 @@ import { Box, Flex, Heading, Divider } from "@chakra-ui/react";
 import Header from "../../Components/Pages/Header";
 import Footer from "../../Components/Pages/Footer";
 import EditButtonSection from "../../Components/Pages/EditButtonSection";
-import AddUniversityForm from "../../Components/Pages/AddUniversityForm";
 import Uni from "./../../assets/images/Uni.png";
+import TeacherForm from "../../Components/Pages/TeacherForm";
 
-const EditUniversity = () => {
+const EditTeacher = () => {
   return (
     <Flex direction="column">
       <Header />
@@ -14,7 +14,7 @@ const EditUniversity = () => {
         <Flex alignItems="center" justifyContent="space-between" my={6}></Flex>
         <EditButtonSection
           image={Uni}
-          heading={"International University"}
+          heading={"Ahsan Sajid"}
           showAddButton={false}
         />
 
@@ -31,14 +31,14 @@ const EditUniversity = () => {
           fontWeight="500"
           paddingBottom="20px"
         >
-          University Information
+          Teacher Information
         </Heading>
 
-        <AddUniversityForm showUpload={false} />
+        <TeacherForm show={false} />
       </Box>
       <Footer />
     </Flex>
   );
 };
 
-export default EditUniversity;
+export default EditTeacher;

@@ -12,7 +12,7 @@ const StudentsDashboard = () => {
       <Box flex="1" mx={12} overflowY="auto" paddingBottom="80px" marginTop="40px">
       {/* Welcome Message */}
       <Heading fontSize="2xl" mb={4}>
-          Welcome Back, Rayyan <span role="img" aria-label="wave">👋</span>
+          Welcome Back, Ahsan <span role="img" aria-label="wave">👋</span>
         </Heading>
 
         <CoursesGrid />

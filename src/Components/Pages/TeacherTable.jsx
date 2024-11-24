@@ -8,14 +8,15 @@ import {
   Td,
   TableContainer,
   Flex,
+  IconButton,
   Avatar,
-  Badge,
   Button,
 } from "@chakra-ui/react";
+import { EditIcon } from "@chakra-ui/icons";
+import { useNavigate } from "react-router-dom";
 
-import { universities } from "./../../data/UniversityData";
-
-const ShowTable = () => {
+const StudentTable = ({ data }) => {
+  const nav = useNavigate();
   return (
     <TableContainer
       mb={12}
@@ -28,32 +29,30 @@ const ShowTable = () => {
       <Table variant="simple">
         <Thead backgroundColor={"#EAEEF0"}>
           <Tr>
-            <Th>University Name</Th>
-            <Th>University ID</Th>
-            <Th>No. of Students</Th>
-            <Th>No. of Teachers</Th>
-            <Th>Status</Th>
+            {data?.headers?.map((header, index) => (
+              <Th key={index}>{header}</Th>
+            ))}
           </Tr>
         </Thead>
         <Tbody>
-          {universities.map((uni, index) => (
+          {data?.data?.map((uni, index) => (
             <Tr key={index}>
               <Td display="flex" alignItems="center">
                 <Avatar src={uni.image} size="sm" mr={3} />
-                {uni.name}
+                {uni.teacherName}
               </Td>
-              <Td>{uni.id}</Td>
-              <Td>{uni.students}</Td>
-              <Td>{uni.teachers}</Td>
-              <Td>
-                <Badge
-                  borderRadius={"lg"}
-                  color={uni.status ==="Active" ? "green" : "gray"}
-                  bg={uni.status === "Active" ? "#ECFDF3" : "#F2F4F7"} // Set custom background color for active status
+              <Td>{uni.teacherId}</Td>
+              <Td>{uni.department}</Td>
 
-                >
-                  {uni.status}
-                </Badge>
+
+              <Td>
+                <IconButton
+                  aria-label="Edit"
+                  icon={<EditIcon />}
+                  size="sm"
+                  colorScheme="blue"
+                  onClick={() => nav("/university/editStudent")}
+                />
               </Td>
             </Tr>
           ))}
@@ -71,4 +70,4 @@ const ShowTable = () => {
   );
 };
 
-export default ShowTable;
+export default StudentTable;

@@ -14,7 +14,6 @@ const CoursesGrid = () => {
     { name: "Pak-Studies", path: "/pak-studies", icon: Eng },
     { name: "Oral Communication", path: "/oral-communication", icon: Eng },
     { name: "E-commerce", path: "/ecommerce", icon: Math },
-    // Add more courses with unique icons as needed
   ];
 
   return (
@@ -26,7 +25,7 @@ const CoursesGrid = () => {
               <GridItem
                 key={index}
                 p={6}
-                minWidth="580px"
+                minWidth="400px"
                 minHeight="180px"
                 bg="blue.50"
                 borderRadius="15px"

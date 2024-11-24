@@ -15,7 +15,7 @@ import FormInput from "./../UI/FormInput";
 import { addUniversity } from "../../data/UniversityData";
 import { useNavigate } from "react-router-dom";
 
-function AddUniversityForm() {
+function AddUniversityForm({showUpload}) {
   const methods = useForm();
   const nav = useNavigate();
   const onSubmit = (data) => {
@@ -27,7 +27,7 @@ function AddUniversityForm() {
       <Box w="100%">
         <Flex align="flex-start">
           {/* Left Section for Logo Upload */}
-          <VStack spacing="4" w="40%" mr="8">
+          {showUpload? ( <VStack spacing="4" w="40%" mr="8">
             <Box
               w="100%"
               h="240px"
@@ -57,7 +57,8 @@ function AddUniversityForm() {
                 }}
               />
             </Box>
-          </VStack>
+          </VStack>):null}
+         
 
           {/* Form Section */}
           <Box w="100%">

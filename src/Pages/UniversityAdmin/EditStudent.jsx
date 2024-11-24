@@ -5,8 +5,9 @@ import Footer from "../../Components/Pages/Footer";
 import EditButtonSection from "../../Components/Pages/EditButtonSection";
 import AddUniversityForm from "../../Components/Pages/AddUniversityForm";
 import Uni from "./../../assets/images/Uni.png";
+import StudentForm from "../../Components/Pages/StudentForm";
 
-const EditUniversity = () => {
+const EditStudent = () => {
   return (
     <Flex direction="column">
       <Header />
@@ -14,7 +15,7 @@ const EditUniversity = () => {
         <Flex alignItems="center" justifyContent="space-between" my={6}></Flex>
         <EditButtonSection
           image={Uni}
-          heading={"International University"}
+          heading={"Ahsan Sajid"}
           showAddButton={false}
         />
 
@@ -31,14 +32,14 @@ const EditUniversity = () => {
           fontWeight="500"
           paddingBottom="20px"
         >
-          University Information
+          Student Information
         </Heading>
 
-        <AddUniversityForm showUpload={false} />
+        <StudentForm show={false} />
       </Box>
       <Footer />
     </Flex>
   );
 };
 
-export default EditUniversity;
+export default EditStudent;
