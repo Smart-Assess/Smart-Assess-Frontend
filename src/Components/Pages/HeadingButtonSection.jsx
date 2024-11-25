@@ -6,10 +6,10 @@ import { useNavigate } from "react-router-dom";
 
 const HeadingButtonSection = ({
   path,
-  headingText,
   bodyText,
   buttonText,
   showButton = true,
+  content,
   showSearchBar = true,
   showIcon = true,
 }) => {
@@ -20,9 +20,9 @@ const HeadingButtonSection = ({
       <Flex alignItems="center" justifyContent="space-between" my={6}>
         <Box>
           <Heading color="#3D4C5E" fontSize="32px" fontWeight="500">
-            {headingText}
+            {path}
           </Heading>
-          <Text color="#546881">{bodyText}</Text>
+          <Text color="#546881">{content}</Text>
         </Box>
         {showButton && (
           <Button

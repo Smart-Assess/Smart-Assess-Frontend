@@ -32,7 +32,7 @@ const CoursesGrid = () => {
                 boxShadow="lg"
                 cursor="pointer"
                 position="relative"  // Enable absolute positioning for children
-                onClick={() => nav(course.path)}
+                onClick={() => nav("/student/assignmentsList")}
               >
                 <Flex justify="space-between">
                   {/* Left Image at Top */}

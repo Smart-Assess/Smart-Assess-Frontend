@@ -72,5 +72,32 @@ export const assignmentsList = [
   ];
 
   
+
+
+  export const assignments = [
+    {
+      id: 1,
+      title: "SQE-Lab#6",
+      dueTime: "24:12",
+      course: "SE-419 SQE Sec-B",
+      image: Math,
+    },
+    {
+      id: 2,
+      title: "SQE-Lab#7",
+      dueTime: "28:00",
+      course: "SE-419 SQE Sec-A",
+      image: Math,
+    },
+    {
+      id: 3,
+      title: "SE-Project",
+      dueTime: "15:00",
+      course: "SE-420 SQE Sec-C",
+      image: Math,
+    },
+  ];
+
+
   
   

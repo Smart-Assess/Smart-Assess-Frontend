@@ -10,9 +10,9 @@ const StudentsEvaluation = () => {
 
   return (
     <Flex direction="column" minH="100vh">
-      <Header />
+      <Header role={'student'} />
       <Box flex="1" mx={12} overflowY="auto" paddingBottom="80px">
-      <HeadingButtonSection path="" headingText="Assignments" showButton={false} showSearchBar={false} />
+      <HeadingButtonSection  path="Assignment#1" showButton={false} showSearchBar={false} />
       <TableofStudentsEvaluationList />
       </Box>
       <Footer />

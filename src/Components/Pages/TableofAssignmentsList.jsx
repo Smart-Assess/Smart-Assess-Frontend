@@ -13,8 +13,10 @@ import {
 } from "@chakra-ui/react";
 
 import { assignmentsList } from "./../../data/AssignmentsListData.js";
+import { useNavigate } from "react-router-dom";
 
 const TableofAssignmentsList = () => {
+  const nav=useNavigate()
   return (
     <TableContainer
       mb={12}
@@ -35,7 +37,7 @@ const TableofAssignmentsList = () => {
         </Thead>
         <Tbody>
           {assignmentsList.map((assignment, index) => (
-            <Tr key={index}>
+            <Tr key={index} onClick={()=>nav('/student/studentsEvaluation')} cursor={'pointer'}>
               <Td>{assignment.assignment}</Td>
               <Td>{assignment.dueDate}</Td>
               <Td>
