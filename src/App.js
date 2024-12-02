@@ -16,6 +16,12 @@ import TeacherDashboard from "./Pages/UniversityAdmin/TeacherDashboard"
 import AddTeacher from "./Pages/UniversityAdmin/AddTeacher"
 import EditTeacher from "./Pages/UniversityAdmin/EditTeacher";
 import UploadAssignment from "./Pages/Student/UploadAssingment"
+import TeacherMainDashboard from "./Pages/Teacher/Dashboard"
+import AddCourse from "./Pages/Teacher/AddCourse"
+import EditCourse from "./Pages/Teacher/EditCourse";
+import CreateAssignment from "./Pages/Teacher/CreateAssignment";
+import ViewRequest from "./Pages/Teacher/ViewRequest";
+import EvaluateAssignment from "./Pages/Teacher/EvaluateAssignment";
 const App = () => {
   return (
     <Routes>
@@ -44,6 +50,20 @@ const App = () => {
       <Route path="/university/teacher/Dashboard" element={<TeacherDashboard/>} />
       <Route path="/university/teacher/addTeacher" element={<AddTeacher/>} />
       <Route path="/university/teacher/editTeacher" element={<EditTeacher/>} />
+
+
+
+      {/* Teacher */}
+
+      <Route path="/teacher/Dashboard" element={<TeacherMainDashboard/>} />
+      <Route path="/teacher/addCourse" element={<AddCourse/>} />
+      <Route path="/teacher/editCourse" element={<EditCourse/>} />
+      <Route path="/teacher/createAssignment" element={<CreateAssignment/>} />
+      <Route path="/teacher/viewRequest" element={<ViewRequest/>} />
+      <Route path="/teacher/evaluateAssignment" element={<EvaluateAssignment/>} />
+
+
+
 
 
 

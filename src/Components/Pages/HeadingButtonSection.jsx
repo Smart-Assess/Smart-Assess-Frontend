@@ -8,6 +8,7 @@ const HeadingButtonSection = ({
   path,
   bodyText,
   buttonText,
+  headingText,
   showButton = true,
   content,
   showSearchBar = true,
@@ -20,9 +21,9 @@ const HeadingButtonSection = ({
       <Flex alignItems="center" justifyContent="space-between" my={6}>
         <Box>
           <Heading color="#3D4C5E" fontSize="32px" fontWeight="500">
-            {path}
+            {headingText}
           </Heading>
-          <Text color="#546881">{content}</Text>
+          <Text color="#546881">{bodyText}</Text>
         </Box>
         {showButton && (
           <Button

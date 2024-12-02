@@ -107,3 +107,23 @@ export const addUniversity = [
   { name: 'password', label: 'Password', type: 'password', placeholder: 'Enter Password' },
   { name: 'confirmPassword', label: 'Confirm Password', type: 'password', placeholder: 'Confirm Password' },
 ];
+
+
+
+export const addCourse = [
+  { name: 'courseName', label: 'Course Name', type: 'text', placeholder: 'Enter Course Name' },
+  { name: 'batch', label: 'Batch Id', type: 'text', placeholder: 'Enter Batch Id' },
+  { name: 'group', label: 'Group', type: 'text', placeholder: 'Enter Group Name' },
+  { name: 'section', label: 'Section', type: 'text', placeholder: 'Enter Section' },
+  { name: 'status', label: 'Status', type: 'text', placeholder: 'Enter Status' },
+  
+];
+
+
+export const createAssignment = [
+  { name: 'assignmentName', label: 'Assignment Name', type: 'text', placeholder: 'Enter Assigment Name' },
+  { name: 'deadline', label: 'Deadline', type: 'date', placeholder: 'Enter Deadline' },
+  { name: 'description', label: 'Description', type: 'text', placeholder: 'Enter Description Name' },
+  { name: 'grade', label: 'Grade', type: 'number', placeholder: 'Enter Grade' },
+  
+];
