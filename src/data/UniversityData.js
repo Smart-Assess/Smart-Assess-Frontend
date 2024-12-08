@@ -111,12 +111,20 @@ export const addUniversity = [
 
 
 export const addCourse = [
-  { name: 'courseName', label: 'Course Name', type: 'text', placeholder: 'Enter Course Name' },
+  { name: 'name', label: 'Course Name', type: 'text', placeholder: 'Enter Course Name' },
   { name: 'batch', label: 'Batch Id', type: 'text', placeholder: 'Enter Batch Id' },
   { name: 'group', label: 'Group', type: 'text', placeholder: 'Enter Group Name' },
   { name: 'section', label: 'Section', type: 'text', placeholder: 'Enter Section' },
-  { name: 'status', label: 'Status', type: 'text', placeholder: 'Enter Status' },
-  
+  { 
+    name: 'status', 
+    label: 'Status', 
+    type: 'select', 
+    options: [
+      { value: 'active', label: 'Active' },
+      { value: 'inactive', label: 'Inactive' },
+    ], 
+    placeholder: 'Select Status' 
+  },
 ];
 
 

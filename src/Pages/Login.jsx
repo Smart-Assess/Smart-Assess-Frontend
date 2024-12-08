@@ -53,7 +53,15 @@ const Login = () => {
 
         localStorage.setItem("accessToken", result.access_token);
 
-        navigate("/empDashboard");
+        if (result.user.role === "superadmin") {
+          navigate("/superadmin/dashboard");
+        } else if (result.user.role === "student") {
+          navigate("/student/Dashboard");
+        } else if (result.user.role === "universityadmin") {
+          navigate("/university/student/Dashboard");
+        } else if (result.user.role === "teacher") {
+          navigate("/teacher/Dashboard");
+        }
       } else {
         if (result.detail) {
           setError("email", {

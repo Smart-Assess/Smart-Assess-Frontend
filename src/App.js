@@ -26,12 +26,11 @@ const App = () => {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
-
+      
       {/* SuperAdmin */}
       <Route path="/superadmin/dashboard" element={<Dashboard />} />
       <Route path="/superadmin/addUniversity" element={<AddUniversity />} />
       <Route path="/superadmin/editUniversity" element={<EditUniversity />} />
-
 
       {/* Students */}
       <Route path="/student/Dashboard" element={<StudentsDashboard/>} />
@@ -41,8 +40,6 @@ const App = () => {
       <Route path="/student/studentProfile" element={<StudentProfile/>} />
       <Route path="/student/uploadAssingment" element={<UploadAssignment/>} />
 
-
-
       {/* UniversityAdmin */}
       <Route path="/university/student/Dashboard" element={<StudentDashboard/>} />
       <Route path="/university/addStudent" element={<AddStudent/>} />
@@ -51,23 +48,13 @@ const App = () => {
       <Route path="/university/teacher/addTeacher" element={<AddTeacher/>} />
       <Route path="/university/teacher/editTeacher" element={<EditTeacher/>} />
 
-
-
       {/* Teacher */}
-
       <Route path="/teacher/Dashboard" element={<TeacherMainDashboard/>} />
       <Route path="/teacher/addCourse" element={<AddCourse/>} />
       <Route path="/teacher/editCourse" element={<EditCourse/>} />
       <Route path="/teacher/createAssignment" element={<CreateAssignment/>} />
       <Route path="/teacher/viewRequest" element={<ViewRequest/>} />
       <Route path="/teacher/evaluateAssignment" element={<EvaluateAssignment/>} />
-
-
-
-
-
-
-
     </Routes>
   );
 };
