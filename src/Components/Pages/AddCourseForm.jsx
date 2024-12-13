@@ -24,47 +24,47 @@ function AddCourseForm({ showUpload }) {
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [error, setError] = useState(null);
 
+  const [loading, setLoading] = useState(false);
   const onSubmit = async (data) => {
     try {
+      setLoading(true);
       const token = localStorage.getItem("accessToken");
       const formData = new FormData();
-  
-      // Add form fields
+
       formData.append("name", data.name);
       formData.append("batch", data.batch);
-      formData.append("group", data.group || ""); // Optional field
+      formData.append("group", data.group || "");
       formData.append("section", data.section);
       formData.append("status", data.status);
-  
-      // Add files
+
       uploadedFiles.forEach((file) => {
         formData.append("pdfs", file);
       });
-  
+
       const config = {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
         },
       };
-  
+
       const response = await axios.post(
         "http://127.0.0.1:8000/teacher/course",
         formData,
         config
       );
-  
-      if (response.status === 201) {
-        console.log("Course added successfully!");
+
+      if (response.status === 200) {
+        setLoading(false);
+        console.log(response.data.course);
         nav("/teacher/Dashboard");
       }
     } catch (err) {
       console.error("Error adding course:", err);
+      setLoading(false);
       setError("An error occurred while adding the course.");
     }
   };
-  
-  
 
   const handleFileUpload = (event) => {
     const files = Array.from(event.target.files);
@@ -84,7 +84,7 @@ function AddCourseForm({ showUpload }) {
     if (validationError) {
       setError(validationError);
     } else {
-      setError(null); // Clear any existing error
+      setError(null);
     }
 
     setUploadedFiles((prev) => [...prev, ...validFiles]);
@@ -179,6 +179,8 @@ function AddCourseForm({ showUpload }) {
                       type={field.type}
                       placeholder={field.placeholder}
                       options={field.options || []}
+                      pattern={field.pattern || undefined} // Pass the pattern if defined
+                      validationMessage={field.validationMessage || undefined}
                     />
                   ))}
                 </SimpleGrid>
@@ -192,7 +194,7 @@ function AddCourseForm({ showUpload }) {
                   >
                     Cancel
                   </Button>
-                  <Button type="submit" colorScheme="blue">
+                  <Button isLoading={loading} type="submit" colorScheme="blue">
                     Save
                   </Button>
                 </Box>

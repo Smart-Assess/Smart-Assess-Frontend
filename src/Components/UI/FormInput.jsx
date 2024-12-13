@@ -8,7 +8,15 @@ import {
 } from "@chakra-ui/react";
 import { useFormContext } from "react-hook-form";
 
-const FormInput = ({ name, label, type = "text", placeholder, options = [] }) => {
+const FormInput = ({
+  name,
+  label,
+  type = "text",
+  placeholder,
+  options = [],
+  pattern,
+  validationMessage,
+}) => {
   const {
     register,
     formState: { errors },
@@ -19,7 +27,9 @@ const FormInput = ({ name, label, type = "text", placeholder, options = [] }) =>
       <FormLabel>{label}</FormLabel>
       {type === "select" ? (
         <Select
-          {...register(name, { required: `${label} is required` })}
+          {...register(name, {
+            required: `${label} is required`,
+          })}
           placeholder={placeholder}
         >
           {options?.map((option) => (
@@ -30,7 +40,10 @@ const FormInput = ({ name, label, type = "text", placeholder, options = [] }) =>
         </Select>
       ) : (
         <Input
-          {...register(name, { required: `${label} is required` })}
+          {...register(name, {
+            required: `${label} is required`,
+            ...(pattern && { pattern: { value: pattern, message: validationMessage } }),
+          })}
           type={type}
           placeholder={placeholder}
         />

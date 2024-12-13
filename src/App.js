@@ -51,7 +51,7 @@ const App = () => {
       {/* Teacher */}
       <Route path="/teacher/Dashboard" element={<TeacherMainDashboard/>} />
       <Route path="/teacher/addCourse" element={<AddCourse/>} />
-      <Route path="/teacher/editCourse" element={<EditCourse/>} />
+      <Route path="/teacher/editCourse/:courseId" element={<EditCourse/>} />
       <Route path="/teacher/createAssignment" element={<CreateAssignment/>} />
       <Route path="/teacher/viewRequest" element={<ViewRequest/>} />
       <Route path="/teacher/evaluateAssignment" element={<EvaluateAssignment/>} />

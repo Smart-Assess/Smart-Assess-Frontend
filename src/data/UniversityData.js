@@ -109,23 +109,38 @@ export const addUniversity = [
 ];
 
 
-
 export const addCourse = [
   { name: 'name', label: 'Course Name', type: 'text', placeholder: 'Enter Course Name' },
-  { name: 'batch', label: 'Batch Id', type: 'text', placeholder: 'Enter Batch Id' },
-  { name: 'group', label: 'Group', type: 'text', placeholder: 'Enter Group Name' },
-  { name: 'section', label: 'Section', type: 'text', placeholder: 'Enter Section' },
-  { 
-    name: 'status', 
-    label: 'Status', 
-    type: 'select', 
+  {
+    name: 'batch',
+    label: 'Batch ID',
+    type: 'text',
+    placeholder: 'Enter Batch (e.g., 21B)',
+    pattern: /^[0-9]{2}[A-Z]$/,
+    validationMessage: 'Batch ID must be in the format: two digits followed by a letter (e.g., 21B)',
+  },
+  { name: 'group', label: 'Department', type: 'text', placeholder: 'Enter Department Name' },
+  {
+    name: 'section',
+    label: 'Section',
+    type: 'text',
+    placeholder: 'Enter Section (e.g., A)',
+    pattern: /^[A-Z]$/, // Ensures a single capital letter
+    validationMessage: 'Section must be a single capital letter (e.g., A, B, C)',
+  },
+  {
+    name: 'status',
+    label: 'Status',
+    type: 'select',
     options: [
       { value: 'active', label: 'Active' },
       { value: 'inactive', label: 'Inactive' },
-    ], 
-    placeholder: 'Select Status' 
+    ],
+    placeholder: 'Select Status',
   },
 ];
+
+
 
 
 export const createAssignment = [

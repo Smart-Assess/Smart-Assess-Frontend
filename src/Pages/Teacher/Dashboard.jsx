@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Flex,
@@ -17,14 +17,58 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
+  Spinner,
 } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import Header from "../../Components/Pages/Header";
 import Footer from "../../Components/Pages/Footer";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Dashboard = () => {
   const nav = useNavigate();
+
+  const [loading, setLoading] = useState(false);
+  const [courses, setCourses] = useState([]);
+  const [selectedBatch, setSelectedBatch] = useState("");
+  const [selectedSection, setSelectedSection] = useState("");
+
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const token = localStorage.getItem("accessToken");
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const response = await axios.get(
+        "http://127.0.0.1:8000/teacher/courses",
+        config
+      );
+
+      if (response.status === 200) {
+        setCourses(response.data.courses);
+        setLoading(false);
+      }
+    } catch (err) {
+      console.error("Error fetching courses:", err);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const filteredCourses = courses.filter(
+    (course) =>
+      (selectedBatch === "" || course.batch === selectedBatch) &&
+      (selectedSection === "" || course.section === selectedSection)
+  );
+
   return (
     <Flex direction="column" height="100vh">
       <Header />
@@ -42,21 +86,36 @@ const Dashboard = () => {
           <VStack align="stretch" spacing={4}>
             <Menu>
               <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-                Batch 21B-SE
+                {selectedBatch || "Select Batch"}
               </MenuButton>
               <MenuList>
-                <MenuItem>Section A</MenuItem>
-                <MenuItem>Section B</MenuItem>
-                <MenuItem>Section C</MenuItem>
+                {Array.from(new Set(courses.map((course) => course.batch))).map(
+                  (batch) => (
+                    <MenuItem
+                      key={batch}
+                      onClick={() => setSelectedBatch(batch)}
+                    >
+                      {batch}
+                    </MenuItem>
+                  )
+                )}
               </MenuList>
             </Menu>
             <Menu>
               <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-                Batch 22B-CS
+                {selectedSection || "Select Section"}
               </MenuButton>
               <MenuList>
-                <MenuItem>Section A</MenuItem>
-                <MenuItem>Section B</MenuItem>
+                {Array.from(
+                  new Set(courses.map((course) => course.section))
+                ).map((section) => (
+                  <MenuItem
+                    key={section}
+                    onClick={() => setSelectedSection(section)}
+                  >
+                    {section}
+                  </MenuItem>
+                ))}
               </MenuList>
             </Menu>
           </VStack>
@@ -87,31 +146,25 @@ const Dashboard = () => {
             borderRadius="lg"
             boxShadow="md"
             overflowX="auto"
+            mb={4}
           >
-            <Table variant="simple" cursor={'pointer'} onClick={()=>nav('/teacher/editCourse')}>
+            <Table variant="simple" cursor={"pointer"}>
               <Thead bg="gray.100">
                 <Tr>
                   <Th>Subject Name</Th>
-                  <Th>Group</Th>
+                  <Th>Department</Th>
                 </Tr>
               </Thead>
               <Tbody>
-                <Tr>
-                  <Td>Algebra</Td>
-                  <Td>Science</Td>
-                </Tr>
-                <Tr>
-                  <Td>World History</Td>
-                  <Td>Arts</Td>
-                </Tr>
-                <Tr>
-                  <Td>Physics</Td>
-                  <Td>Economics</Td>
-                </Tr>
-                <Tr>
-                  <Td>Chemistry</Td>
-                  <Td>Science</Td>
-                </Tr>
+                {filteredCourses?.map((course) => (
+                  <Tr
+                    key={course.id}
+                    onClick={() => nav(`/teacher/editCourse/${course.id}`)}
+                  >
+                    <Td>{course.name}</Td>
+                    <Td>{course.group}</Td>
+                  </Tr>
+                ))}
               </Tbody>
             </Table>
           </Box>
