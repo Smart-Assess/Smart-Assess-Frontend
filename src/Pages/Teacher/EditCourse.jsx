@@ -5,43 +5,13 @@ import Footer from "../../Components/Pages/Footer";
 import AddCourseForm from "../../Components/Pages/AddCourseForm";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import EditCourseForm from "../../Components/Pages/EditCourseForm";
 
 const EditCourse = () => {
   const { courseId } = useParams();
 
-  const [loading, setLoading] = useState(false);
+  
 
-  const [courses, setCourses] = useState({});
-
-  const fetchData = async () => {
-    try {
-      setLoading(true);
-      const token = localStorage.getItem("accessToken");
-
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
-
-      const response = await axios.get(
-        `http://127.0.0.1:8000/teacher/course/${courseId}`,
-        config
-      );
-
-      if (response.status === 200) {
-        setCourses(response.data.course);
-        setLoading(false);
-      }
-    } catch (err) {
-      console.error("Error fetching courses:", err);
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
 
   const nav = useNavigate();
   return (
@@ -71,7 +41,8 @@ const EditCourse = () => {
             </Button>
           </Box>
         </Flex>
-        <AddCourseForm  showUpload={true}></AddCourseForm>
+        
+        <EditCourseForm courseId={courseId} showUpload={true}></EditCourseForm>
       </Box>
       <Footer />
     </Flex>

@@ -128,16 +128,7 @@ export const addCourse = [
     pattern: /^[A-Z]$/, // Ensures a single capital letter
     validationMessage: 'Section must be a single capital letter (e.g., A, B, C)',
   },
-  {
-    name: 'status',
-    label: 'Status',
-    type: 'select',
-    options: [
-      { value: 'active', label: 'Active' },
-      { value: 'inactive', label: 'Inactive' },
-    ],
-    placeholder: 'Select Status',
-  },
+ 
 ];
 
 

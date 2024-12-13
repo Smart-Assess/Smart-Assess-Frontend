@@ -28,14 +28,13 @@ import axios from "axios";
 const Dashboard = () => {
   const nav = useNavigate();
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [courses, setCourses] = useState([]);
   const [selectedBatch, setSelectedBatch] = useState("");
   const [selectedSection, setSelectedSection] = useState("");
 
   const fetchData = async () => {
     try {
-      setLoading(true);
       const token = localStorage.getItem("accessToken");
 
       const config = {
@@ -156,15 +155,34 @@ const Dashboard = () => {
                 </Tr>
               </Thead>
               <Tbody>
-                {filteredCourses?.map((course) => (
-                  <Tr
-                    key={course.id}
-                    onClick={() => nav(`/teacher/editCourse/${course.id}`)}
-                  >
-                    <Td>{course.name}</Td>
-                    <Td>{course.group}</Td>
+                {loading ? (
+                  <Tr>
+                    <Td colSpan={2} textAlign="center">
+                      <Spinner
+                        size="lg"
+                        thickness="4px"
+                        speed="0.65s"
+                        color="blue.500"
+                      />
+                    </Td>
                   </Tr>
-                ))}
+                ) : filteredCourses.length > 0 ? (
+                  filteredCourses.map((course) => (
+                    <Tr
+                      key={course.id}
+                      onClick={() => nav(`/teacher/editCourse/${course.id}`)}
+                    >
+                      <Td>{course.name}</Td>
+                      <Td>{course.group}</Td>
+                    </Tr>
+                  ))
+                ) : (
+                  <Tr>
+                    <Td colSpan={2} textAlign="center">
+                      No courses found.
+                    </Td>
+                  </Tr>
+                )}
               </Tbody>
             </Table>
           </Box>

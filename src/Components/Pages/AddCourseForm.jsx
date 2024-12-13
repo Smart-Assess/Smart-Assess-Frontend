@@ -26,6 +26,7 @@ function AddCourseForm({ showUpload }) {
 
   const [loading, setLoading] = useState(false);
   const onSubmit = async (data) => {
+    console.log(data)
     try {
       setLoading(true);
       const token = localStorage.getItem("accessToken");

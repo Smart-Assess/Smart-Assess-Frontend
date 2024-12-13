@@ -29,6 +29,7 @@ const FormInput = ({
         <Select
           {...register(name, {
             required: `${label} is required`,
+            ...(pattern && { pattern: { value: pattern, message: validationMessage } }),
           })}
           placeholder={placeholder}
         >
