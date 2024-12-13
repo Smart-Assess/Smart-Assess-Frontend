@@ -1,17 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Box, Flex, Heading, Text, Button } from "@chakra-ui/react";
 import Header from "../../Components/Pages/Header";
 import Footer from "../../Components/Pages/Footer";
-import AddCourseForm from "../../Components/Pages/AddCourseForm";
 import { useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
 import EditCourseForm from "../../Components/Pages/EditCourseForm";
 
 const EditCourse = () => {
   const { courseId } = useParams();
 
-  
+  const [coursecodeId, setCourseCodeId] = useState("");
 
+  const [isCopied, setIsCopied] = useState(false);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(coursecodeId).then(() => {
+      setIsCopied(true);
+      setTimeout(() => setIsCopied(false), 2000);
+    });
+  };
 
   const nav = useNavigate();
   return (
@@ -26,6 +32,10 @@ const EditCourse = () => {
             <Text color="#546881">Add the required information below</Text>
           </Box>
           <Box d="flex">
+            <Button mr={3} colorScheme="blue" onClick={handleCopy}>
+              {isCopied ? "Copied!" : "Course Code"}
+            </Button>
+
             <Button
               mr={3}
               colorScheme="blue"
@@ -41,8 +51,12 @@ const EditCourse = () => {
             </Button>
           </Box>
         </Flex>
-        
-        <EditCourseForm courseId={courseId} showUpload={true}></EditCourseForm>
+
+        <EditCourseForm
+          setCourseCodeId={setCourseCodeId}
+          courseId={courseId}
+          showUpload={true}
+        ></EditCourseForm>
       </Box>
       <Footer />
     </Flex>

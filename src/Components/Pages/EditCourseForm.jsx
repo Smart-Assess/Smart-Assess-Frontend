@@ -19,7 +19,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { addCourse } from "../../data/UniversityData";
 
-function EditCourseForm({ showUpload, courseId }) {
+function EditCourseForm({ showUpload, courseId,setCourseCodeId }) {
   const methods = useForm();
 
   const [loading, setLoading] = useState(true);
@@ -41,6 +41,8 @@ function EditCourseForm({ showUpload, courseId }) {
       if (response.status === 200) {
         const courseData = response.data.course;
         setCourses(courseData);
+        setCourseCodeId(courseData.course_code)
+        
         setLoading(false);
         methods.setValue("name", courseData.name);
         methods.setValue("batch", courseData.batch);
@@ -68,7 +70,6 @@ function EditCourseForm({ showUpload, courseId }) {
   const [error, setError] = useState(null);
 
   const onSubmit = async (data) => {
-    console.log(data);
     try {
       const token = localStorage.getItem("accessToken");
 
@@ -127,7 +128,7 @@ function EditCourseForm({ showUpload, courseId }) {
     <Flex w="100%" pb={8}>
       <Box w="100%">
         {loading ? (
-          <Flex justifyContent="center"   mt="140px" alignItems="center" >
+          <Flex justifyContent="center" mt="140px" alignItems="center">
             <Spinner size="lg" thickness="4px" speed="0.65s" color="blue.500" />
           </Flex>
         ) : (
@@ -202,6 +203,7 @@ function EditCourseForm({ showUpload, courseId }) {
             )}
 
             <Box w="100%">
+              
               <FormProvider {...methods}>
                 <form onSubmit={methods.handleSubmit(onSubmit)}>
                   <SimpleGrid columns={[1, null, 3]} spacing="8">
