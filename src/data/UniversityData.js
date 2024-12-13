@@ -133,11 +133,17 @@ export const addCourse = [
 
 
 
-
 export const createAssignment = [
-  { name: 'assignmentName', label: 'Assignment Name', type: 'text', placeholder: 'Enter Assigment Name' },
+  { name: 'assignmentName', label: 'Assignment Name', type: 'text', placeholder: 'Enter Assignment Name' },
   { name: 'deadline', label: 'Deadline', type: 'date', placeholder: 'Enter Deadline' },
+  { name: 'time', label: 'Time', type: 'time', placeholder: 'Enter Time', defaultValue: '12:00' }, // Default time value
   { name: 'description', label: 'Description', type: 'text', placeholder: 'Enter Description Name' },
-  { name: 'grade', label: 'Grade', type: 'number', placeholder: 'Enter Grade' },
-  
+  { 
+    name: 'grade', 
+    label: 'Grade', 
+    type: 'number', 
+    placeholder: 'Enter Grade', 
+    min: 0, // Minimum grade value
+    max: 10, // Maximum grade value
+  },
 ];

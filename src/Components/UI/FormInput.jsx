@@ -16,6 +16,9 @@ const FormInput = ({
   options = [],
   pattern,
   validationMessage,
+  defaultValue,
+  min,
+  max,
 }) => {
   const {
     register,
@@ -47,6 +50,9 @@ const FormInput = ({
           })}
           type={type}
           placeholder={placeholder}
+          defaultValue={defaultValue} // Pass default value
+          min={min} // Set minimum value for numeric inputs
+          max={max} // Set maximum value for numeric inputs
         />
       )}
       <FormErrorMessage>
