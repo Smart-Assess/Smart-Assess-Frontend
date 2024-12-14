@@ -1,11 +1,48 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import Header from "../../Components/Pages/Header";
 import Footer from "../../Components/Pages/Footer";
 import ViewRequestTable from "../../Components/Pages/ViewRequestTable";
 import { viewRequestData } from "./../../data/studentsData";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 
 const ViewRequest = () => {
+  const { courseId } = useParams();
+
+  const [loading, setLoading] = useState(true);
+  const [courses, setCourses] = useState([]);
+
+  const fetchData = async () => {
+    try {
+      const token = localStorage.getItem("accessToken");
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const response = await axios.get(
+        `http://127.0.0.1:8000/teacher/course/${courseId}/requests`,
+        config
+      );
+
+      if (response.status === 200) {
+        setCourses(response.data.requests);
+        setLoading(false);
+      }
+    } catch (err) {
+      console.error("Error fetching courses:", err);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  console.log(courses);
   return (
     <Flex direction="column">
       <Header />
@@ -18,8 +55,7 @@ const ViewRequest = () => {
             <Text color="#546881">Add the required information below</Text>
           </Box>
         </Flex>
-        <ViewRequestTable data={viewRequestData}></ViewRequestTable>
-        
+        <ViewRequestTable courseId={courseId} courses={courses} data={viewRequestData}></ViewRequestTable>
       </Box>
 
       <Footer />

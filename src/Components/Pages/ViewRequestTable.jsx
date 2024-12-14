@@ -12,8 +12,43 @@ import {
   Avatar,
 } from "@chakra-ui/react";
 import { CheckIcon, CloseIcon } from "@chakra-ui/icons";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-const ViewRequestTable = ({ data, onApprove, onReject }) => {
+const ViewRequestTable = ({ data, courses, courseId }) => {
+  const navigate = useNavigate();
+
+  const handleSubmit = async (requestId, status) => {
+    try {
+      const token = localStorage.getItem("accessToken");
+
+      const config = {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const payload = {
+        status,
+      };
+
+      const response = await axios.put(
+        `http://127.0.0.1:8000/teacher/course/${courseId}/request/${requestId}`,
+        payload,
+        config
+      );
+
+      if (response.status === 200) {
+        navigate(`/teacher/viewRequest/${courseId}`);
+        window.location.reload();
+      }
+    } catch (err) {
+      console.error("Error updating request:", err);
+    }
+  };
+
   return (
     <TableContainer
       mb={12}
@@ -32,32 +67,32 @@ const ViewRequestTable = ({ data, onApprove, onReject }) => {
           </Tr>
         </Thead>
         <Tbody>
-          {data?.data?.map((uni, index) => (
+          {courses?.map((uni, index) => (
             <Tr key={index}>
               <Td display="flex" alignItems="center">
                 <Avatar src={uni.image} size="sm" mr={3} />
-                {uni.studentName}
+                {uni?.student?.name}
               </Td>
-              <Td>{uni.studentID}</Td>
-              <Td>{uni.batch}</Td>
-              <Td>{uni.department}</Td>
-              <Td>{uni.section}</Td>
+              <Td>{uni?.student?.id}</Td>
+              <Td>{uni?.student?.batch}</Td>
+              <Td>{uni?.student?.department}</Td>
+              <Td>{uni?.student?.section}</Td>
               <Td>
                 <Flex gap={3}>
                   <Tooltip label="Approve" aria-label="Approve">
                     <CheckIcon
                       color="green.500"
-                      boxSize={'6'}
+                      boxSize={"6"}
                       cursor="pointer"
-                      onClick={() => onApprove(uni.studentID)}
+                      onClick={() => handleSubmit(uni?.request_id, "accepted")}
                     />
                   </Tooltip>
                   <Tooltip label="Reject" aria-label="Reject">
                     <CloseIcon
-                    mt="4px"
+                      mt="4px"
                       color="red.500"
                       cursor="pointer"
-                      onClick={() => onReject(uni.studentID)}
+                      onClick={() => handleSubmit(uni?.request_id, "rejected")}
                     />
                   </Tooltip>
                 </Flex>

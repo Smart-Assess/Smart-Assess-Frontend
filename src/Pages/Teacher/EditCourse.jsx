@@ -39,13 +39,13 @@ const EditCourse = () => {
             <Button
               mr={3}
               colorScheme="blue"
-              onClick={() => nav("/teacher/viewRequest")}
+              onClick={() => nav(`/teacher/viewRequest/${courseId}`)}
             >
               View Request
             </Button>
             <Button
               colorScheme="blue"
-              onClick={() => nav("/teacher/createAssignment")}
+              onClick={() => nav(`/teacher/createAssignment/${courseId}`)}
             >
               Create Assignment
             </Button>

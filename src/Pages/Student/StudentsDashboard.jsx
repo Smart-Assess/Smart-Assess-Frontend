@@ -9,12 +9,17 @@ import JoinCourseModal from "../../Components/Pages/JoinCourseModal";
 const StudentsDashboard = () => {
   const [isModalOpen, setModalOpen] = useState(false);
 
-  const handleOpenModal = () => setModalOpen(true);
+  const [courseCode, setCourseCode] = useState("");
+
+  const handleOpenModal = () => {
+    setCourseCode("");
+    setModalOpen(true);
+  };
   const handleCloseModal = () => setModalOpen(false);
 
   return (
     <Flex direction="column" minH="100vh">
-      <Header role={'student'} />
+      <Header role={"student"} />
       <Box
         flex="1"
         mx={12}
@@ -39,7 +44,12 @@ const StudentsDashboard = () => {
       </Box>
       <Footer />
 
-      <JoinCourseModal isOpen={isModalOpen} onClose={handleCloseModal} />
+      <JoinCourseModal
+        courseCode={courseCode}
+        setCourseCode={setCourseCode}
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+      />
     </Flex>
   );
 };

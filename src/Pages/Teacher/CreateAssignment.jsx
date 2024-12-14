@@ -3,8 +3,11 @@ import { Box, Flex, Heading, Text, Button } from "@chakra-ui/react";
 import Header from "../../Components/Pages/Header";
 import Footer from "../../Components/Pages/Footer";
 import CreateAssignmentForm from "../../Components/Pages/CreateAssigmentForm";
+import { useParams } from "react-router-dom";
 
 const CreateAssignment = () => {
+  const { courseId } = useParams();
+
   return (
     <Flex direction="column">
       <Header />
@@ -17,7 +20,7 @@ const CreateAssignment = () => {
             <Text color="#546881">Add the required information below</Text>
           </Box>
         </Flex>
-        <CreateAssignmentForm showUpload={true}></CreateAssignmentForm>
+        <CreateAssignmentForm courseId={courseId} showUpload={true}></CreateAssignmentForm>
       </Box>
       <Footer />
     </Flex>

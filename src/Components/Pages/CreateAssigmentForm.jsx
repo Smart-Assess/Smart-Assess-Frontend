@@ -16,26 +16,58 @@ import FormInput from "./../UI/FormInput";
 import { createAssignment } from "../../data/UniversityData";
 import { useNavigate } from "react-router-dom";
 import { FiTrash } from "react-icons/fi";
+import axios from "axios";
 
-function CreateAssignmentForm({ showUpload }) {
+function CreateAssignmentForm({ showUpload, courseId }) {
   const [uploadFileName, setUploadFileName] = useState(null);
 
+  const [loading,setLoading]=useState(false)
   const methods = useForm();
   const nav = useNavigate();
-  const onSubmit = (data) => {
-    const { deadline, time } = data;
-    const formattedDateTime = `${deadline} ${time}`;
 
-    const updatedData = {
-      ...data,
-      deadline: formattedDateTime,
-      question_pdf: data.question_pdf[0].name,
-    };
+  const onSubmit = async (data) => {
+    try {
+      setLoading(true)
+      const { deadline, time } = data;
+      const formattedDateTime = `${deadline} ${time}`;
+      const updatedData = {
+        ...data,
+        deadline: formattedDateTime,
+      };
+      delete updatedData.time;
+      setUploadFileName(data.question_pdf[0]?.name);
+      const token = localStorage.getItem("accessToken");
+      const formData = new FormData();
+      formData.append("name", data.name);
+      formData.append("description", data.description);
+      formData.append("deadline", data.deadline || "");
+      formData.append("grade", String(data.grade)); 
+      formData.append("question_pdf", data.question_pdf[0]);
 
-    setUploadFileName(data.question_pdf[0].name);
-    console.log("Form Data:", updatedData);
+      const config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const response = await axios.post(
+        `http://127.0.0.1:8000/teacher/course/${courseId}/assignment`,
+        formData,
+        config
+      );
+
+      if (response.status === 200) {
+        setLoading(false)
+
+        nav("/teacher/Dashboard");
+      }
+    } catch (err) {
+      console.error("Error adding course:", err);
+      setLoading(false)
+
+    }
   };
-
   return (
     <Flex w="100%" pb={8}>
       <Box w="100%">
@@ -127,7 +159,7 @@ function CreateAssignmentForm({ showUpload }) {
                   >
                     Cancel
                   </Button>
-                  <Button type="submit" colorScheme="blue">
+                  <Button isLoading={loading} type="submit" colorScheme="blue">
                     Save
                   </Button>
                 </Box>
