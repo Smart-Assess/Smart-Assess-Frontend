@@ -11,12 +11,21 @@ import {
   Badge,
   Button,
 } from "@chakra-ui/react";
-
-import { assignmentsList } from "./../../data/AssignmentsListData.js";
 import { useNavigate } from "react-router-dom";
 
-const TableofAssignmentsList = () => {
-  const nav=useNavigate()
+const TableofAssignmentsList = ({ assignments,courseId }) => {
+  const nav = useNavigate();
+
+  const getBadgeColor = (deadline) => {
+    const today = new Date();
+    const dueDate = new Date(deadline);
+
+    if (dueDate < today) return "red"; // Overdue
+    const daysLeft = Math.ceil((dueDate - today) / (1000 * 60 * 60 * 24));
+    if (daysLeft <= 3) return "orange"; // Urgent
+    return "green"; // Safe
+  };
+
   return (
     <TableContainer
       mb={12}
@@ -29,27 +38,35 @@ const TableofAssignmentsList = () => {
       <Table variant="simple">
         <Thead backgroundColor={"#EAEEF0"}>
           <Tr>
-            <Th>Assignment</Th>
+            <Th>Name</Th>
             <Th>Due Date</Th>
-            <Th>Status</Th>
+            <Th>Description</Th>
             <Th>Score</Th>
+            <Th></Th> {/* Updated Header */}
           </Tr>
         </Thead>
         <Tbody>
-          {assignmentsList.map((assignment, index) => (
-            <Tr key={index} onClick={()=>nav('/student/studentsEvaluation')} cursor={'pointer'}>
-              <Td>{assignment.assignment}</Td>
-              <Td>{assignment.dueDate}</Td>
+          {assignments.map((assignment, index) => (
+            <Tr key={index}>
+              <Td>{assignment.name}</Td>
               <Td>
-                <Badge
-                  borderRadius={"lg"}
-                  color={assignment.status.includes("Submitted") ? "green" : "red"}
-                  bg={assignment.status.includes("Submitted") ? "#ECFDF3" : "#F2F4F7"}
-                >
-                  {assignment.status}
+                <Badge colorScheme={getBadgeColor(assignment.deadline)}>
+                  {assignment.deadline}
                 </Badge>
               </Td>
-              <Td>{assignment.score}</Td>
+              <Td>{assignment.description}</Td>
+              <Td>{assignment.grade}</Td>
+              <Td>
+                <Button
+                  colorScheme="blue"
+                  size="sm"
+                  onClick={() =>
+                    nav(`/student/studentsEvaluation/${courseId}/${assignment.id}`)
+                  }
+                >
+                  View Submissions
+                </Button>
+              </Td>
             </Tr>
           ))}
         </Tbody>

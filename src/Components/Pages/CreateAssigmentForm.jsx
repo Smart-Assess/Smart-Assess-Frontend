@@ -10,38 +10,41 @@ import {
   Icon,
   HStack,
 } from "@chakra-ui/react";
-import { FiUpload } from "react-icons/fi";
-
+import { FiUpload, FiTrash } from "react-icons/fi";
 import FormInput from "./../UI/FormInput";
 import { createAssignment } from "../../data/UniversityData";
 import { useNavigate } from "react-router-dom";
-import { FiTrash } from "react-icons/fi";
 import axios from "axios";
 
 function CreateAssignmentForm({ showUpload, courseId }) {
   const [uploadFileName, setUploadFileName] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [errorMessages, setErrorMessages] = useState({}); // State to store backend validation errors
 
-  const [loading,setLoading]=useState(false)
   const methods = useForm();
   const nav = useNavigate();
 
   const onSubmit = async (data) => {
     try {
-      setLoading(true)
+      setLoading(true);
+      setErrorMessages({}); // Clear previous errors
+
       const { deadline, time } = data;
       const formattedDateTime = `${deadline} ${time}`;
       const updatedData = {
         ...data,
         deadline: formattedDateTime,
       };
+
       delete updatedData.time;
       setUploadFileName(data.question_pdf[0]?.name);
+
       const token = localStorage.getItem("accessToken");
       const formData = new FormData();
       formData.append("name", data.name);
       formData.append("description", data.description);
-      formData.append("deadline", data.deadline || "");
-      formData.append("grade", String(data.grade)); 
+      formData.append("deadline", updatedData.deadline || "");
+      formData.append("grade", String(data.grade));
       formData.append("question_pdf", data.question_pdf[0]);
 
       const config = {
@@ -58,16 +61,30 @@ function CreateAssignmentForm({ showUpload, courseId }) {
       );
 
       if (response.status === 200) {
-        setLoading(false)
-
+        setLoading(false);
         nav("/teacher/Dashboard");
       }
     } catch (err) {
-      console.error("Error adding course:", err);
-      setLoading(false)
+      setLoading(false);
+      if (err.response && err.response.data) {
+        const { detail } = err.response.data;
 
+        if (Array.isArray(detail)) {
+          setErrorMessages(
+            detail.reduce((acc, error) => {
+              acc[error.loc[1]] = error.msg;
+              return acc;
+            }, {})
+          );
+        } else {
+          setErrorMessages({ general: detail });
+        }
+      } else {
+        setErrorMessages({ general: "An unexpected error occurred." });
+      }
     }
   };
+
   return (
     <Flex w="100%" pb={8}>
       <Box w="100%">
@@ -131,7 +148,6 @@ function CreateAssignmentForm({ showUpload, courseId }) {
             </VStack>
           ) : null}
 
-          {/* Form Section */}
           <Box w="100%">
             <FormProvider {...methods}>
               <form onSubmit={methods.handleSubmit(onSubmit)}>
@@ -149,6 +165,22 @@ function CreateAssignmentForm({ showUpload, courseId }) {
                     />
                   ))}
                 </SimpleGrid>
+
+                {/* Display Field-Level Errors */}
+                {Object.keys(errorMessages).map((key) => (
+                  key !== "general" && errorMessages[key] ? (
+                    <Text key={key} color="red.500" fontSize="sm">
+                      {key}: {errorMessages[key]}
+                    </Text>
+                  ) : null
+                ))}
+
+                {/* Display General Errors */}
+                {errorMessages.general && (
+                  <Text color="red.500" fontSize="sm" mt="4">
+                    {errorMessages.general}
+                  </Text>
+                )}
 
                 <Box display="flex" justifyContent="flex-end" mt="6">
                   <Button

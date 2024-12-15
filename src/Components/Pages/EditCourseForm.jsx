@@ -19,7 +19,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { addCourse } from "../../data/UniversityData";
 
-function EditCourseForm({ showUpload, courseId,setCourseCodeId }) {
+function EditCourseForm({ showUpload, courseId, setCourseCodeId }) {
   const methods = useForm();
 
   const [loading, setLoading] = useState(true);
@@ -41,8 +41,8 @@ function EditCourseForm({ showUpload, courseId,setCourseCodeId }) {
       if (response.status === 200) {
         const courseData = response.data.course;
         setCourses(courseData);
-        setCourseCodeId(courseData.course_code)
-        
+        setCourseCodeId(courseData.course_code);
+
         setLoading(false);
         methods.setValue("name", courseData.name);
         methods.setValue("batch", courseData.batch);
@@ -146,6 +146,7 @@ function EditCourseForm({ showUpload, courseId,setCourseCodeId }) {
                   justifyContent="center"
                   bg="gray.50"
                   flexDirection="column"
+                  position="relative"
                 >
                   <Icon as={FiUpload} w={10} h={10} color="gray.400" mb="2" />
                   <Text color="gray.500" mb="2">
@@ -159,13 +160,17 @@ function EditCourseForm({ showUpload, courseId,setCourseCodeId }) {
                     onChange={handleFileUpload}
                     style={{
                       position: "absolute",
-                      width: "100%",
-                      height: "100%",
+                      top: "50%",
+                      left: "50%",
+                      transform: "translate(-50%, -50%)",
+                      width: "calc(100% - 32px)", // Adjust padding area
+                      height: "calc(100% - 32px)", // Adjust padding area
                       opacity: 0,
                       cursor: "pointer",
                     }}
                   />
                 </Box>
+
                 {error && (
                   <Alert status="error" borderRadius="md" fontSize="sm" mt="4">
                     <AlertIcon />
@@ -203,7 +208,6 @@ function EditCourseForm({ showUpload, courseId,setCourseCodeId }) {
             )}
 
             <Box w="100%">
-              
               <FormProvider {...methods}>
                 <form onSubmit={methods.handleSubmit(onSubmit)}>
                   <SimpleGrid columns={[1, null, 3]} spacing="8">
