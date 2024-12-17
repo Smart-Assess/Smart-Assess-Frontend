@@ -23,6 +23,8 @@ import CreateAssignment from "./Pages/Teacher/CreateAssignment";
 import ViewRequest from "./Pages/Teacher/ViewRequest";
 import EvaluateAssignment from "./Pages/Teacher/EvaluateAssignment";
 import ViewAssignments from "./Pages/Teacher/ViewAssignments";
+import ViewSubmissions from "./Pages/Teacher/ViewSubmissions";
+import Grading from "./Pages/Teacher/Grading";
 const App = () => {
   return (
     <Routes>
@@ -57,7 +59,9 @@ const App = () => {
       <Route path="/teacher/viewRequest/:courseId" element={<ViewRequest/>} />
       <Route path="/teacher/evaluateAssignment" element={<EvaluateAssignment/>} />
       <Route path="/teacher/viewAssignments/:courseId" element={<ViewAssignments/>} />
-      {/* <Route path="/teacher/viewStudentsSubmissions/:courseId/:assignmentId" element={<ViewAssignments/>} /> */}
+      <Route path="/teacher/viewStudentsSubmissions/:courseId/:assignmentId" element={<ViewSubmissions/>} />
+      <Route path="/teacher/student/grading/:courseId/:assignmentId" element={<Grading/>} />
+
     </Routes>
   );
 };

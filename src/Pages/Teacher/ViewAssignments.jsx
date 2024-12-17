@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Flex, IconButton } from "@chakra-ui/react";
 import Header from "../../Components/Pages/Header";
 import Footer from "../../Components/Pages/Footer";
 import HeadingButtonSection from "../../Components/Pages/HeadingButtonSection";
 import TableofAssignmentsList from "../../Components/Pages/TableofAssignmentsList";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { ArrowBackIcon } from "@chakra-ui/icons";
+
 import axios from "axios";
 
 const ViewAssignments = () => {
@@ -13,6 +15,7 @@ const ViewAssignments = () => {
   const [assignments, setAssignments] = useState([]);
 
   const [loading, setLoading] = useState(true);
+  const nav = useNavigate();
 
   const fetchData = async () => {
     try {
@@ -43,7 +46,6 @@ const ViewAssignments = () => {
     fetchData();
   }, []);
 
-
   return (
     <Flex direction="column" minH="100vh">
       <Header />
@@ -53,7 +55,20 @@ const ViewAssignments = () => {
           content="Marketing"
           showButton={false}
         />
-        <TableofAssignmentsList courseId={courseId} assignments={assignments} />
+
+        <IconButton
+          aria-label="Go Back"
+          icon={<ArrowBackIcon />}
+          onClick={() => nav(`/teacher/editCourse/${courseId}`)}
+          mr={4}
+          mb={4}
+        />
+
+        <TableofAssignmentsList
+          loading={loading}
+          courseId={courseId}
+          assignments={assignments}
+        />
       </Box>
       <Footer />
     </Flex>

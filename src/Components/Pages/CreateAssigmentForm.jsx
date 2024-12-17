@@ -167,13 +167,13 @@ function CreateAssignmentForm({ showUpload, courseId }) {
                 </SimpleGrid>
 
                 {/* Display Field-Level Errors */}
-                {Object.keys(errorMessages).map((key) => (
+                {Object.keys(errorMessages).map((key) =>
                   key !== "general" && errorMessages[key] ? (
                     <Text key={key} color="red.500" fontSize="sm">
                       {key}: {errorMessages[key]}
                     </Text>
                   ) : null
-                ))}
+                )}
 
                 {/* Display General Errors */}
                 {errorMessages.general && (
@@ -184,9 +184,9 @@ function CreateAssignmentForm({ showUpload, courseId }) {
 
                 <Box display="flex" justifyContent="flex-end" mt="6">
                   <Button
-                    onClick={() => nav("/teacher/dashboard")}
                     variant="outline"
                     colorScheme="gray"
+                    onClick={() => nav(`/teacher/editCourse/${courseId}`)}
                     mr="4"
                   >
                     Cancel

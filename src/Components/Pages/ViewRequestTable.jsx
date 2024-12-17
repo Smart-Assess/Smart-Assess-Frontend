@@ -10,12 +10,15 @@ import {
   Flex,
   Tooltip,
   Avatar,
+  Spinner,
+  Box,
+  Text,
 } from "@chakra-ui/react";
 import { CheckIcon, CloseIcon } from "@chakra-ui/icons";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const ViewRequestTable = ({ data, courses, courseId }) => {
+const ViewRequestTable = ({ data, courses, courseId, loading }) => {
   const navigate = useNavigate();
 
   const handleSubmit = async (requestId, status) => {
@@ -67,38 +70,54 @@ const ViewRequestTable = ({ data, courses, courseId }) => {
           </Tr>
         </Thead>
         <Tbody>
-          {courses?.map((uni, index) => (
-            <Tr key={index}>
-              <Td display="flex" alignItems="center">
-                <Avatar src={uni.image} size="sm" mr={3} />
-                {uni?.student?.name}
-              </Td>
-              <Td>{uni?.student?.id}</Td>
-              <Td>{uni?.student?.batch}</Td>
-              <Td>{uni?.student?.department}</Td>
-              <Td>{uni?.student?.section}</Td>
-              <Td>
-                <Flex gap={3}>
-                  <Tooltip label="Approve" aria-label="Approve">
-                    <CheckIcon
-                      color="green.500"
-                      boxSize={"6"}
-                      cursor="pointer"
-                      onClick={() => handleSubmit(uni?.request_id, "accepted")}
-                    />
-                  </Tooltip>
-                  <Tooltip label="Reject" aria-label="Reject">
-                    <CloseIcon
-                      mt="4px"
-                      color="red.500"
-                      cursor="pointer"
-                      onClick={() => handleSubmit(uni?.request_id, "rejected")}
-                    />
-                  </Tooltip>
-                </Flex>
+          {loading ? (
+            <Tr>
+              <Td colSpan={data.headers.length} textAlign="center">
+                <Spinner size="xl" thickness="4px" speed="0.65s" color="blue.500" />
               </Td>
             </Tr>
-          ))}
+          ) : courses.length === 0 ? (
+            <Tr>
+              <Td colSpan={data.headers.length} textAlign="center">
+                <Box p={5}>
+                  <Text fontSize="xl" color="gray.500">No Data Found</Text>
+                </Box>
+              </Td>
+            </Tr>
+          ) : (
+            courses.map((uni, index) => (
+              <Tr key={index}>
+                <Td display="flex" alignItems="center">
+                  <Avatar src={uni.image} size="sm" mr={3} />
+                  {uni?.student?.name}
+                </Td>
+                <Td>{uni?.student?.id}</Td>
+                <Td>{uni?.student?.batch}</Td>
+                <Td>{uni?.student?.department}</Td>
+                <Td>{uni?.student?.section}</Td>
+                <Td>
+                  <Flex gap={3}>
+                    <Tooltip label="Approve" aria-label="Approve">
+                      <CheckIcon
+                        color="green.500"
+                        boxSize={"6"}
+                        cursor="pointer"
+                        onClick={() => handleSubmit(uni?.request_id, "accepted")}
+                      />
+                    </Tooltip>
+                    <Tooltip label="Reject" aria-label="Reject">
+                      <CloseIcon
+                        mt="4px"
+                        color="red.500"
+                        cursor="pointer"
+                        onClick={() => handleSubmit(uni?.request_id, "rejected")}
+                      />
+                    </Tooltip>
+                  </Flex>
+                </Td>
+              </Tr>
+            ))
+          )}
         </Tbody>
       </Table>
     </TableContainer>

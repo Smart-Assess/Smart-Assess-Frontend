@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Box, Flex, Heading, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, Text, IconButton } from "@chakra-ui/react";
 import Header from "../../Components/Pages/Header";
 import Footer from "../../Components/Pages/Footer";
 import ViewRequestTable from "../../Components/Pages/ViewRequestTable";
 import { viewRequestData } from "./../../data/studentsData";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { ArrowBackIcon } from "@chakra-ui/icons";
 
 const ViewRequest = () => {
   const { courseId } = useParams();
@@ -42,7 +43,7 @@ const ViewRequest = () => {
     fetchData();
   }, []);
 
-  console.log(courses);
+  const nav = useNavigate();
   return (
     <Flex direction="column">
       <Header />
@@ -55,7 +56,19 @@ const ViewRequest = () => {
             <Text color="#546881">Add the required information below</Text>
           </Box>
         </Flex>
-        <ViewRequestTable courseId={courseId} courses={courses} data={viewRequestData}></ViewRequestTable>
+        <IconButton
+          aria-label="Go Back"
+          icon={<ArrowBackIcon />}
+          onClick={() => nav(`/teacher/editCourse/${courseId}`)}
+          mr={4}
+          mb={4}
+        />
+        <ViewRequestTable
+          courseId={courseId}
+          courses={courses}
+          data={viewRequestData}
+          loading={loading}
+        ></ViewRequestTable>
       </Box>
 
       <Footer />
