@@ -73,14 +73,21 @@ const ViewRequestTable = ({ data, courses, courseId, loading }) => {
           {loading ? (
             <Tr>
               <Td colSpan={data.headers.length} textAlign="center">
-                <Spinner size="xl" thickness="4px" speed="0.65s" color="blue.500" />
+                <Spinner
+                  size="xl"
+                  thickness="4px"
+                  speed="0.65s"
+                  color="blue.500"
+                />
               </Td>
             </Tr>
           ) : courses.length === 0 ? (
             <Tr>
               <Td colSpan={data.headers.length} textAlign="center">
                 <Box p={5}>
-                  <Text fontSize="xl" color="gray.500">No Data Found</Text>
+                  <Text fontSize="xl" color="gray.500">
+                    No Data Found
+                  </Text>
                 </Box>
               </Td>
             </Tr>
@@ -102,7 +109,9 @@ const ViewRequestTable = ({ data, courses, courseId, loading }) => {
                         color="green.500"
                         boxSize={"6"}
                         cursor="pointer"
-                        onClick={() => handleSubmit(uni?.request_id, "accepted")}
+                        onClick={() =>
+                          handleSubmit(uni?.request_id, "accepted")
+                        }
                       />
                     </Tooltip>
                     <Tooltip label="Reject" aria-label="Reject">
@@ -110,7 +119,9 @@ const ViewRequestTable = ({ data, courses, courseId, loading }) => {
                         mt="4px"
                         color="red.500"
                         cursor="pointer"
-                        onClick={() => handleSubmit(uni?.request_id, "rejected")}
+                        onClick={() =>
+                          handleSubmit(uni?.request_id, "rejected")
+                        }
                       />
                     </Tooltip>
                   </Flex>
