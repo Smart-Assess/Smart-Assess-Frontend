@@ -62,7 +62,8 @@ const App = () => {
       <Route path="/teacher/viewRequest/:courseId" element={<ViewRequest/>} />
       <Route path="/teacher/evaluateAssignment" element={<EvaluateAssignment/>} />
       <Route path="/teacher/viewAssignments/:courseId" element={<ViewAssignments/>} />
-      {/* <Route path="/teacher/viewStudentsSubmissions/:courseId/:assignmentId" element={<ViewAssignments/>} /> */}
+      <Route path="/teacher/viewStudentsSubmissions/:courseId/:assignmentId" element={<ViewSubmissions/>} />
+      <Route path="/teacher/student/grading/:courseId/:assignmentId" element={<Grading/>} />
     </Routes>
   );
 };
