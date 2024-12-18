@@ -39,11 +39,11 @@ const App = () => {
 
       {/* Students */}
       <Route path="/student/Dashboard" element={<StudentsDashboard />} />
-      <Route path="/student/allAssignments" element={<AllAssignments />} />
+      <Route path="/student/allAssignments/:course_id" element={<AllAssignments />} />
       <Route path="/student/assignmentsList" element={<AssignmentsList />} />
       <Route path="/student/studentsEvaluation" element={<StudentsEvaluation />} />
       <Route path="/student/studentProfile" element={<StudentProfile />} />
-      <Route path="/student/uploadAssingment" element={<UploadAssignment />} />
+      <Route path="/student/uploadAssignment/:assignment_id" element={<UploadAssignment />} />
       <Route path="/student/courseMaterial/:course_id" element={<CourseMaterial />} />
 
       {/* UniversityAdmin */}

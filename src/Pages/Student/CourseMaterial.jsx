@@ -11,6 +11,7 @@ import {
   Link,
   Spinner,
   Text,
+  Button,
 } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import Header from "../../Components/Pages/Header";
@@ -79,13 +80,22 @@ const CourseMaterial = () => {
       <Header role={"student"} />
 
       {/* Content */}
-      <Box flex="1" mx={12} overflowY="auto" paddingBottom="80px">
+      <Box flex="1" mx={12} overflowY="auto" paddingBottom="80px" marginTop="40px">
         {/* Page Heading */}
         <HeadingButtonSection
           path="Course Materials"
           content="Uploaded Course Materials"
           showButton={false}
         />
+        {/* Assignment Button */}
+        <Flex justifyContent={"space-between"} mb={4}>
+          <Button
+            colorScheme="blue"
+            onClick={() => window.location.href = `/student/allAssignments/${course_id}`} // Use course_id here
+          >
+            Assignments
+          </Button>
+        </Flex>
 
         {/* Loading/Error State */}
         {loading ? (
