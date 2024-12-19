@@ -9,7 +9,7 @@ const StudentProfile = () => {
 
   return (
     <Flex direction="column" minH="100vh">
-      <Header role={'student'} />
+      <Header />
       <Box flex="1" mx={12} overflowY="auto" paddingBottom="80px">
      <EditButtonSection image={Profile} heading={"Muhammad Rayyan"} showIcon={false} showDeleteButton={false} buttonText={"Change Password"}/>
      {/* Divider line with customized thickness and width */}

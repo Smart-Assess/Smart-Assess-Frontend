@@ -1,11 +1,21 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Box, Flex, Button, Text, Heading, Input, Spinner, Link } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Button,
+  Text,
+  Heading,
+  Input,
+  Spinner,
+  Link,
+  Badge,
+} from "@chakra-ui/react";
 import Header from "../../Components/Pages/Header";
 import Footer from "../../Components/Pages/Footer";
 import { useParams } from "react-router-dom";
 
 const UploadAssignments = () => {
-  const [files, setFiles] = useState([]); // Files to upload
+  const [files, setFiles] = useState([]);
   const [assignment, setAssignment] = useState(null); // Assignment details
   const [loading, setLoading] = useState(true); // Loading state
   const [error, setError] = useState(""); // Error state
@@ -34,10 +44,13 @@ const UploadAssignments = () => {
         );
 
         if (!response.ok) {
-          throw new Error(`Error fetching assignment details: ${response.statusText}`);
+          throw new Error(
+            `Error fetching assignment details: ${response.statusText}`
+          );
         }
 
         const data = await response.json();
+
         if (data.success) {
           setAssignment(data.assignment);
         } else {
@@ -97,36 +110,44 @@ const UploadAssignments = () => {
         submission: data.submission,
         grade: data.submission.grade,
       }));
+
       setPostLoading(false);
       setFiles([]);
       setError("");
     } catch (err) {
       console.error("Submission error:", err);
-      setError(err.message || "An error occurred while submitting the assignment.");
+      setError(
+        err.message || "An error occurred while submitting the assignment."
+      );
       setPostLoading(false);
     }
   };
 
-  if (loading) return <Spinner size="xl" color="blue.500" />;
+  if (loading)
+    return (
+      <Flex minH="100vh" justifyContent="center" alignItems="center" bg="white">
+        <Spinner size="xl" color="blue.500" />
+      </Flex>
+    );
 
   return (
     <Flex direction="column" minH="100vh">
-      <Header role={"student"} />
+      <Header />
       <Box flex="1" mx={12} overflowY="auto" paddingBottom="80px">
         <Flex alignItems={"center"} mt={6} justifyContent={"space-between"}>
           <Box>
             <Heading color="#3D4C5E" fontSize="32px" fontWeight="500">
               {assignment?.name}
             </Heading>
-            <Text color="#546881" mt={2}>
+            <Badge bg="blue.500" color="white" mt={2}>
               Due {new Date(assignment?.deadline).toLocaleString()}
-            </Text>
+            </Badge>
           </Box>
           <Box display="flex" gap={8} alignItems={"center"}>
             <Box>
               <Text fontSize={"lg"}>Points</Text>
-              {assignment?.submission?.status === "graded" ? (
-                <Text color="#546881">{assignment.grade}/10</Text>
+              {assignment?.submission?.status === "submitted" ? (
+                <Text color="#546881">{assignment.grade}</Text>
               ) : (
                 <Text color="#546881">Not Graded Yet</Text>
               )}
@@ -148,6 +169,14 @@ const UploadAssignments = () => {
             </Box>
           </Box>
         </Flex>
+        <Box>
+          {assignment?.submission?.status === "submitted" ? (
+            <Badge bg="blue.500" color="white" mt={2}>
+              Submitted at{" "}
+              {new Date(assignment.submission.submitted_at).toLocaleString()}
+            </Badge>
+          ) : null}
+        </Box>
 
         <Box mt={6}>
           <Flex direction="column" alignItems="flex-start">
@@ -159,11 +188,9 @@ const UploadAssignments = () => {
                 <Box
                   border="1px solid"
                   borderColor="blue.500"
-                  p={4}
                   borderRadius="8px"
                   mb={4}
-                  display="flex"
-                  alignItems="center"
+                  p={4}
                 >
                   <Text as="span" fontWeight="normal" color="blue.500">
                     <Link
@@ -202,22 +229,14 @@ const UploadAssignments = () => {
                 <Text fontSize="md" mb={2}>
                   Submitted File:
                 </Text>
-                <Box
-                  border="1px solid #AACCFF"
-                  p={2}
-                  borderRadius={"8px"}
-                  display="flex"
-                  justifyContent="space-between"
-                  alignItems="center"
-                >
-                  <Text>{extractFileName(assignment.submission.pdf_url)}</Text>
+                <Box border="1px solid #AACCFF" p={2} borderRadius="8px">
                   <Link
                     href={assignment.submission.pdf_url}
-                    download={extractFileName(assignment.submission.pdf_url)}
                     color="blue.500"
                     fontWeight="bold"
+                    isExternal
                   >
-                    Download
+                    {extractFileName(assignment.submission.pdf_url)}
                   </Link>
                 </Box>
               </Box>

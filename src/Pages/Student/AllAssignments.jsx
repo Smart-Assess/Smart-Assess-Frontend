@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Box, Flex, Grid, Image, Text, Spinner } from "@chakra-ui/react";
+import { Box, Flex, Grid, Image, Text, Spinner, Badge } from "@chakra-ui/react";
 import Header from "../../Components/Pages/Header";
 import Footer from "../../Components/Pages/Footer";
 import HeadingButtonSection from "../../Components/Pages/HeadingButtonSection";
 import { useNavigate, useParams } from "react-router-dom";
 import Math from "./../../assets/images/Math.png"; // Placeholder image
-import { useToast } from "@chakra-ui/react";
 
 const AllAssignments = () => {
   const [assignments, setAssignments] = useState([]); // State to store assignments
@@ -13,14 +12,12 @@ const AllAssignments = () => {
   const [error, setError] = useState(""); // Error state
   const { course_id } = useParams(); // Get course_id from URL
   const nav = useNavigate();
-  const toast = useToast();
 
   useEffect(() => {
     const fetchAssignments = async () => {
       try {
         const token = localStorage.getItem("accessToken");
 
-        // Ensure course_id exists
         if (!course_id) {
           throw new Error("Invalid Course ID.");
         }
@@ -58,7 +55,7 @@ const AllAssignments = () => {
 
   return (
     <Flex direction="column" minH="100vh">
-      <Header role={"student"} />
+      <Header />
       <Box flex="1" mx={12} overflowY="auto" paddingBottom="80px">
         <HeadingButtonSection
           path="Assignments"
@@ -67,9 +64,10 @@ const AllAssignments = () => {
           showSearchBar={false}
         />
 
-        {/* Loading/Error State */}
         {loading ? (
-          <Spinner size="xl" color="blue.500" />
+          <Flex justify="center" align="center" height="100%">
+            <Spinner size="xl" color="blue.500" />
+          </Flex>
         ) : error ? (
           <Text color="red.500" fontSize="lg">
             {error}
@@ -79,12 +77,13 @@ const AllAssignments = () => {
             No assignments available.
           </Text>
         ) : (
-          /* Grid to Display Assignments */
           <Grid py={4} gap={4}>
             {assignments.map((assignment) => (
               <Flex
                 cursor={"pointer"}
-                onClick={() => nav(`/student/uploadAssignment/${assignment.id}`)} // Redirect to assignment submission page
+                onClick={() =>
+                  nav(`/student/uploadAssignment/${assignment.id}`)
+                } // Redirect to assignment submission page
                 key={assignment.id}
                 gap={4}
                 align="start"
@@ -101,11 +100,18 @@ const AllAssignments = () => {
                   <Text fontWeight="bold" fontSize="lg">
                     {assignment.name}
                   </Text>
-                  <Text>Due at {assignment.deadline}</Text>
+                  <Badge colorScheme="blue" mt={2}>
+                    Due: {assignment.deadline}
+                  </Badge>
+
                   <Text>Grade: {assignment.grade}</Text>
                   {assignment.submission && assignment.submission.pdf_url && (
                     <Text color="blue.500" fontSize="sm">
-                      <a href={assignment.submission.pdf_url} target="_blank" rel="noopener noreferrer">
+                      <a
+                        href={assignment.submission.pdf_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
                         View Submission
                       </a>
                     </Text>

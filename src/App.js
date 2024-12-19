@@ -30,7 +30,7 @@ import CourseMaterial from "./Pages/Student/CourseMaterial";  // Ensure correct 
 const App = () => {
   return (
     <Routes>
-      <Route path="/login" element={<Login />} />
+      <Route path="/*" element={<Login />} />
 
       {/* SuperAdmin */}
       <Route path="/superadmin/dashboard" element={<Dashboard />} />

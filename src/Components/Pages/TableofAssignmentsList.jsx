@@ -15,7 +15,7 @@ import {
   Box,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import { FiUpload, FiTrash, FiEye, FiCheckCircle } from "react-icons/fi";
+import {  FiEye, FiCheckCircle } from "react-icons/fi";
 
 const TableofAssignmentsList = ({ assignments, courseId, loading }) => {
   const nav = useNavigate();

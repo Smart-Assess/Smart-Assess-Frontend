@@ -1,11 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { Box, Flex, Heading, Button, Spinner, Text, Grid, GridItem, Image } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Heading,
+  Button,
+  Spinner,
+  Text,
+  Grid,
+  GridItem,
+  Image,
+} from "@chakra-ui/react";
 import Header from "../../Components/Pages/Header";
 import Footer from "../../Components/Pages/Footer";
 import JoinCourseModal from "../../Components/Pages/JoinCourseModal";
-import Math from "./../../assets/images/Math.png"; // Use your actual icons for courses
-import Eng from "./../../assets/images/Eng.png"; // Use your actual icons for courses
-import Arrow from "./../../assets/images/Arrow.png"; // Optional arrow icon
+import Math from "./../../assets/images/Math.png";
+import Arrow from "./../../assets/images/Arrow.png";
+import { useNavigate } from "react-router-dom";
 
 const StudentsDashboard = () => {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -21,16 +31,14 @@ const StudentsDashboard = () => {
 
   const handleCloseModal = () => setModalOpen(false);
 
-  // Fetch enrolled courses from the API
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const token = localStorage.getItem("accessToken"); // Retrieve token from localStorage
+        const token = localStorage.getItem("accessToken");
 
-        // Set up headers with Authorization token if it exists
         const headers = {
           "Content-Type": "application/json",
-          Authorization: token ? `Bearer ${token}` : "", // Add Bearer token if available
+          Authorization: token ? `Bearer ${token}` : "",
         };
 
         const response = await fetch("http://127.0.0.1:8000/student/courses", {
@@ -59,10 +67,17 @@ const StudentsDashboard = () => {
     fetchCourses();
   }, []);
 
+  const nav = useNavigate();
   return (
     <Flex direction="column" minH="100vh">
-      <Header role={"student"} />
-      <Box flex="1" mx={12} overflowY="auto" paddingBottom="80px" marginTop="40px">
+      <Header />
+      <Box
+        flex="1"
+        mx={12}
+        overflowY="auto"
+        paddingBottom="80px"
+        marginTop="40px"
+      >
         <Flex justifyContent={"space-between"}>
           <Heading fontSize="2xl" mb={4}>
             Welcome Back, Ahsan{" "}
@@ -75,10 +90,11 @@ const StudentsDashboard = () => {
           </Button>
         </Flex>
 
-        {/* Courses Section */}
         <Box mt={8}>
           {loading ? (
-            <Spinner size="xl" color="blue.500" />
+            <Flex justifyContent="center" alignItems="center" minHeight="50vh">
+              <Spinner size="xl" color="blue.500" />
+            </Flex>
           ) : error ? (
             <Text color="red.500" fontSize="lg">
               {error}
@@ -90,26 +106,23 @@ const StudentsDashboard = () => {
                   key={course.id}
                   p={6}
                   minWidth="300px"
-                  minHeight="170px"  // Increased height for additional fields
+                  minHeight="170px"
                   bg="blue.50"
                   borderRadius="15px"
                   boxShadow="lg"
                   cursor="pointer"
                   position="relative"
-                  onClick={() => window.location.href = `/student/courseMaterial/${course.id}`}
-  // Adjust navigation if necessary
+                  onClick={() => nav(`/student/courseMaterial/${course.id}`)}
                 >
                   <Flex justify="space-between">
-                    {/* Left Image at Top */}
                     <Image
-                      src={course.icon || Math}  // Replace with dynamic icon logic (course.icon, etc.)
+                      src={course.icon || Math}
                       padding={1}
                       bg="white"
                       borderRadius="full"
                       boxSize={14}
                       alt={`${course.name} icon`}
                     />
-                    {/* Right Arrow Icon */}
                     <Image
                       src={Arrow}
                       padding={1}
@@ -120,7 +133,6 @@ const StudentsDashboard = () => {
                     />
                   </Flex>
 
-                  {/* Course Name at Bottom Left */}
                   <Text
                     marginLeft={4}
                     fontSize="20px"
@@ -131,21 +143,6 @@ const StudentsDashboard = () => {
                   >
                     {course.name}
                   </Text>
-
-                  {/* Department and Batch */}
-                  {/* <Box
-                    position="absolute"
-                    bottom={4}
-                    right={4}
-                    textAlign="right"
-                  >
-                    <Text fontSize="sm" color="gray.600">
-                      Department: {course.department}
-                    </Text>
-                    <Text fontSize="sm" color="gray.600">
-                      Batch: {course.batch}
-                    </Text>
-                  </Box> */}
                 </GridItem>
               ))}
             </Grid>
