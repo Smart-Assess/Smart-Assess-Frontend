@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 
 import FormInput from "./../UI/FormInput";
-import { addTeacher } from "../../data/TeacherData";
+import { addStudent } from "../../data/studentsData";
 import { useNavigate } from "react-router-dom";
 import { FiUpload } from "react-icons/fi";
 function StudentForm({ show }) {
@@ -63,7 +63,7 @@ function StudentForm({ show }) {
             <FormProvider {...methods}>
               <form onSubmit={methods.handleSubmit(onSubmit)}>
                 <SimpleGrid columns={[1, null, 3]} spacing="8">
-                  {addTeacher.map((field) => (
+                  {addStudent.map((field) => (
                     <FormInput
                       key={field.name}
                       name={field.name}

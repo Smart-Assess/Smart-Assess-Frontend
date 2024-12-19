@@ -48,6 +48,8 @@ const Dashboard = () => {
         config
       );
 
+
+
       if (response.status === 200) {
         setCourses(response.data.courses);
         setLoading(false);

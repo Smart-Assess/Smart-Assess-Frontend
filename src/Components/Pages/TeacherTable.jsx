@@ -51,7 +51,7 @@ const StudentTable = ({ data }) => {
                   icon={<EditIcon />}
                   size="sm"
                   colorScheme="blue"
-                  onClick={() => nav("/university/editStudent")}
+                  onClick={() => nav("/university/teacher/editTeacher")}
                 />
               </Td>
             </Tr>
