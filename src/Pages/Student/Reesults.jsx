@@ -89,7 +89,7 @@ const Reesults = () => {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {resultData.questions.map((assignment, index) => (
+                  {resultData?.questions?.map((assignment, index) => (
                     <Tr key={index}>
                       <Td>{assignment.question_number}</Td>
                       <Td>{assignment.score}</Td>
