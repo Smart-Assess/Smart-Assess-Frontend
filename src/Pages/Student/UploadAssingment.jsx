@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import Header from "../../Components/Pages/Header";
 import Footer from "../../Components/Pages/Footer";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const UploadAssignments = () => {
   const [files, setFiles] = useState([]);
@@ -27,6 +27,8 @@ const UploadAssignments = () => {
     const urlParts = url.split("/");
     return urlParts[urlParts.length - 1];
   };
+
+  const nav = useNavigate();
 
   useEffect(() => {
     const fetchAssignmentDetails = async () => {
@@ -143,7 +145,7 @@ const UploadAssignments = () => {
               Due {new Date(assignment?.deadline).toLocaleString()}
             </Badge>
           </Box>
-          <Box display="flex" gap={8} alignItems={"center"}>
+          <Box display="flex" gap={4} alignItems={"center"}>
             <Box>
               <Text fontSize={"lg"}>Points</Text>
               {assignment?.submission?.status === "submitted" ? (
@@ -166,6 +168,15 @@ const UploadAssignments = () => {
                   Hands In
                 </Button>
               )}
+            </Box>
+
+            <Box>
+              <Button
+                colorScheme="blue"
+                onClick={() => nav(`/student/results/${assignment_id}`)}
+                >
+                Results
+              </Button>
             </Box>
           </Box>
         </Flex>

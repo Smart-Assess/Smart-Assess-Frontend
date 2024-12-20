@@ -76,7 +76,6 @@ const Grading = () => {
     }
   };
 
-  // Fetch Students Data
   const fetchStudentsData = async () => {
     try {
       const token = localStorage.getItem("accessToken");
@@ -124,7 +123,7 @@ const Grading = () => {
       );
 
       if (response.status === 200) {
-        navigate("/teacher/Dashboard");
+        fetchStudentsData()
       }
     } catch (err) {
       console.error("Error submitting evaluation:", err);

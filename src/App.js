@@ -26,6 +26,7 @@ import ViewAssignments from "./Pages/Teacher/ViewAssignments";
 import ViewSubmissions from "./Pages/Teacher/ViewSubmissions";
 import Grading from "./Pages/Teacher/Grading";
 import CourseMaterial from "./Pages/Student/CourseMaterial";  // Ensure correct import
+import Reesults from "./Pages/Student/Reesults";
 
 const App = () => {
   return (
@@ -45,6 +46,9 @@ const App = () => {
       <Route path="/student/studentProfile" element={<StudentProfile />} />
       <Route path="/student/uploadAssignment/:assignment_id" element={<UploadAssignment />} />
       <Route path="/student/courseMaterial/:course_id" element={<CourseMaterial />} />
+
+      <Route path="/student/results/:assignment_id" element={<Reesults />} />
+
 
       {/* UniversityAdmin */}
       <Route path="/university/student/Dashboard" element={<StudentDashboard />} />
