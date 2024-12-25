@@ -101,7 +101,6 @@ export const addStudent = [
     placeholder: "Enter Department",
   },
   { name: "email", label: "Email", type: "email", placeholder: "Enter Email" },
-  { name: "batch", label: "Email", type: "text", placeholder: "Enter Email" },
   {
     name: "section",
     label: "Batch",

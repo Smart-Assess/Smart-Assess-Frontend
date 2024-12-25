@@ -141,7 +141,7 @@ const UploadAssignments = () => {
             <Heading color="#3D4C5E" fontSize="32px" fontWeight="500">
               {assignment?.name}
             </Heading>
-            <Badge bg="blue.500" color="white" mt={2}>
+            <Badge bg='gray.500' color="white" mt={2}>
               Due {new Date(assignment?.deadline).toLocaleString()}
             </Badge>
           </Box>
@@ -182,7 +182,7 @@ const UploadAssignments = () => {
         </Flex>
         <Box>
           {assignment?.submission?.status === "submitted" ? (
-            <Badge bg="blue.500" color="white" mt={2}>
+            <Badge bg='gray.500' color="white" mt={2}>
               Submitted at{" "}
               {new Date(assignment.submission.submitted_at).toLocaleString()}
             </Badge>

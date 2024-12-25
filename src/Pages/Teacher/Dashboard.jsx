@@ -152,7 +152,7 @@ const Dashboard = () => {
             <Table variant="simple" cursor={"pointer"}>
               <Thead bg="gray.100">
                 <Tr>
-                  <Th>Subject Name</Th>
+                  <Th>Course Name</Th>
                   <Th>Department</Th>
                 </Tr>
               </Thead>
