@@ -141,7 +141,7 @@ const UploadAssignments = () => {
             <Heading color="#3D4C5E" fontSize="32px" fontWeight="500">
               {assignment?.name}
             </Heading>
-            <Badge bg='gray.500' color="white" mt={2}>
+            <Badge bg="gray.500" color="white" mt={2}>
               Due {new Date(assignment?.deadline).toLocaleString()}
             </Badge>
           </Box>
@@ -159,10 +159,8 @@ const UploadAssignments = () => {
                 <Button colorScheme="blue">Handed In</Button>
               ) : (
                 <Button
-                  border="1px solid"
-                  borderColor="blue.500"
                   isLoading={postLoading}
-                  colorScheme="white"
+                  colorScheme="blue"
                   onClick={handleSubmitAssignment}
                 >
                   Hands In
@@ -174,7 +172,7 @@ const UploadAssignments = () => {
               <Button
                 colorScheme="blue"
                 onClick={() => nav(`/student/results/${assignment_id}`)}
-                >
+              >
                 Results
               </Button>
             </Box>
@@ -182,7 +180,7 @@ const UploadAssignments = () => {
         </Flex>
         <Box>
           {assignment?.submission?.status === "submitted" ? (
-            <Badge bg='gray.500' color="white" mt={2}>
+            <Badge bg="gray.500" color="white" mt={2}>
               Submitted at{" "}
               {new Date(assignment.submission.submitted_at).toLocaleString()}
             </Badge>
