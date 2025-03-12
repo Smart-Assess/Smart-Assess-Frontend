@@ -36,7 +36,7 @@ const App = () => {
       {/* SuperAdmin */}
       <Route path="/superadmin/dashboard" element={<Dashboard />} />
       <Route path="/superadmin/addUniversity" element={<AddUniversity />} />
-      <Route path="/superadmin/editUniversity" element={<EditUniversity />} />
+      <Route path="/superadmin/editUniversity/:id" element={<EditUniversity />} />
 
       {/* Students */}
       <Route path="/student/Dashboard" element={<StudentsDashboard />} />

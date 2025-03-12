@@ -48,7 +48,6 @@ const Grading = () => {
   });
   const navigate = useNavigate();
 
-  // Fetch Assignment Data
   const fetchAssignmentData = async () => {
     try {
       const token = localStorage.getItem("accessToken");

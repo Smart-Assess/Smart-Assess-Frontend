@@ -1,8 +1,8 @@
-// UniversitySection.js
-import React from "react";
-import { Box, Heading, Button, Flex, Image } from "@chakra-ui/react";
+import React, { useState } from "react";
+import { Box, Heading, Button, Flex, Image, Skeleton, Icon } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { AddIcon } from "@chakra-ui/icons";
+import { FaUniversity } from "react-icons/fa"; // Import an icon for placeholder
 
 const EditButtonSection = ({
   heading,
@@ -15,17 +15,34 @@ const EditButtonSection = ({
   image,
 }) => {
   const nav = useNavigate();
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   return (
     <Box my={6}>
       <Flex alignItems="center" justifyContent="space-between" my={6}>
         <Flex alignItems="center" gap="4">
-          <Image
-            src={image}
-            alt="University Logo"
-            boxSize="180px" // Adjust size as needed
-            borderRadius="full"
-          />
+          {image ? (
+            <Skeleton isLoaded={imageLoaded} boxSize="180px" borderRadius="full">
+              <Image
+                src={image}
+                alt="University Logo"
+                boxSize="180px"
+                borderRadius="full"
+                onLoad={() => setImageLoaded(true)}
+                onError={() => setImageLoaded(true)} // Ensures fallback in case of an error
+              />
+            </Skeleton>
+          ) : (
+            <Flex
+              boxSize="180px"
+              borderRadius="full"
+              bg="gray.200"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <Icon as={FaUniversity} boxSize="80px" color="gray.500" />
+            </Flex>
+          )}
           <Heading color="#3D4C5E" fontSize="32px" fontWeight="500">
             {heading}
           </Heading>
@@ -37,12 +54,11 @@ const EditButtonSection = ({
               onClick={() => nav(pathAdd)}
               bg="#0D64C1"
               _hover={{ bg: "#0D64C8" }}
-              leftIcon={showIcon ? <AddIcon /> : null} // Conditionally render the icon
+              leftIcon={showIcon ? <AddIcon /> : null}
             >
               {buttonText}
             </Button>
           )}
-
           {showDeleteButton && (
             <Button
               color="white"

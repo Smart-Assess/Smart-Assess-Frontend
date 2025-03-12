@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   Thead,
@@ -10,14 +10,96 @@ import {
   Flex,
   IconButton,
   Avatar,
-  Badge,
   Button,
+  Spinner,
+  Center,
+  useToast,
 } from "@chakra-ui/react";
-import { EditIcon } from "@chakra-ui/icons";
+import { EditIcon, DeleteIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
 
-const AdminTable = ({ data }) => {
+const AdminTable = () => {
+  const [universities, setUniversities] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [deleting, setDeleting] = useState({}); // Track individual delete states
+
   const nav = useNavigate();
+  const toast = useToast();
+
+  const fetchUniversities = async () => {
+    try {
+      setLoading(true);
+      const token = localStorage.getItem("accessToken");
+      const response = await fetch(
+        "http://127.0.0.1:8000/superadmin/universities",
+        {
+          method: "GET",
+          headers: {
+            Authorization: token ? `Bearer ${token}` : "",
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Error fetching universities");
+      }
+
+      const data = await response.json();
+      setUniversities(data.universities || []);
+    } catch (err) {
+      console.error("Fetch error:", err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchUniversities();
+  }, []);
+
+  const handleDelete = async (uni_id) => {
+    try {
+      setDeleting((prev) => ({ ...prev, [uni_id]: true }));
+      const token = localStorage.getItem("accessToken");
+      const response = await fetch(
+        `http://127.0.0.1:8000/superadmin/university/${uni_id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: token ? `Bearer ${token}` : "",
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Error deleting university");
+      }
+
+      toast({
+        title: "University deleted successfully.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+
+      setUniversities((prev) => prev.filter((uni) => uni.id !== uni_id));
+    } catch (err) {
+      console.error("Delete error:", err.message);
+      toast({
+        title: "Failed to delete university.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    } finally {
+      setDeleting((prev) => ({ ...prev, [uni_id]: false })); // Reset only the clicked university
+    }
+  };
+
+
+
   return (
     <TableContainer
       mb={12}
@@ -27,46 +109,54 @@ const AdminTable = ({ data }) => {
       borderRadius="xl"
       bg="white"
     >
-      <Table variant="simple">
-        <Thead backgroundColor={"#EAEEF0"}>
-          <Tr>
-            {data?.headers?.map((header, index) => (
-              <Th key={index}>{header}</Th>
-            ))}
-          </Tr>
-        </Thead>
-        <Tbody>
-          {data?.data?.map((uni, index) => (
-            <Tr key={index}>
-              <Td display="flex" alignItems="center">
-                <Avatar src={uni.image} size="sm" mr={3} />
-                {uni.name}
-              </Td>
-              <Td>{uni.id}</Td>
-              <Td>{uni.students}</Td>
-              <Td>{uni.teachers}</Td>
-              <Td>
-                <Badge
-                  borderRadius={"lg"}
-                  color={uni.status === "Active" ? "green" : "gray"}
-                  bg={uni.status === "Active" ? "#ECFDF3" : "#F2F4F7"}
-                >
-                  {uni.status}
-                </Badge>
-              </Td>
-              <Td>
-                <IconButton
-                  aria-label="Edit"
-                  icon={<EditIcon />}
-                  size="sm"
-                  colorScheme="blue"
-                  onClick={() => nav("/superadmin/editUniversity")}
-                />
-              </Td>
+      {loading ? (
+        <Center py={10}>
+          <Spinner size="xl" color="blue.500" />
+        </Center>
+      ) : (
+        <Table variant="simple">
+          <Thead backgroundColor={"#EAEEF0"}>
+            <Tr>
+              <Th>ID</Th>
+              <Th>University Name</Th>
+              <Th>No. of Students</Th>
+              <Th>No. of Teachers</Th>
+              <Th>Actions</Th>
             </Tr>
-          ))}
-        </Tbody>
-      </Table>
+          </Thead>
+          <Tbody>
+            {universities.map((uni) => (
+              <Tr key={uni.uni_id}>
+                <Td>{uni.uni_id}</Td>
+                <Td display="flex" alignItems="center">
+                  {/* <Avatar src={uni.image} size="sm" mr={3} /> */}
+                  {uni.name}
+                </Td>
+                <Td>{uni.students_count}</Td>
+                <Td>{uni.teachers_count}</Td>
+                <Td>
+                  <IconButton
+                    aria-label="Edit"
+                    icon={<EditIcon />}
+                    size="sm"
+                    colorScheme="blue"
+                    onClick={() => nav(`/superadmin/editUniversity/${uni.id}`)}
+                  />
+                  <IconButton
+                    aria-label="Delete"
+                    ml={2}
+                    icon={<DeleteIcon />}
+                    size="sm"
+                    isLoading={deleting[uni.id] || false}
+                    onClick={() => handleDelete(uni.id)}
+                    colorScheme="blue"
+                  />
+                </Td>
+              </Tr>
+            ))}
+          </Tbody>
+        </Table>
+      )}
       <Flex px={6} py={2} pb={6} justifyContent={"space-between"}>
         <Button mt={4} onClick={() => alert("Previous Page")} mr={2}>
           Previous
