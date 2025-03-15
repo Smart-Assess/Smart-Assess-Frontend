@@ -30,6 +30,7 @@ const AdminTable = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem("accessToken");
+      console.log(token)
       const response = await fetch(
         "http://127.0.0.1:8000/superadmin/universities",
         {
@@ -98,8 +99,7 @@ const AdminTable = () => {
     }
   };
 
-
-
+  console.log(universities);
   return (
     <TableContainer
       mb={12}
@@ -128,10 +128,7 @@ const AdminTable = () => {
             {universities.map((uni) => (
               <Tr key={uni.uni_id}>
                 <Td>{uni.uni_id}</Td>
-                <Td display="flex" alignItems="center">
-                  {/* <Avatar src={uni.image} size="sm" mr={3} /> */}
-                  {uni.name}
-                </Td>
+                <Td>{uni.name.charAt(0).toUpperCase() + uni.name.slice(1)}</Td>
                 <Td>{uni.students_count}</Td>
                 <Td>{uni.teachers_count}</Td>
                 <Td>

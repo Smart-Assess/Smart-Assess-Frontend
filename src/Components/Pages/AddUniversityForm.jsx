@@ -28,8 +28,8 @@ function AddUniversityForm({ showUpload }) {
   const nav = useNavigate();
   const toast = useToast();
 
-  const [fileName, setFileName] = useState(""); 
-  const [file, setFile] = useState(null); // Store the file itself
+  const [fileName, setFileName] = useState("");
+  const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
 
   // Handle file selection
@@ -171,6 +171,8 @@ function AddUniversityForm({ showUpload }) {
                       label={field.label}
                       type={field.type}
                       placeholder={field.placeholder}
+                      pattern={field.pattern}
+                      validationMessage={field.validationMessage}
                     />
                   ))}
                 </SimpleGrid>

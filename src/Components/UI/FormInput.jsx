@@ -26,7 +26,7 @@ const FormInput = ({
   } = useFormContext();
 
   return (
-    <FormControl key={name} isInvalid={errors[name]}>
+    <FormControl isInvalid={errors[name]}>
       <FormLabel>{label}</FormLabel>
       {type === "select" ? (
         <Select
@@ -46,13 +46,15 @@ const FormInput = ({
         <Input
           {...register(name, {
             required: `${label} is required`,
-            ...(pattern && { pattern: { value: pattern, message: validationMessage } }),
+            pattern: pattern
+              ? { value: pattern, message: validationMessage }
+              : undefined,
           })}
           type={type}
           placeholder={placeholder}
-          defaultValue={defaultValue} // Pass default value
-          min={min} // Set minimum value for numeric inputs
-          max={max} // Set maximum value for numeric inputs
+          defaultValue={defaultValue}
+          min={min}
+          max={max}
         />
       )}
       <FormErrorMessage>

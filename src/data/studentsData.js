@@ -102,8 +102,14 @@ export const addStudent = [
   },
   { name: "email", label: "Email", type: "email", placeholder: "Enter Email" },
   {
-    name: "section",
+    name: "batch",
     label: "Batch",
+    type: "text",
+    placeholder: "Enter Batch",
+  },
+  {
+    name: "section",
+    label: "Section",
     type: "text",
     placeholder: "Enter Section",
   },
@@ -112,12 +118,6 @@ export const addStudent = [
     label: "Password",
     type: "password",
     placeholder: "Enter Password",
-  },
-  {
-    name: "confirmPassword",
-    label: "Confirm Password",
-    type: "password",
-    placeholder: "Confirm Password",
   },
 ];
 
@@ -137,7 +137,6 @@ export const viewRequestData = {
       batch: "2024",
       department: "Computer Science",
       section: "A",
-      
     },
     {
       studentName: "Jane Smith",
@@ -145,7 +144,6 @@ export const viewRequestData = {
       batch: "2024",
       department: "Mathematics",
       section: "B",
-      
     },
     {
       studentName: "Alice Johnson",
@@ -153,7 +151,6 @@ export const viewRequestData = {
       batch: "2025",
       department: "Physics",
       section: "A",
-      
     },
     {
       studentName: "Bob Brown",
@@ -161,7 +158,6 @@ export const viewRequestData = {
       batch: "2023",
       department: "Chemistry",
       section: "C",
-
     },
     {
       studentName: "Charlie Davis",
@@ -169,7 +165,6 @@ export const viewRequestData = {
       batch: "2023",
       department: "Biology",
       section: "B",
-
     },
     {
       studentName: "David Evans",
@@ -177,7 +172,6 @@ export const viewRequestData = {
       batch: "2024",
       department: "Economics",
       section: "A",
-
     },
     {
       studentName: "Eve White",
@@ -185,7 +179,6 @@ export const viewRequestData = {
       batch: "2025",
       department: "Political Science",
       section: "C",
-      
     },
     {
       studentName: "Frank Black",
@@ -193,7 +186,6 @@ export const viewRequestData = {
       batch: "2024",
       department: "Law",
       section: "B",
-      
     },
     {
       studentName: "Grace Green",
@@ -201,7 +193,6 @@ export const viewRequestData = {
       batch: "2025",
       department: "Engineering",
       section: "A",
-      
     },
     {
       studentName: "Hannah Blue",
@@ -209,7 +200,6 @@ export const viewRequestData = {
       batch: "2023",
       department: "Business",
       section: "B",
-      
     },
   ],
 };

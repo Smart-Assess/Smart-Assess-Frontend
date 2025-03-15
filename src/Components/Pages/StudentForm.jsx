@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import {
   Box,
@@ -7,20 +7,97 @@ import {
   Flex,
   Icon,
   Text,
+  HStack,
   VStack,
+  useToast,
 } from "@chakra-ui/react";
 
 import FormInput from "./../UI/FormInput";
 import { addStudent } from "../../data/studentsData";
 import { useNavigate } from "react-router-dom";
 import { FiUpload } from "react-icons/fi";
+import axios from "axios";
 function StudentForm({ show }) {
   const methods = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = methods;
   const nav = useNavigate();
-  const onSubmit = (data) => {
-    console.log("Form Data:", data);
+  const toast = useToast();
+
+  const [fileName, setFileName] = useState("");
+  const [file, setFile] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  // Handle file selection
+  const handleFileChange = (event) => {
+    const selectedFile = event.target.files[0];
+    if (selectedFile) {
+      setFile(selectedFile);
+      setFileName(selectedFile.name);
+    }
   };
 
+  const onSubmit = async (data) => {
+    console.log(data);
+    try {
+      setLoading(true);
+      const token = localStorage.getItem("accessToken");
+      const formData = new FormData();
+
+      formData.append("full_name", data.fullName);
+      formData.append("email", data.email);
+      formData.append("password", data.password);
+      formData.append("section", data.section);
+      formData.append("batch", data.batch);
+      formData.append("department", data.studentDepartment);
+      formData.append("student_id", data.studentId);
+
+      if (file) {
+        formData.append("image", file);
+      }
+      const config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const response = await axios.post(
+        "http://127.0.0.1:8000/universityadmin/student",
+        formData,
+        config
+      );
+
+      if (response.status === 200 || response.status === 201) {
+        setLoading(false);
+        toast({
+          title: "Student added successfully!",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+          position: "top-right",
+        });
+        nav("/university/studnent/Dashboard");
+      }
+    } catch (err) {
+      console.error("Error adding course:", err);
+      setLoading(false);
+
+      toast({
+        title: "Error adding student",
+        description:
+          err.response?.data?.detail ||
+          "An unexpected error occurred. Please try again.",
+        status: "error",
+        duration: 4000,
+        isClosable: true,
+        position: "top-right",
+      });
+    }
+  };
   return (
     <Flex w="100%" pb={8}>
       <Box w="100%">
@@ -31,22 +108,24 @@ function StudentForm({ show }) {
                 w="100%"
                 h="240px"
                 border="2px"
-                borderColor="gray.200"
+                borderColor={errors.universityLogo ? "red.500" : "gray.200"}
                 borderRadius="md"
                 display="flex"
                 alignItems="center"
                 justifyContent="center"
                 bg="gray.50"
                 flexDirection="column"
+                position="relative"
               >
                 <Icon as={FiUpload} w={10} h={10} color="gray.400" mb="2" />
                 <Text color="gray.500" mb="2">
-                  Upload Student Profile
+                  Upload Student Image
                 </Text>
                 <input
                   type="file"
                   accept="image/*"
-                  {...methods.register("universityLogo")}
+                  {...register("studentImage")}
+                  onChange={handleFileChange}
                   style={{
                     position: "absolute",
                     width: "100%",
@@ -56,6 +135,22 @@ function StudentForm({ show }) {
                   }}
                 />
               </Box>
+              {fileName && (
+                <HStack
+                  w="100%"
+                  justify="space-between"
+                  bg="gray.100"
+                  p="2"
+                  borderRadius="md"
+                >
+                  <Text fontSize="sm" noOfLines={1} w="80%">
+                    {file.name}
+                  </Text>
+                </HStack>
+              )}
+              {errors.universityLogo && (
+                <Text color="red.500">{errors.universityLogo.message}</Text>
+              )}
             </VStack>
           ) : null}
 
@@ -83,7 +178,7 @@ function StudentForm({ show }) {
                   >
                     Cancel
                   </Button>
-                  <Button type="submit" colorScheme="blue">
+                  <Button isLoading={loading} type="submit" colorScheme="blue">
                     Save
                   </Button>
                 </Box>

@@ -104,6 +104,8 @@ function EditUniversityForm({
                       label={field.label}
                       type={field.type}
                       placeholder={field.placeholder}
+                      pattern={field.pattern}
+                      validationMessage={field.validationMessage}
                     />
                   ))}
                 </SimpleGrid>
@@ -122,7 +124,7 @@ function EditUniversityForm({
                     type="submit"
                     colorScheme="blue"
                   >
-                    Save
+                    Update
                   </Button>
                 </Box>
               </form>

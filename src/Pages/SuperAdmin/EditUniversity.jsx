@@ -47,7 +47,6 @@ const EditUniversity = () => {
     fetchUniversity();
   }, []);
 
-
   return (
     <Flex direction="column">
       <Header />
@@ -59,7 +58,6 @@ const EditUniversity = () => {
           showDeleteButton={false}
           showAddButton={false}
         />
-
         <Divider
           borderColor="#3D4C5E"
           borderWidth="1px"
