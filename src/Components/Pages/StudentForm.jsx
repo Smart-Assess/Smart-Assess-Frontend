@@ -21,7 +21,6 @@ function StudentForm({ show }) {
   const methods = useForm();
   const {
     register,
-    handleSubmit,
     formState: { errors },
   } = methods;
   const nav = useNavigate();
@@ -31,7 +30,6 @@ function StudentForm({ show }) {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  // Handle file selection
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
     if (selectedFile) {
@@ -41,7 +39,6 @@ function StudentForm({ show }) {
   };
 
   const onSubmit = async (data) => {
-    console.log(data);
     try {
       setLoading(true);
       const token = localStorage.getItem("accessToken");
@@ -53,7 +50,6 @@ function StudentForm({ show }) {
       formData.append("section", data.section);
       formData.append("batch", data.batch);
       formData.append("department", data.studentDepartment);
-      formData.append("student_id", data.studentId);
 
       if (file) {
         formData.append("image", file);
@@ -165,6 +161,9 @@ function StudentForm({ show }) {
                       label={field.label}
                       type={field.type}
                       placeholder={field.placeholder}
+                      pattern={field.pattern}
+                      validationMessage={field.validationMessage}
+                      options={field.options}
                     />
                   ))}
                 </SimpleGrid>

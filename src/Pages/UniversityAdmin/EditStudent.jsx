@@ -1,21 +1,62 @@
-import React from "react";
-import { Box, Flex, Heading, Divider } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
+import { Box, Flex, Heading, Divider, Spinner, Center } from "@chakra-ui/react";
 import Header from "../../Components/Pages/Header";
 import Footer from "../../Components/Pages/Footer";
 import EditButtonSection from "../../Components/Pages/EditButtonSection";
-import AddUniversityForm from "../../Components/Pages/AddUniversityForm";
-import Uni from "./../../assets/images/Uni.png";
-import StudentForm from "../../Components/Pages/StudentForm";
+
+import { useParams } from "react-router-dom";
+import EditStudentForm from "../../Components/Pages/EditStudentForm";
 
 const EditStudent = () => {
+  const { id } = useParams();
+
+  const [fileName, setFileName] = useState("");
+  const [file, setFile] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const [student, setStudent] = useState({});
+
+  const fetchStudent = async () => {
+    try {
+      setLoading(true);
+      const token = localStorage.getItem("accessToken");
+      const response = await fetch(
+        `http://127.0.0.1:8000/universityadmin/student/${id}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: token ? `Bearer ${token}` : "",
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Error fetching universities");
+      }
+
+      const data = await response.json();
+      setStudent(data?.student || []);
+    } catch (err) {
+      console.error("Fetch error:", err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchStudent();
+  }, []);
+
   return (
     <Flex direction="column">
       <Header />
       <Box flex="1" mx={12} overflowY="auto" paddingBottom="80px">
         <Flex alignItems="center" justifyContent="space-between" my={6}></Flex>
         <EditButtonSection
-          image={Uni}
-          heading={"Ahsan Sajid"}
+          image={student?.image_url}
+          heading={student?.full_name}
+          showDeleteButton={false}
           showAddButton={false}
         />
 
@@ -35,7 +76,14 @@ const EditStudent = () => {
           Student Information
         </Heading>
 
-        <StudentForm show={false} />
+        <EditStudentForm
+          student={student}
+          file={file}
+          setFile={setFile}
+          fileName={fileName}
+          setFileName={setFileName}
+          showUpload={false}
+        />
       </Box>
       <Footer />
     </Flex>

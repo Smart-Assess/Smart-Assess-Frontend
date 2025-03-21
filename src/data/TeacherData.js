@@ -54,12 +54,65 @@ export const teacherData = {
   ],
 };
 
-
 export const addTeacher = [
-  { name: 'teacherName', label: 'Teacher Name', type: 'text', placeholder: 'Enter Teacher Name' },
-  { name: 'teacherId', label: 'Teacher Id', type: 'text', placeholder: 'Enter Teacher Id' },
-  { name: 'email', label: 'Email', type: 'email', placeholder: 'Enter Email' },
-  { name: 'department', label: 'Department', type: 'text', placeholder: 'Enter Department' },
-  { name: 'password', label: 'Password', type: 'password', placeholder: 'Enter Password' },
-  { name: 'confirmPassword', label: 'Confirm Password', type: 'password', placeholder: 'Confirm Password' },
+  {
+    name: "teacherName",
+    label: "Teacher Name",
+    type: "text",
+    placeholder: "Enter Teacher Name",
+    pattern: /^[a-zA-Z\s]{3,20}$/,
+    validationMessage: "Teacher name must be between 3 to 20 characters.",
+  },
+  {
+    name: "email",
+    label: "Email",
+    type: "email",
+    placeholder: "Enter Email",
+    pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+    validationMessage: "Enter a valid email address.",
+  },
+  {
+    name: "department",
+    label: "Department",
+    type: "text",
+    placeholder: "Enter Department",
+  },
+  {
+    name: "password",
+    label: "Password",
+    type: "password",
+    placeholder: "Enter Password",
+    pattern:
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+    validationMessage:
+      "Password must be at least 8 characters and contain at least one uppercase letter, one lowercase letter, one number, and one special character.",
+  },
+];
+
+
+
+export const editTeacher = [
+  {
+    name: "teacherName",
+    label: "Teacher Name",
+    type: "text",
+    placeholder: "Enter Teacher Name",
+    pattern: /^[a-zA-Z\s]{3,20}$/,
+    validationMessage: "Teacher name must be between 3 to 20 characters.",
+  },
+  {
+    name: "email",
+    label: "Email",
+    type: "email",
+    placeholder: "Enter Email",
+    pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+    validationMessage: "Enter a valid email address.",
+  },
+  {
+    name: "department",
+    label: "Department",
+    type: "text",
+    placeholder: "Enter Department",
+  },
+
 ];

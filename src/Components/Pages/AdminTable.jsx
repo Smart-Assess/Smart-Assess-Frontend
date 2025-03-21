@@ -21,7 +21,7 @@ import { useNavigate } from "react-router-dom";
 const AdminTable = () => {
   const [universities, setUniversities] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [deleting, setDeleting] = useState({}); // Track individual delete states
+  const [deleting, setDeleting] = useState({});
 
   const nav = useNavigate();
   const toast = useToast();
@@ -30,7 +30,6 @@ const AdminTable = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem("accessToken");
-      console.log(token)
       const response = await fetch(
         "http://127.0.0.1:8000/superadmin/universities",
         {
@@ -99,7 +98,6 @@ const AdminTable = () => {
     }
   };
 
-  console.log(universities);
   return (
     <TableContainer
       mb={12}

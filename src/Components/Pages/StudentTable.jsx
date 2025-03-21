@@ -58,7 +58,6 @@ const StudentTable = ({ data }) => {
   }, []);
 
   const handleDelete = async (std_id) => {
-    console.log(std_id);
     try {
       setDeleting((prev) => ({ ...prev, [std_id]: true }));
       const token = localStorage.getItem("accessToken");
@@ -139,7 +138,9 @@ const StudentTable = ({ data }) => {
                     icon={<EditIcon />}
                     size="sm"
                     colorScheme="blue"
-                    onClick={() => nav("/university/editStudent")}
+                    onClick={() =>
+                      nav(`/university/student/edit/${std.student_id}`)
+                    }
                   />
                   <IconButton
                     aria-label="Delete"

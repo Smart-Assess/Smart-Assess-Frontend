@@ -1,12 +1,18 @@
 import React from "react";
-import { Box, Image, Text } from "@chakra-ui/react";
-import { NavLink } from "react-router-dom"; // Use NavLink for active link styling
+import { Box, Button, Image, Text } from "@chakra-ui/react";
+import { NavLink, useNavigate } from "react-router-dom";
 import logo from "./../../assets/images/Logo.png";
-import Profile from "./../../assets/images/Profile.png";
 import { navItems } from "../../data/NavigationData";
 
 const Header = ({ role }) => {
   const items = navItems[role] || [];
+  const navigate = useNavigate();
+
+  const logout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    navigate("/login");
+  };
 
   return (
     <Box
@@ -38,7 +44,7 @@ const Header = ({ role }) => {
             key={item.label}
             style={({ isActive }) => ({
               textDecoration: "none",
-              color:'#0D64C1',
+              color: "#0D64C1",
               fontSize: "18px",
               fontWeight: "500",
             })}
@@ -48,7 +54,14 @@ const Header = ({ role }) => {
         ))}
       </Box>
       <Box>
-        <Image w="52px" h="52px" src={Profile} alt="Profile" />
+        <Button
+          bg="#0D64C1"
+          _hover={{ bg: "#0D64C8" }}
+          onClick={logout}
+          color="white"
+        >
+          Logout
+        </Button>
       </Box>
     </Box>
   );

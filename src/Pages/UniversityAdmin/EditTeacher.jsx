@@ -1,20 +1,61 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Flex, Heading, Divider } from "@chakra-ui/react";
 import Header from "../../Components/Pages/Header";
 import Footer from "../../Components/Pages/Footer";
 import EditButtonSection from "../../Components/Pages/EditButtonSection";
-import Uni from "./../../assets/images/Uni.png";
-import TeacherForm from "../../Components/Pages/TeacherForm";
+import { useParams } from "react-router-dom";
+import EditTeacherForm from "../../Components/Pages/EditTeacherForm";
 
 const EditTeacher = () => {
+  const { id } = useParams();
+
+  const [fileName, setFileName] = useState("");
+  const [file, setFile] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const [teacher, setTeacher] = useState({});
+
+  const fetchTeacher = async () => {
+    try {
+      setLoading(true);
+      const token = localStorage.getItem("accessToken");
+      const response = await fetch(
+        `http://127.0.0.1:8000/universityadmin/teacher/${id}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: token ? `Bearer ${token}` : "",
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Error fetching universities");
+      }
+
+      const data = await response.json();
+      setTeacher(data?.teacher || []);
+    } catch (err) {
+      console.error("Fetch error:", err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchTeacher();
+  }, []);
+
   return (
     <Flex direction="column">
       <Header />
       <Box flex="1" mx={12} overflowY="auto" paddingBottom="80px">
         <Flex alignItems="center" justifyContent="space-between" my={6}></Flex>
         <EditButtonSection
-          image={Uni}
-          heading={"Ahsan Sajid"}
+          image={teacher?.image_url}
+          heading={teacher?.full_name}
+          showDeleteButton={false}
           showAddButton={false}
         />
 
@@ -34,7 +75,14 @@ const EditTeacher = () => {
           Teacher Information
         </Heading>
 
-        <TeacherForm show={false} />
+        <EditTeacherForm
+          teacher={teacher}
+          file={file}
+          setFile={setFile}
+          fileName={fileName}
+          setFileName={setFileName}
+          showUpload={false}
+        />
       </Box>
       <Footer />
     </Flex>

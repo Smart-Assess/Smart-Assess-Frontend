@@ -13,16 +13,19 @@ import {
   IconButton,
   Avatar,
   Button,
+  useToast,
 } from "@chakra-ui/react";
-import { EditIcon } from "@chakra-ui/icons";
+import { EditIcon, DeleteIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
 
 const TeacherTable = ({ data }) => {
   const nav = useNavigate();
   const [teachers, setTeachers] = useState([]);
+  const [deleting, setDeleting] = useState({});
 
   const [loading, setLoading] = useState(true);
 
+  const toast = useToast();
   const fetchTeachers = async () => {
     try {
       setLoading(true);
@@ -55,6 +58,45 @@ const TeacherTable = ({ data }) => {
     fetchTeachers();
   }, []);
 
+  const handleDelete = async (tch_id) => {
+    try {
+      setDeleting((prev) => ({ ...prev, [tch_id]: true }));
+      const token = localStorage.getItem("accessToken");
+      const response = await fetch(
+        `http://127.0.0.1:8000/universityadmin/teacher/${tch_id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: token ? `Bearer ${token}` : "",
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Error deleting Student");
+      }
+
+      toast({
+        title: "Student deleted successfully.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+
+      setTeachers((prev) => prev.filter((std) => std.teacher_id !== tch_id));
+    } catch (err) {
+      console.error("Delete error:", err.message);
+      toast({
+        title: "Failed to delete student.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    } finally {
+      setDeleting((prev) => ({ ...prev, [tch_id]: false }));
+    }
+  };
   return (
     <TableContainer
       mb={12}
@@ -73,7 +115,7 @@ const TeacherTable = ({ data }) => {
           <Thead backgroundColor={"#EAEEF0"}>
             <Tr>
               <Th>Teacher Name </Th>
-              <Th> Teacher ID </Th>
+              <Th>Teacher ID</Th>
               <Th>EMAIL</Th>
               <Th> DEPARTMENT</Th>
               <Th></Th>
@@ -86,6 +128,7 @@ const TeacherTable = ({ data }) => {
                   <Avatar src={uni.image_url} size="sm" mr={3} />
                   {uni.full_name}
                 </Td>
+
                 <Td>{uni.teacher_id}</Td>
 
                 <Td>{uni.email}</Td>
@@ -98,7 +141,19 @@ const TeacherTable = ({ data }) => {
                     icon={<EditIcon />}
                     size="sm"
                     colorScheme="blue"
-                    onClick={() => nav("/university/teacher/editTeacher")}
+                    onClick={() =>
+                      nav(`/university/teacher/edit/${uni.teacher_id}`)
+                    }
+                  />
+
+                  <IconButton
+                    aria-label="Delete"
+                    ml={2}
+                    icon={<DeleteIcon />}
+                    size="sm"
+                    isLoading={deleting[uni.teacher_id] || false}
+                    onClick={() => handleDelete(uni.teacher_id)}
+                    colorScheme="blue"
                   />
                 </Td>
               </Tr>

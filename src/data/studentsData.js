@@ -87,37 +87,51 @@ export const addStudent = [
     label: "Full Name",
     type: "text",
     placeholder: "Enter your Name",
+    pattern: /^[a-zA-Z\s]{3,20}$/,
+    validationMessage: " Name must be between 3 to 20 characters.",
   },
-  {
-    name: "studentId",
-    label: "Student Id",
-    type: "text",
-    placeholder: "Enter Student Id",
-  },
+
   {
     name: "studentDepartment",
     label: "Department",
     type: "text",
     placeholder: "Enter Department",
   },
-  { name: "email", label: "Email", type: "email", placeholder: "Enter Email" },
+  {
+    name: "email",
+    label: "Email",
+    type: "email",
+    placeholder: "Enter Email",
+    pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+    validationMessage: "Enter a valid email address.",
+  },
   {
     name: "batch",
     label: "Batch",
     type: "text",
-    placeholder: "Enter Batch",
+    placeholder: "eg:21B",
+    pattern: /^[0-9]{2}[A-Z]$/,
+    validationMessage:
+      "Batch must be in the format '21B' or '21A' (two digits followed by an uppercase letter).",
   },
   {
     name: "section",
     label: "Section",
     type: "text",
     placeholder: "Enter Section",
+    pattern: /^[A-Z]$/,
+    validationMessage:
+      "Section must be a single uppercase letter (A, B, C, D, etc.).",
   },
   {
     name: "password",
     label: "Password",
     type: "password",
     placeholder: "Enter Password",
+    pattern:
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+    validationMessage:
+      "Password must be at least 8 characters and contain at least one uppercase letter, one lowercase letter, one number, and one special character.",
   },
 ];
 
@@ -203,3 +217,47 @@ export const viewRequestData = {
     },
   ],
 };
+
+export const editStudent = [
+  {
+    name: "fullName",
+    label: "Full Name",
+    type: "text",
+    placeholder: "Enter your Name",
+    pattern: /^[a-zA-Z\s]{3,20}$/,
+    validationMessage: " Name must be between 3 to 20 characters.",
+  },
+
+  {
+    name: "studentDepartment",
+    label: "Department",
+    type: "text",
+    placeholder: "Enter Department",
+  },
+  {
+    name: "email",
+    label: "Email",
+    type: "email",
+    placeholder: "Enter Email",
+    pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+    validationMessage: "Enter a valid email address.",
+  },
+  {
+    name: "batch",
+    label: "Batch",
+    type: "text",
+    placeholder: "eg:21B",
+    pattern: /^[0-9]{2}[A-Z]$/,
+    validationMessage:
+      "Batch must be in the format '21B' or '21A' (two digits followed by an uppercase letter).",
+  },
+  {
+    name: "section",
+    label: "Section",
+    type: "text",
+    placeholder: "Enter Section",
+    pattern: /^[A-Z]$/,
+    validationMessage:
+      "Section must be a single uppercase letter (A, B, C, D, etc.).",
+  }
+];

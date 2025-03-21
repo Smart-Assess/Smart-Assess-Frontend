@@ -49,9 +49,8 @@ const Login = () => {
       const result = await response.json();
 
       if (response.ok) {
-        console.log("Login successful:", result);
-
         localStorage.setItem("accessToken", result.access_token);
+        localStorage.setItem("role", result.user.role);
 
         if (result.user.role === "superadmin") {
           navigate("/superadmin/dashboard");
