@@ -83,24 +83,36 @@ const Login = () => {
 
   return (
     <>
-      <Flex p={8} gap={4} alignItems={"center"}>
-        <Image src={logo} />
-        <Text fontSize={"24px"}>
+      <Flex
+        p={{ base: 4, md: 8 }}
+        gap={4}
+        alignItems="center"
+        justifyContent={{ base: "center", md: "flex-start" }}
+        flexDirection={{ base: "column", md: "row" }}
+      >
+        <Image src={logo}/>
+        <Text fontSize={{ base: "20px", md: "24px" }} textAlign="center">
           <span style={{ color: "#0D64C1" }}>Smart</span>{" "}
           <span style={{ color: "#B2BBC6" }}>Assess</span>
         </Text>
       </Flex>
 
-      <Box maxW="500px" mx="auto" mt="60px">
+      <Box
+        width={{ base: "90%", sm: "80%", md: "500px" }}
+        mx="auto"
+        mt={{ base: "40px", md: "60px" }}
+        p={{ base: 4, md: 0 }}
+      >
         <Heading
-          fontSize="32px"
-          color="3D4C5E"
+          fontSize={{ base: "28px", md: "32px" }}
+          color="#3D4C5E"
           textAlign="center"
           mb="4"
-          fontWeight={"500"}
+          fontWeight="500"
         >
           Welcome Back!!
         </Heading>
+
         <form onSubmit={handleSubmit(onSubmit)}>
           <FormControl isInvalid={errors.email}>
             <FormLabel htmlFor="email">Email</FormLabel>

@@ -17,6 +17,7 @@ import { addStudent } from "../../data/studentsData";
 import { useNavigate } from "react-router-dom";
 import { FiUpload } from "react-icons/fi";
 import axios from "axios";
+
 function StudentForm({ show }) {
   const methods = useForm();
   const {
@@ -54,6 +55,7 @@ function StudentForm({ show }) {
       if (file) {
         formData.append("image", file);
       }
+
       const config = {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -76,10 +78,10 @@ function StudentForm({ show }) {
           isClosable: true,
           position: "top-right",
         });
-        nav("/university/studnent/Dashboard");
+        nav("/university/student/Dashboard");
       }
     } catch (err) {
-      console.error("Error adding course:", err);
+      console.error("Error adding student:", err);
       setLoading(false);
 
       toast({
@@ -94,12 +96,17 @@ function StudentForm({ show }) {
       });
     }
   };
+
   return (
     <Flex w="100%" pb={8}>
       <Box w="100%">
-        <Flex align="flex-start">
+        <Flex
+          align="flex-start"
+          direction={["column", "column", "row"]}
+          gap={[6, 6, 0]}
+        >
           {show ? (
-            <VStack spacing="4" w="40%" mr="8">
+            <VStack spacing="4" w={["100%", "100%", "40%"]} mr={[0, 0, 8]}>
               <Box
                 w="100%"
                 h="240px"
@@ -150,10 +157,10 @@ function StudentForm({ show }) {
             </VStack>
           ) : null}
 
-          <Box w="100%" ml={4}>
+          <Box w={["100%", "100%", "100%"]} ml={[0, 0, 4]}>
             <FormProvider {...methods}>
               <form onSubmit={methods.handleSubmit(onSubmit)}>
-                <SimpleGrid columns={[1, null, 3]} spacing="8">
+                <SimpleGrid columns={[1, 1, 3]} spacing="8">
                   {addStudent.map((field) => (
                     <FormInput
                       key={field.name}

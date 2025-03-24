@@ -15,7 +15,7 @@ import {
 import { FiUpload, FiTrash } from "react-icons/fi";
 import FormInput from "./../UI/FormInput";
 import { useNavigate } from "react-router-dom";
-import axios from "axios"; // or use fetch directly
+import axios from "axios";
 import { addCourse } from "../../data/UniversityData";
 
 function AddCourseForm({ showUpload }) {
@@ -23,8 +23,8 @@ function AddCourseForm({ showUpload }) {
   const nav = useNavigate();
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [error, setError] = useState(null);
-
   const [loading, setLoading] = useState(false);
+
   const onSubmit = async (data) => {
     try {
       setLoading(true);
@@ -56,7 +56,6 @@ function AddCourseForm({ showUpload }) {
 
       if (response.status === 200) {
         setLoading(false);
-        console.log(response.data.course);
         nav("/teacher/Dashboard");
       }
     } catch (err) {
@@ -69,7 +68,6 @@ function AddCourseForm({ showUpload }) {
   const handleFileUpload = (event) => {
     const files = Array.from(event.target.files);
     const maxFileSize = 5 * 1024 * 1024; // 5 MB
-
     const validFiles = [];
     let validationError = null;
 
@@ -97,23 +95,29 @@ function AddCourseForm({ showUpload }) {
   return (
     <Flex w="100%" pb={8}>
       <Box w="100%">
-        <Flex align="flex-start">
+        <Flex
+          flexDirection={{ base: "column", md: "row" }}
+          gap={8}
+          align="flex-start"
+        >
+          {/* Upload Section */}
           {showUpload && (
-            <VStack spacing="4" w="40%" mr="8">
+            <VStack spacing={4} w={{ base: "100%", md: "40%" }} align="center">
               <Box
                 w="100%"
                 h="240px"
                 border="2px"
-                borderColor="gray.200"
+                borderColor={error ? "red.500" : "gray.200"}
                 borderRadius="md"
                 display="flex"
                 alignItems="center"
                 justifyContent="center"
                 bg="gray.50"
                 flexDirection="column"
+                position="relative"
               >
-                <Icon as={FiUpload} w={10} h={10} color="gray.400" mb="2" />
-                <Text color="gray.500" mb="2">
+                <Icon as={FiUpload} w={10} h={10} color="gray.400" mb={2} />
+                <Text color="gray.500" mb={2}>
                   Upload Documents
                 </Text>
                 <input
@@ -131,46 +135,47 @@ function AddCourseForm({ showUpload }) {
                   }}
                 />
               </Box>
+
               {error && (
-                <Alert status="error" borderRadius="md" fontSize="sm" mt="4">
+                <Alert status="error" borderRadius="md" fontSize="sm">
                   <AlertIcon />
                   {error}
                 </Alert>
               )}
-              <Box w="100%">
-                {uploadedFiles.length > 0 && (
-                  <VStack align="start" spacing="2" w="100%">
-                    {uploadedFiles.map((file, index) => (
-                      <HStack
-                        key={index}
-                        w="100%"
-                        justify="space-between"
-                        bg="gray.100"
-                        p="2"
-                        borderRadius="md"
+
+              {uploadedFiles.length > 0 && (
+                <VStack align="start" spacing={2} w="100%">
+                  {uploadedFiles.map((file, index) => (
+                    <HStack
+                      key={index}
+                      w="100%"
+                      justify="space-between"
+                      bg="gray.100"
+                      p={2}
+                      borderRadius="md"
+                    >
+                      <Text fontSize="sm" noOfLines={1} w="80%">
+                        {file.name}
+                      </Text>
+                      <Button
+                        size="sm"
+                        colorScheme="red"
+                        onClick={() => handleFileDelete(index)}
                       >
-                        <Text fontSize="sm" noOfLines={1} w="80%">
-                          {file.name}
-                        </Text>
-                        <Button
-                          size="sm"
-                          colorScheme="red"
-                          onClick={() => handleFileDelete(index)}
-                        >
-                          <Icon as={FiTrash} />
-                        </Button>
-                      </HStack>
-                    ))}
-                  </VStack>
-                )}
-              </Box>
+                        <Icon as={FiTrash} />
+                      </Button>
+                    </HStack>
+                  ))}
+                </VStack>
+              )}
             </VStack>
           )}
 
-          <Box w="100%">
+          {/* Form Section */}
+          <Box w={{ base: "100%", md: showUpload ? "60%" : "100%" }}>
             <FormProvider {...methods}>
               <form onSubmit={methods.handleSubmit(onSubmit)}>
-                <SimpleGrid columns={[1, null, 3]} spacing="8">
+                <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6}>
                   {addCourse.map((field) => (
                     <FormInput
                       key={field.name}
@@ -179,25 +184,32 @@ function AddCourseForm({ showUpload }) {
                       type={field.type}
                       placeholder={field.placeholder}
                       options={field.options || []}
-                      pattern={field.pattern || undefined} // Pass the pattern if defined
-                      validationMessage={field.validationMessage || undefined}
+                      pattern={field.pattern}
+                      validationMessage={field.validationMessage}
                     />
                   ))}
                 </SimpleGrid>
 
-                <Box display="flex" justifyContent="flex-end" mt="6">
+                {/* Buttons */}
+                <Flex justifyContent="flex-end" mt={6} flexWrap="wrap">
                   <Button
                     onClick={() => nav("/teacher/Dashboard")}
                     variant="outline"
                     colorScheme="gray"
-                    mr="4"
+                    mr={4}
+                    size={{ base: "sm", md: "md" }}
                   >
                     Cancel
                   </Button>
-                  <Button isLoading={loading} type="submit" colorScheme="blue">
+                  <Button
+                    isLoading={loading}
+                    type="submit"
+                    colorScheme="blue"
+                    size={{ base: "sm", md: "md" }}
+                  >
                     Save
                   </Button>
-                </Box>
+                </Flex>
               </form>
             </FormProvider>
           </Box>

@@ -16,11 +16,11 @@ import { useNavigate, useParams } from "react-router-dom";
 
 const UploadAssignments = () => {
   const [files, setFiles] = useState([]);
-  const [assignment, setAssignment] = useState(null); // Assignment details
-  const [loading, setLoading] = useState(true); // Loading state
-  const [error, setError] = useState(""); // Error state
+  const [assignment, setAssignment] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const fileInputRef = useRef(null);
-  const { assignment_id } = useParams(); // Get assignment_id from URL
+  const { assignment_id } = useParams();
   const [postLoading, setPostLoading] = useState(false);
 
   const extractFileName = (url) => {
@@ -52,7 +52,6 @@ const UploadAssignments = () => {
         }
 
         const data = await response.json();
-
         if (data.success) {
           setAssignment(data.assignment);
         } else {
@@ -102,7 +101,6 @@ const UploadAssignments = () => {
 
       if (!response.ok) {
         const errorData = await response.json();
-        console.error("Error data:", errorData);
         throw new Error(errorData.detail || "Failed to submit assignment.");
       }
 
@@ -113,14 +111,11 @@ const UploadAssignments = () => {
         grade: data.submission.grade,
       }));
 
-      setPostLoading(false);
       setFiles([]);
       setError("");
     } catch (err) {
-      console.error("Submission error:", err);
-      setError(
-        err.message || "An error occurred while submitting the assignment."
-      );
+      setError(err.message || "An error occurred while submitting the assignment.");
+    } finally {
       setPostLoading(false);
     }
   };
@@ -135,95 +130,93 @@ const UploadAssignments = () => {
   return (
     <Flex direction="column" minH="100vh">
       <Header />
-      <Box flex="1" mx={12} overflowY="auto" paddingBottom="80px">
-        <Flex alignItems={"center"} mt={6} justifyContent={"space-between"}>
+      <Box flex="1" px={{ base: 4, md: 8, lg: 12 }} py={6}>
+        {/* Heading & Actions */}
+        <Flex
+          direction={{ base: "column", md: "row" }}
+          alignItems={{ base: "flex-start", md: "center" }}
+          justifyContent="space-between"
+          gap={4}
+        >
           <Box>
-            <Heading color="#3D4C5E" fontSize="32px" fontWeight="500">
+            <Heading
+              color="#3D4C5E"
+              fontSize={{ base: "24px", md: "28px", lg: "32px" }}
+              fontWeight="500"
+            >
               {assignment?.name}
             </Heading>
-            <Badge bg="gray.500" color="white" mt={2}>
+            <Badge bg="gray.500" color="white" mt={2} fontSize="sm">
               Due {new Date(assignment?.deadline).toLocaleString()}
             </Badge>
           </Box>
-          <Box display="flex" gap={4} alignItems={"center"}>
-            <Box>
-              <Text fontSize={"lg"}>Points</Text>
+
+          <Flex direction={{ base: "column", sm: "row" }} gap={4} alignItems="center">
+            <Box textAlign={{ base: "left", sm: "center" }}>
+              <Text fontSize="md">Points</Text>
               {assignment?.submission?.status === "submitted" ? (
                 <Text color="#546881">{assignment.grade}</Text>
               ) : (
                 <Text color="#546881">Not Graded Yet</Text>
               )}
             </Box>
-            <Box>
-              {assignment?.submission?.status === "submitted" ? (
-                <Button colorScheme="blue">Handed In</Button>
-              ) : (
-                <Button
-                  isLoading={postLoading}
-                  colorScheme="blue"
-                  onClick={handleSubmitAssignment}
-                >
-                  Hands In
-                </Button>
-              )}
-            </Box>
 
-            <Box>
-              <Button
-                colorScheme="blue"
-                onClick={() => nav(`/student/results/${assignment_id}`)}
-              >
-                Results
-              </Button>
-            </Box>
-          </Box>
+            <Button
+              isLoading={postLoading}
+              colorScheme="blue"
+              onClick={handleSubmitAssignment}
+              isDisabled={assignment?.submission?.status === "submitted"}
+              width={{ base: "100%", sm: "auto" }}
+            >
+              {assignment?.submission?.status === "submitted" ? "Handed In" : "Hands In"}
+            </Button>
+
+            <Button
+              colorScheme="blue"
+              onClick={() => nav(`/student/results/${assignment_id}`)}
+              width={{ base: "100%", sm: "auto" }}
+            >
+              Results
+            </Button>
+          </Flex>
         </Flex>
-        <Box>
-          {assignment?.submission?.status === "submitted" ? (
-            <Badge bg="gray.500" color="white" mt={2}>
-              Submitted at{" "}
-              {new Date(assignment.submission.submitted_at).toLocaleString()}
-            </Badge>
-          ) : null}
-        </Box>
 
+        {/* Submission Status */}
+        {assignment?.submission?.status === "submitted" && (
+          <Badge bg="gray.500" color="white" mt={4} fontSize="sm">
+            Submitted at {new Date(assignment.submission.submitted_at).toLocaleString()}
+          </Badge>
+        )}
+
+        {/* Description & Upload Section */}
         <Box mt={6}>
-          <Flex direction="column" alignItems="flex-start">
-            <Box>
-              <Text mb={2} fontSize="lg">
-                {assignment?.description}
-              </Text>
-              {assignment?.question_pdf_url && (
-                <Box
-                  border="1px solid"
-                  borderColor="blue.500"
-                  borderRadius="8px"
-                  mb={4}
-                  p={4}
-                >
-                  <Text as="span" fontWeight="normal" color="blue.500">
-                    <Link
-                      href={assignment.question_pdf_url}
-                      download={extractFileName(assignment.question_pdf_url)}
-                      color="blue.500"
-                      fontSize="md"
-                      fontWeight="bold"
-                    >
-                      {extractFileName(assignment.question_pdf_url)}
-                    </Link>
-                  </Text>
-                </Box>
-              )}
-            </Box>
+          <Flex direction="column" gap={4}>
+            <Text fontSize="md">{assignment?.description}</Text>
 
-            <Text mb={2} fontSize="lg">
-              My work:
-            </Text>
+            {assignment?.question_pdf_url && (
+              <Box
+                border="1px solid"
+                borderColor="blue.500"
+                borderRadius="8px"
+                p={4}
+              >
+                <Link
+                  href={assignment.question_pdf_url}
+                  download={extractFileName(assignment.question_pdf_url)}
+                  color="blue.500"
+                  fontSize="md"
+                  fontWeight="bold"
+                >
+                  {extractFileName(assignment.question_pdf_url)}
+                </Link>
+              </Box>
+            )}
+
+            <Text fontSize="md">My work:</Text>
 
             <Button colorScheme="blue" onClick={triggerFileInput}>
               Upload Documents
             </Button>
-
             <Input
               ref={fileInputRef}
               type="file"
@@ -233,8 +226,9 @@ const UploadAssignments = () => {
               display="none"
             />
 
+            {/* Submitted File */}
             {assignment?.submission?.status === "submitted" && (
-              <Box mt={4}>
+              <Box>
                 <Text fontSize="md" mb={2}>
                   Submitted File:
                 </Text>
@@ -251,28 +245,30 @@ const UploadAssignments = () => {
               </Box>
             )}
 
+            {/* Error Message */}
             {error && (
-              <Text color="red.500" fontSize="sm" mt={2}>
+              <Text color="red.500" fontSize="sm">
                 {error}
               </Text>
             )}
 
+            {/* Selected Files */}
             {files.length > 0 && (
-              <Box mt={4}>
-                <Text fontSize="md">Selected files:</Text>
-                <ul>
-                  {files.map((file, index) => (
-                    <Text
-                      border="1px solid #AACCFF"
-                      p={2}
-                      borderRadius={"8px"}
-                      mt={3}
-                      key={index}
-                    >
-                      {file.name}
-                    </Text>
-                  ))}
-                </ul>
+              <Box>
+                <Text fontSize="md" mb={2}>
+                  Selected files:
+                </Text>
+                {files.map((file, index) => (
+                  <Text
+                    border="1px solid #AACCFF"
+                    p={2}
+                    borderRadius="8px"
+                    mt={2}
+                    key={index}
+                  >
+                    {file.name}
+                  </Text>
+                ))}
               </Box>
             )}
           </Flex>

@@ -21,18 +21,16 @@ import { addCourse } from "../../data/UniversityData";
 
 function EditCourseForm({ showUpload, courseId, setCourseCodeId }) {
   const methods = useForm();
-
   const [loading, setLoading] = useState(true);
   const [courses, setCourses] = useState({});
+  const [uploadedFiles, setUploadedFiles] = useState([]);
+  const [error, setError] = useState(null);
+  const nav = useNavigate();
+
   const fetchData = async () => {
     try {
       const token = localStorage.getItem("accessToken");
-
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
+      const config = { headers: { Authorization: `Bearer ${token}` } };
       const response = await axios.get(
         `http://127.0.0.1:8000/teacher/course/${courseId}`,
         config
@@ -42,8 +40,8 @@ function EditCourseForm({ showUpload, courseId, setCourseCodeId }) {
         const courseData = response.data.course;
         setCourses(courseData);
         setCourseCodeId(courseData.course_code);
-
         setLoading(false);
+
         methods.setValue("name", courseData.name);
         methods.setValue("batch", courseData.batch);
         methods.setValue("group", courseData.group);
@@ -64,20 +62,10 @@ function EditCourseForm({ showUpload, courseId, setCourseCodeId }) {
     fetchData();
   }, []);
 
-  const nav = useNavigate();
-  const [uploadedFiles, setUploadedFiles] = useState([]);
-
-  const [error, setError] = useState(null);
-
   const onSubmit = async (data) => {
     try {
       const token = localStorage.getItem("accessToken");
-
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
+      const config = { headers: { Authorization: `Bearer ${token}` } };
 
       const response = await axios.put(
         `http://127.0.0.1:8000/teacher/course/${courseId}`,
@@ -92,6 +80,7 @@ function EditCourseForm({ showUpload, courseId, setCourseCodeId }) {
       console.error("Error updating course:", err);
     }
   };
+
   const handleFileUpload = (event) => {
     const files = Array.from(event.target.files);
     const maxFileSize = 5 * 1024 * 1024; // 5 MB
@@ -125,19 +114,28 @@ function EditCourseForm({ showUpload, courseId, setCourseCodeId }) {
   };
 
   return (
-    <Flex w="100%" pb={8}>
+    <Flex w="100%" pb={8} flexDirection="column">
       <Box w="100%">
         {loading ? (
           <Flex justifyContent="center" mt="140px" alignItems="center">
             <Spinner size="lg" thickness="4px" speed="0.65s" color="blue.500" />
           </Flex>
         ) : (
-          <Flex align="flex-start">
+          <Flex
+            direction={{ base: "column", md: "row" }}
+            gap={8}
+            align="flex-start"
+          >
+            {/* Upload Section */}
             {showUpload && (
-              <VStack spacing="4" w="40%" mr="8">
+              <VStack
+                spacing={4}
+                w={{ base: "100%", md: "40%" }}
+                align="center"
+              >
                 <Box
                   w="100%"
-                  h="240px"
+                  h={{ base: "200px", md: "240px" }}
                   border="2px"
                   borderColor="gray.200"
                   borderRadius="md"
@@ -160,11 +158,10 @@ function EditCourseForm({ showUpload, courseId, setCourseCodeId }) {
                     onChange={handleFileUpload}
                     style={{
                       position: "absolute",
-                      top: "50%",
-                      left: "50%",
-                      transform: "translate(-50%, -50%)",
-                      width: "calc(100% - 32px)", // Adjust padding area
-                      height: "calc(100% - 32px)", // Adjust padding area
+                      top: 0,
+                      left: 0,
+                      width: "100%",
+                      height: "100%",
                       opacity: 0,
                       cursor: "pointer",
                     }}
@@ -172,21 +169,22 @@ function EditCourseForm({ showUpload, courseId, setCourseCodeId }) {
                 </Box>
 
                 {error && (
-                  <Alert status="error" borderRadius="md" fontSize="sm" mt="4">
+                  <Alert status="error" borderRadius="md" fontSize="sm" mt={2}>
                     <AlertIcon />
                     {error}
                   </Alert>
                 )}
+
                 <Box w="100%">
                   {uploadedFiles.length > 0 && (
-                    <VStack align="start" spacing="2" w="100%">
+                    <VStack align="start" spacing={2} w="100%">
                       {uploadedFiles.map((file, index) => (
                         <HStack
                           key={index}
                           w="100%"
                           justify="space-between"
                           bg="gray.100"
-                          p="2"
+                          p={2}
                           borderRadius="md"
                         >
                           <Text fontSize="sm" noOfLines={1} w="80%">
@@ -207,10 +205,11 @@ function EditCourseForm({ showUpload, courseId, setCourseCodeId }) {
               </VStack>
             )}
 
-            <Box w="100%">
+            {/* Form Section */}
+            <Box w={{ base: "100%", md: showUpload ? "60%" : "100%" }}>
               <FormProvider {...methods}>
                 <form onSubmit={methods.handleSubmit(onSubmit)}>
-                  <SimpleGrid columns={[1, null, 3]} spacing="8">
+                  <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6}>
                     {addCourse.map((field) => (
                       <FormInput
                         key={field.name}
@@ -225,12 +224,17 @@ function EditCourseForm({ showUpload, courseId, setCourseCodeId }) {
                     ))}
                   </SimpleGrid>
 
-                  <Box display="flex" justifyContent="flex-end" mt="6">
+                  <Flex
+                    justifyContent="flex-end"
+                    mt={6}
+                    flexWrap="wrap"
+                    gap={4}
+                  >
                     <Button
                       onClick={() => nav("/teacher/Dashboard")}
                       variant="outline"
                       colorScheme="gray"
-                      mr="4"
+                      size={{ base: "sm", md: "md" }}
                     >
                       Cancel
                     </Button>
@@ -238,10 +242,11 @@ function EditCourseForm({ showUpload, courseId, setCourseCodeId }) {
                       isLoading={loading}
                       type="submit"
                       colorScheme="blue"
+                      size={{ base: "sm", md: "md" }}
                     >
                       Update
                     </Button>
-                  </Box>
+                  </Flex>
                 </form>
               </FormProvider>
             </Box>

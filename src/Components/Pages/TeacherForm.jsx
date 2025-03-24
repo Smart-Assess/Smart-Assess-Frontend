@@ -11,7 +11,6 @@ import {
   HStack,
   useToast,
 } from "@chakra-ui/react";
-
 import FormInput from "./../UI/FormInput";
 import { addTeacher } from "../../data/TeacherData";
 import { useNavigate } from "react-router-dom";
@@ -53,6 +52,7 @@ function TeacherForm({ show }) {
       if (file) {
         formData.append("image", file);
       }
+
       const config = {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -80,7 +80,6 @@ function TeacherForm({ show }) {
     } catch (err) {
       console.error("Error adding course:", err);
       setLoading(false);
-
       toast({
         title: "Error adding Teacher",
         description:
@@ -93,12 +92,21 @@ function TeacherForm({ show }) {
       });
     }
   };
+
   return (
     <Flex w="100%" pb={8}>
       <Box w="100%">
-        <Flex align="flex-start">
-          {show ? (
-            <VStack spacing="4" w="40%" mr="8">
+        <Flex
+          flexDirection={{ base: "column", md: "row" }}
+          gap={8}
+          align="flex-start"
+        >
+          {show && (
+            <VStack
+              spacing={4}
+              w={{ base: "100%", md: "40%" }}
+              align="center"
+            >
               <Box
                 w="100%"
                 h="240px"
@@ -147,12 +155,12 @@ function TeacherForm({ show }) {
                 <Text color="red.500">{errors.universityLogo.message}</Text>
               )}
             </VStack>
-          ) : null}
+          )}
 
-          <Box w="100%" ml={4}>
+          <Box w={{ base: "100%", md: show ? "60%" : "100%" }}>
             <FormProvider {...methods}>
               <form onSubmit={methods.handleSubmit(onSubmit)}>
-                <SimpleGrid columns={[1, null, 3]} spacing="8">
+                <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6}>
                   {addTeacher.map((field) => (
                     <FormInput
                       key={field.name}
@@ -163,23 +171,37 @@ function TeacherForm({ show }) {
                       pattern={field.pattern}
                       validationMessage={field.validationMessage}
                       options={field.options}
+                      inputProps={{
+                        height: "45px",
+                        width: "100%",
+                      }}
                     />
                   ))}
                 </SimpleGrid>
 
-                <Box display="flex" justifyContent="flex-end" mt="6">
+                <Flex
+                  justifyContent="flex-end"
+                  mt={6}
+                  flexWrap="wrap"
+                  gap={4}
+                >
                   <Button
                     onClick={() => nav("/university/teacher/Dashboard")}
                     variant="outline"
                     colorScheme="gray"
-                    mr="4"
+                    size={{ base: "sm", md: "md" }}
                   >
                     Cancel
                   </Button>
-                  <Button  isLoading={loading} type="submit" colorScheme="blue">
+                  <Button
+                    isLoading={loading}
+                    type="submit"
+                    colorScheme="blue"
+                    size={{ base: "sm", md: "md" }}
+                  >
                     Save
                   </Button>
-                </Box>
+                </Flex>
               </form>
             </FormProvider>
           </Box>

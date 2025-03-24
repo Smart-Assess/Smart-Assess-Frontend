@@ -65,12 +65,12 @@ const App = () => {
         path="/student/allAssignments/:course_id"
         element={<AllAssignments />}
       />
-      <Route path="/student/assignmentsList" element={<AssignmentsList />} />
+      {/* <Route path="/student/assignmentsList" element={<AssignmentsList />} /> */}
       <Route
         path="/student/studentsEvaluation"
         element={<StudentsEvaluation />}
       />
-      <Route path="/student/studentProfile" element={<StudentProfile />} />
+      {/* <Route path="/student/studentProfile" element={<StudentProfile />} /> */}
       <Route
         path="/student/uploadAssignment/:assignment_id"
         element={<UploadAssignment />}

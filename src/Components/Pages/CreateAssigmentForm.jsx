@@ -19,7 +19,7 @@ import axios from "axios";
 function CreateAssignmentForm({ showUpload, courseId }) {
   const [uploadFileName, setUploadFileName] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [errorMessages, setErrorMessages] = useState({}); // State to store backend validation errors
+  const [errorMessages, setErrorMessages] = useState({});
 
   const methods = useForm();
   const nav = useNavigate();
@@ -27,15 +27,10 @@ function CreateAssignmentForm({ showUpload, courseId }) {
   const onSubmit = async (data) => {
     try {
       setLoading(true);
-      setErrorMessages({}); // Clear previous errors
-
+      setErrorMessages({});
       const { deadline, time } = data;
       const formattedDateTime = `${deadline} ${time}`;
-      const updatedData = {
-        ...data,
-        deadline: formattedDateTime,
-      };
-
+      const updatedData = { ...data, deadline: formattedDateTime };
       delete updatedData.time;
       setUploadFileName(data.question_pdf[0]?.name);
 
@@ -66,9 +61,8 @@ function CreateAssignmentForm({ showUpload, courseId }) {
       }
     } catch (err) {
       setLoading(false);
-      if (err.response && err.response.data) {
+      if (err.response?.data) {
         const { detail } = err.response.data;
-
         if (Array.isArray(detail)) {
           setErrorMessages(
             detail.reduce((acc, error) => {
@@ -88,9 +82,17 @@ function CreateAssignmentForm({ showUpload, courseId }) {
   return (
     <Flex w="100%" pb={8}>
       <Box w="100%">
-        <Flex align="flex-start">
-          {showUpload ? (
-            <VStack spacing="4" w="40%" mr="8">
+        <Flex
+          direction={{ base: "column", md: "row" }}
+          gap={8}
+          align="flex-start"
+        >
+          {showUpload && (
+            <VStack
+              spacing="4"
+              w={{ base: "100%", md: "40%" }}
+              mb={{ base: 4, md: 0 }}
+            >
               <Box
                 w="100%"
                 h="240px"
@@ -102,6 +104,7 @@ function CreateAssignmentForm({ showUpload, courseId }) {
                 justifyContent="center"
                 bg="gray.50"
                 flexDirection="column"
+                position="relative"
               >
                 <Icon as={FiUpload} w={10} h={10} color="gray.400" mb="2" />
                 <Text color="gray.500" mb="2">
@@ -112,7 +115,7 @@ function CreateAssignmentForm({ showUpload, courseId }) {
                   accept="application/pdf"
                   {...methods.register("question_pdf")}
                   onChange={(e) => {
-                    setUploadFileName(e.target.files[0].name);
+                    setUploadFileName(e.target.files[0]?.name);
                   }}
                   style={{
                     position: "absolute",
@@ -138,7 +141,11 @@ function CreateAssignmentForm({ showUpload, courseId }) {
                         {uploadFileName}
                       </Text>
 
-                      <Button size="sm" colorScheme="red">
+                      <Button
+                        size="sm"
+                        colorScheme="red"
+                        onClick={() => setUploadFileName(null)}
+                      >
                         <Icon as={FiTrash} />
                       </Button>
                     </HStack>
@@ -146,12 +153,12 @@ function CreateAssignmentForm({ showUpload, courseId }) {
                 </Box>
               )}
             </VStack>
-          ) : null}
+          )}
 
           <Box w="100%">
             <FormProvider {...methods}>
               <form onSubmit={methods.handleSubmit(onSubmit)}>
-                <SimpleGrid columns={[1, null, 3]} spacing="8">
+                <SimpleGrid columns={[1, null, 2, 3]} spacing={8}>
                   {createAssignment.map((field) => (
                     <FormInput
                       key={field.name}
@@ -166,35 +173,34 @@ function CreateAssignmentForm({ showUpload, courseId }) {
                   ))}
                 </SimpleGrid>
 
-                {/* Display Field-Level Errors */}
+                {/* Field-Level Errors */}
                 {Object.keys(errorMessages).map((key) =>
                   key !== "general" && errorMessages[key] ? (
-                    <Text key={key} color="red.500" fontSize="sm">
+                    <Text key={key} color="red.500" fontSize="sm" mt={2}>
                       {key}: {errorMessages[key]}
                     </Text>
                   ) : null
                 )}
 
-                {/* Display General Errors */}
+                {/* General Errors */}
                 {errorMessages.general && (
-                  <Text color="red.500" fontSize="sm" mt="4">
+                  <Text color="red.500" fontSize="sm" mt={4}>
                     {errorMessages.general}
                   </Text>
                 )}
 
-                <Box display="flex" justifyContent="flex-end" mt="6">
+                <Flex justify="flex-end" mt={6} wrap="wrap" gap={4}>
                   <Button
                     variant="outline"
                     colorScheme="gray"
                     onClick={() => nav(`/teacher/editCourse/${courseId}`)}
-                    mr="4"
                   >
                     Cancel
                   </Button>
                   <Button isLoading={loading} type="submit" colorScheme="blue">
                     Save
                   </Button>
-                </Box>
+                </Flex>
               </form>
             </FormProvider>
           </Box>

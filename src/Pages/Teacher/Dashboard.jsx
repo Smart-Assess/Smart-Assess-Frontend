@@ -48,8 +48,6 @@ const Dashboard = () => {
         config
       );
 
-
-
       if (response.status === 200) {
         setCourses(response.data.courses);
         setLoading(false);
@@ -71,13 +69,19 @@ const Dashboard = () => {
   );
 
   return (
-    <Flex direction="column" height="100vh">
+    <Flex direction="column" minH="100vh">
       <Header />
 
-      <Flex flex="1" mx={12} my={6}>
+      <Flex
+        flex="1"
+        mx={{ base: 4, md: 8, lg: 12 }}
+        my={6}
+        direction={{ base: "column", lg: "row" }}
+        gap={6}
+      >
+        {/* Sidebar Filters */}
         <Box
-          h="fit-content"
-          w="20%"
+          w={{ base: "100%", lg: "20%" }}
           bg="white"
           borderWidth="1px"
           borderRadius="lg"
@@ -102,6 +106,7 @@ const Dashboard = () => {
                 )}
               </MenuList>
             </Menu>
+
             <Menu>
               <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
                 {selectedSection || "Select Section"}
@@ -122,8 +127,15 @@ const Dashboard = () => {
           </VStack>
         </Box>
 
-        <Box flex="1" ml={8}>
-          <Flex justify="space-between" align="center" mb={6}>
+        {/* Main Content */}
+        <Box flex="1">
+          <Flex
+            direction={{ base: "column", md: "row" }}
+            justify="space-between"
+            align={{ base: "flex-start", md: "center" }}
+            mb={6}
+            gap={4}
+          >
             <Box>
               <Heading fontSize="2xl">Welcome Back Oliver! 👋</Heading>
               <Text mt={1} color="gray.600">
@@ -133,6 +145,7 @@ const Dashboard = () => {
             <Button
               colorScheme="blue"
               onClick={() => nav("/teacher/addCourse")}
+              alignSelf={{ base: "stretch", md: "auto" }}
             >
               + Add New Course
             </Button>
@@ -149,7 +162,7 @@ const Dashboard = () => {
             overflowX="auto"
             mb={4}
           >
-            <Table variant="simple" cursor={"pointer"}>
+            <Table variant="simple" cursor="pointer">
               <Thead bg="gray.100">
                 <Tr>
                   <Th>Course Name</Th>
@@ -189,18 +202,21 @@ const Dashboard = () => {
             </Table>
           </Box>
 
-          <Flex py={2} pb={6} justifyContent={"space-between"}>
-            <Button mt={4} onClick={() => alert("Previous Page")} mr={2}>
-              Previous
-            </Button>
-            <Button mt={4} onClick={() => alert("Next Page")}>
-              Next
-            </Button>
+          {/* Pagination Buttons (Always Visible) */}
+          <Flex
+            py={2}
+            pb={6}
+            justifyContent={{ base: "center", md: "space-between" }}
+            gap={4}
+          >
+            <Button onClick={() => alert("Previous Page")}>Previous</Button>
+            <Button onClick={() => alert("Next Page")}>Next</Button>
           </Flex>
+          <Box height="80px" />
         </Box>
       </Flex>
 
-      <Footer />
+      <Footer mt="auto" />
     </Flex>
   );
 };

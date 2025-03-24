@@ -12,7 +12,6 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { FiUpload } from "react-icons/fi";
-
 import FormInput from "./../UI/FormInput";
 import { addUniversity } from "../../data/UniversityData";
 import { useNavigate } from "react-router-dom";
@@ -32,7 +31,6 @@ function AddUniversityForm({ showUpload }) {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  // Handle file selection
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
     if (selectedFile) {
@@ -61,6 +59,7 @@ function AddUniversityForm({ showUpload }) {
       if (file) {
         formData.append("image", file);
       }
+
       const config = {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -86,9 +85,8 @@ function AddUniversityForm({ showUpload }) {
         nav("/superadmin/dashboard");
       }
     } catch (err) {
-      console.error("Error adding course:", err);
+      console.error("Error adding university:", err);
       setLoading(false);
-
       toast({
         title: "Error adding university",
         description:
@@ -105,10 +103,18 @@ function AddUniversityForm({ showUpload }) {
   return (
     <Flex w="100%" pb={8}>
       <Box w="100%">
-        <Flex align="flex-start">
-          {/* Left Section for Logo Upload */}
-          {showUpload ? (
-            <VStack spacing="4" w="40%" mr="8">
+        <Flex
+          flexDirection={{ base: "column", md: "row" }}
+          gap={8}
+          align="flex-start"
+        >
+          {/* Upload Section */}
+          {showUpload && (
+            <VStack
+              spacing={4}
+              w={{ base: "100%", md: "40%" }}
+              align="center"
+            >
               <Box
                 w="100%"
                 h="240px"
@@ -157,13 +163,13 @@ function AddUniversityForm({ showUpload }) {
                 <Text color="red.500">{errors.universityLogo.message}</Text>
               )}
             </VStack>
-          ) : null}
+          )}
 
           {/* Form Section */}
-          <Box w="100%">
+          <Box w={{ base: "100%", md: showUpload ? "60%" : "100%" }}>
             <FormProvider {...methods}>
               <form onSubmit={handleSubmit(onSubmit)}>
-                <SimpleGrid columns={[1, null, 3]} spacing="8">
+                <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6}>
                   {addUniversity.map((field) => (
                     <FormInput
                       key={field.name}
@@ -177,19 +183,26 @@ function AddUniversityForm({ showUpload }) {
                   ))}
                 </SimpleGrid>
 
-                <Box display="flex" justifyContent="flex-end" mt="6">
+                {/* Buttons */}
+                <Flex justifyContent="flex-end" mt={6} flexWrap="wrap">
                   <Button
                     onClick={() => nav("/superadmin/Dashboard")}
                     variant="outline"
                     colorScheme="gray"
-                    mr="4"
+                    mr={4}
+                    size={{ base: "sm", md: "md" }}
                   >
                     Cancel
                   </Button>
-                  <Button isLoading={loading} type="submit" colorScheme="blue">
+                  <Button
+                    isLoading={loading}
+                    type="submit"
+                    colorScheme="blue"
+                    size={{ base: "sm", md: "md" }}
+                  >
                     Save
                   </Button>
-                </Box>
+                </Flex>
               </form>
             </FormProvider>
           </Box>

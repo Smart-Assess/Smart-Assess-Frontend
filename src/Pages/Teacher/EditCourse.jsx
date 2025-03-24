@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Flex, Heading, Text, Button } from "@chakra-ui/react";
+import { Box, Flex, Heading, Text, Button, Stack } from "@chakra-ui/react";
 import Header from "../../Components/Pages/Header";
 import Footer from "../../Components/Pages/Footer";
 import { useNavigate, useParams } from "react-router-dom";
@@ -7,9 +7,7 @@ import EditCourseForm from "../../Components/Pages/EditCourseForm";
 
 const EditCourse = () => {
   const { courseId } = useParams();
-
   const [coursecodeId, setCourseCodeId] = useState("");
-
   const [isCopied, setIsCopied] = useState(false);
 
   const handleCopy = () => {
@@ -20,51 +18,82 @@ const EditCourse = () => {
   };
 
   const nav = useNavigate();
+
   return (
-    <Flex direction="column">
+    <Flex direction="column" minH="100vh">
       <Header />
-      <Box flex="1" mx={12} overflowY="auto" paddingBottom="80px">
-        <Flex alignItems="center" justifyContent="space-between" my={6}>
-          <Box>
-            <Heading color="#3D4C5E" fontSize="32px" fontWeight="500">
-              Edit Course
-            </Heading>
-            <Text color="#546881">Add the required information below</Text>
-          </Box>
-          <Box d="flex">
-            <Button mr={3} colorScheme="blue" onClick={handleCopy}>
-              {isCopied ? "Copied!" : "Course Code"}
-            </Button>
+      <Box flex="1" pb="80px">
+        <Box
+          w="100%"
+          maxW={{ base: "360px", md: "100%" }}  // Match Header width on mobile
+          mx="auto"
+          px={{ base: 4, md: 12 }}
+        >
+          <Flex
+            direction={{ base: "column", md: "row" }}
+            alignItems={{ base: "flex-start", md: "center" }}
+            justifyContent="space-between"
+            my={6}
+            w="100%"
+          >
+            <Box mb={{ base: 4, md: 0 }}>
+              <Heading
+                color="#3D4C5E"
+                fontSize={{ base: "24px", md: "28px", lg: "32px" }}
+                fontWeight="500"
+              >
+                Edit Course
+              </Heading>
+              <Text color="#546881" fontSize={{ base: "sm", md: "md" }}>
+                Add the required information below
+              </Text>
+            </Box>
 
-            <Button
-              mr={3}
-              colorScheme="blue"
-              onClick={() => nav(`/teacher/viewAssignments/${courseId}`)}
+            <Stack
+              direction={{ base: "column", sm: "row" }}
+              spacing={3}
+              width={{ base: "100%", sm: "auto" }}
             >
-              View Assignments
-            </Button>
+              <Button
+                colorScheme="blue"
+                onClick={handleCopy}
+                width={{ base: "100%", sm: "auto" }}
+              >
+                {isCopied ? "Copied!" : "Course Code"}
+              </Button>
 
-            <Button
-              mr={3}
-              colorScheme="blue"
-              onClick={() => nav(`/teacher/viewRequest/${courseId}`)}
-            >
-              View Request
-            </Button>
-            <Button
-              colorScheme="blue"
-              onClick={() => nav(`/teacher/createAssignment/${courseId}`)}
-            >
-              Create Assignment
-            </Button>
-          </Box>
-        </Flex>
+              <Button
+                colorScheme="blue"
+                onClick={() => nav(`/teacher/viewAssignments/${courseId}`)}
+                width={{ base: "100%", sm: "auto" }}
+              >
+                View Assignments
+              </Button>
 
-        <EditCourseForm
-          setCourseCodeId={setCourseCodeId}
-          courseId={courseId}
-          showUpload={true}
-        ></EditCourseForm>
+              <Button
+                colorScheme="blue"
+                onClick={() => nav(`/teacher/viewRequest/${courseId}`)}
+                width={{ base: "100%", sm: "auto" }}
+              >
+                View Request
+              </Button>
+
+              <Button
+                colorScheme="blue"
+                onClick={() => nav(`/teacher/createAssignment/${courseId}`)}
+                width={{ base: "100%", sm: "auto" }}
+              >
+                Create Assignment
+              </Button>
+            </Stack>
+          </Flex>
+
+          <EditCourseForm
+            setCourseCodeId={setCourseCodeId}
+            courseId={courseId}
+            showUpload={true}
+          />
+        </Box>
       </Box>
       <Footer />
     </Flex>

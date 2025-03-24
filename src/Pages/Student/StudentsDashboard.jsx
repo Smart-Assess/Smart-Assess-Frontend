@@ -35,7 +35,6 @@ const StudentsDashboard = () => {
     const fetchCourses = async () => {
       try {
         const token = localStorage.getItem("accessToken");
-
         const headers = {
           "Content-Type": "application/json",
           Authorization: token ? `Bearer ${token}` : "",
@@ -68,18 +67,25 @@ const StudentsDashboard = () => {
   }, []);
 
   const nav = useNavigate();
+
   return (
     <Flex direction="column" minH="100vh">
       <Header />
       <Box
         flex="1"
-        mx={12}
+        mx={{ base: 4, md: 8, lg: 12 }}
         overflowY="auto"
         paddingBottom="80px"
         marginTop="40px"
       >
-        <Flex justifyContent={"space-between"}>
-          <Heading fontSize="2xl" mb={4}>
+        <Flex
+          justifyContent="space-between"
+          alignItems="center"
+          flexWrap="wrap"
+          gap={4}
+          mb={4}
+        >
+          <Heading fontSize={{ base: "xl", md: "2xl" }}>
             Welcome Back, Ahsan{" "}
             <span role="img" aria-label="wave">
               👋
@@ -89,6 +95,7 @@ const StudentsDashboard = () => {
             Join Course
           </Button>
         </Flex>
+
 
         <Box mt={8}>
           {loading ? (
@@ -100,12 +107,16 @@ const StudentsDashboard = () => {
               {error}
             </Text>
           ) : courses.length > 0 ? (
-            <Grid templateColumns="repeat(3, 1fr)" gap={8} mb={8}>
+            <Grid
+              templateColumns={{ base: "1fr", sm: "repeat(2, 1fr)", lg: "repeat(3, 1fr)" }}
+              gap={8}
+              mb={8}
+            >
               {courses.map((course) => (
                 <GridItem
                   key={course.id}
                   p={6}
-                  minWidth="300px"
+                  minWidth="auto"
                   minHeight="170px"
                   bg="blue.50"
                   borderRadius="15px"
@@ -114,13 +125,13 @@ const StudentsDashboard = () => {
                   position="relative"
                   onClick={() => nav(`/student/courseMaterial/${course.id}`)}
                 >
-                  <Flex justify="space-between">
+                  <Flex justify="space-between" alignItems="center">
                     <Image
                       src={course.icon || Math}
                       padding={1}
                       bg="white"
                       borderRadius="full"
-                      boxSize={14}
+                      boxSize={{ base: "10", md: "14" }}
                       alt={`${course.name} icon`}
                     />
                     <Image
@@ -128,14 +139,14 @@ const StudentsDashboard = () => {
                       padding={1}
                       bg="white"
                       borderRadius="full"
-                      boxSize={14}
+                      boxSize={{ base: "10", md: "14" }}
                       alt="Forward Arrow"
                     />
                   </Flex>
 
                   <Text
                     marginLeft={4}
-                    fontSize="20px"
+                    fontSize={{ base: "md", md: "20px" }}
                     fontWeight="bold"
                     position="absolute"
                     bottom={4}

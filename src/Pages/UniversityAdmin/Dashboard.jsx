@@ -22,7 +22,7 @@ const Dashboard = () => {
 
   const isStudentPage = activeTab === 0;
   const data = isStudentPage ? studentData : teacherData;
-  const headingText = isStudentPage ? "Students" : "Teachers";
+  const headingText = isStudentPage ? "Student" : "Teacher";
   const bodyText = isStudentPage
     ? "View and Manage students here"
     : "View and Manage teachers here";
@@ -58,7 +58,7 @@ const Dashboard = () => {
           path={buttonPath}
           headingText={headingText}
           bodyText={bodyText}
-          buttonText={`Add New ${headingText}`}
+          buttonText={`Add ${headingText}`}
         />
 
         {isStudentPage ? (
