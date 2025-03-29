@@ -278,7 +278,6 @@ const Grading = () => {
                       <Th>Avg Plagiarism Score</Th>
                       <Th>Avg AI Score</Th>
                       <Th>Avg Grammar Score</Th>
-
                       <Th>Feedback</Th>
                     </Tr>
                   </Thead>
@@ -296,9 +295,11 @@ const Grading = () => {
                     ) : (
                       studentsData.map((student, index) => (
                         <Tr key={index}>
-                          <Td display="flex" alignItems="center">
-                            <Avatar src={student.image} size="sm" mr={3} />
-                            {student.name}
+                          <Td>
+                            <Flex alignItems={'center'}>
+                              <Avatar src={student.image} size="sm" mr={3} />
+                              {student.name}
+                            </Flex>
                           </Td>
                           <Td>{student.batch}</Td>
                           <Td>{student.department}</Td>

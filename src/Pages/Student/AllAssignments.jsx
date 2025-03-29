@@ -13,6 +13,8 @@ const AllAssignments = () => {
   const { course_id } = useParams(); // Get course_id from URL
   const nav = useNavigate();
 
+
+  console.log(assignments)
   useEffect(() => {
     const fetchAssignments = async () => {
       try {
