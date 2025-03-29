@@ -122,7 +122,7 @@ const Grading = () => {
       );
 
       if (response.status === 200) {
-        fetchStudentsData()
+        fetchStudentsData();
       }
     } catch (err) {
       console.error("Error submitting evaluation:", err);
@@ -167,6 +167,7 @@ const Grading = () => {
                           label={field.label}
                           type={field.type}
                           placeholder={field.placeholder}
+                          isDisabled={true} // Disable inputs
                         />
                       ))}
                     </SimpleGrid>
@@ -213,7 +214,7 @@ const Grading = () => {
                         name="enable_ai_detection"
                         control={methods.control}
                         render={({ field }) => (
-                          <Checkbox {...field} isDisabled colorScheme="blue">
+                          <Checkbox {...field} colorScheme="blue">
                             AI Detection
                           </Checkbox>
                         )}
@@ -223,7 +224,7 @@ const Grading = () => {
                         name="enable_grammar"
                         control={methods.control}
                         render={({ field }) => (
-                          <Checkbox {...field} isDisabled colorScheme="blue">
+                          <Checkbox {...field} colorScheme="blue">
                             Grammar Check
                           </Checkbox>
                         )}
@@ -246,7 +247,7 @@ const Grading = () => {
                         isLoading={isSubmitting}
                         type="submit"
                         colorScheme="blue"
-                        disabled={studentsData.length === 0 ? true:false}
+                        disabled={studentsData.length === 0 ? true : false}
                       >
                         Evaluate
                       </Button>
@@ -275,6 +276,10 @@ const Grading = () => {
                       <Th>Total Score</Th>
                       <Th>Avg Context Score</Th>
                       <Th>Avg Plagiarism Score</Th>
+                      <Th>Avg AI Score</Th>
+                      <Th>Avg Grammar Score</Th>
+
+                      <Th>Feedback</Th>
                     </Tr>
                   </Thead>
                   <Tbody>
@@ -301,6 +306,30 @@ const Grading = () => {
                           <Td>{student.total_score}</Td>
                           <Td>{student.avg_context_score}</Td>
                           <Td>{student.avg_plagiarism_score}</Td>
+                          <Td>{student.avg_ai_score}</Td>
+                          <Td>{student.avg_grammar_score}</Td>
+                          <Td>
+                            <Box
+                              maxW="200px"
+                              cursor="pointer"
+                              overflow="hidden"
+                              textOverflow="ellipsis"
+                              whiteSpace={
+                                student.showFull ? "normal" : "nowrap"
+                              }
+                              onClick={() =>
+                                setStudentsData((prev) =>
+                                  prev.map((s, i) =>
+                                    i === index
+                                      ? { ...s, showFull: !s.showFull }
+                                      : s
+                                  )
+                                )
+                              }
+                            >
+                              {student.feedback}
+                            </Box>
+                          </Td>
                         </Tr>
                       ))
                     )}

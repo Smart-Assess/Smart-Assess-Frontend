@@ -189,7 +189,7 @@ function EditCourseForm({ showUpload, courseId, setCourseCodeId }) {
                   </Text>
                   <input
                     type="file"
-                    accept="application/pdf"
+                    accept="application/pdf, application/vnd.ms-powerpoint, application/vnd.openxmlformats-officedocument.presentationml.presentation"
                     multiple
                     {...methods.register("pdfs")}
                     onChange={handleFileUpload}
