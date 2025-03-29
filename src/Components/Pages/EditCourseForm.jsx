@@ -26,9 +26,20 @@ function EditCourseForm({ showUpload, courseId, setCourseCodeId }) {
   const [loading, setLoading] = useState(true);
   const [courses, setCourses] = useState({});
   const [uploadedFiles, setUploadedFiles] = useState([]);
-
+  const [existingFiles, setExistingFiles] = useState([]);
+  const [filesToRemove, setFilesToRemove] = useState([]);
   const [error, setError] = useState(null);
   const nav = useNavigate();
+
+  // Helper function to extract filename from URL
+  const getFilenameFromUrl = (url) => {
+    if (!url) return "Unknown file";
+    // Get the part after the last slash and remove any query parameters
+    const fullName = url.split("/").pop().split("?")[0];
+    // If filename has a course ID prefix (e.g., "123_filename.pdf"), remove it
+    const parts = fullName.split("_");
+    return parts.length > 1 ? parts.slice(1).join("_") : fullName;
+  };
 
   const fetchData = async () => {
     try {
@@ -51,8 +62,11 @@ function EditCourseForm({ showUpload, courseId, setCourseCodeId }) {
         methods.setValue("section", courseData.section);
         methods.setValue("pdfs", courseData.pdf_urls || []);
 
-        if (courseData.pdf_urls) {
-          setUploadedFiles(courseData.pdf_urls.map((url) => ({ name: url })));
+        if (courseData.pdf_urls && courseData.pdf_urls.length > 0) {
+          setExistingFiles(courseData.pdf_urls.map(url => ({
+            name: getFilenameFromUrl(url),
+            url: url
+          })));
         }
       }
     } catch (err) {
@@ -78,9 +92,15 @@ function EditCourseForm({ showUpload, courseId, setCourseCodeId }) {
       formData.append("group", data.group || "");
       formData.append("section", data.section);
 
+      // Add new files to upload
       uploadedFiles.forEach((file) => {
-        formData.append("files", file);
+        formData.append("pdfs", file);
       });
+
+      // Add files to remove as a JSON string
+      if (filesToRemove.length > 0) {
+        formData.append("removed_pdfs", JSON.stringify(filesToRemove));
+      }
 
       const config = {
         headers: {
@@ -109,6 +129,14 @@ function EditCourseForm({ showUpload, courseId, setCourseCodeId }) {
     } catch (err) {
       console.error("Error updating course:", err);
       setupdateLaoding(false);
+      toast({
+        title: "Error updating course",
+        description: err.response?.data?.detail || "An error occurred",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "top-right",
+      });
     }
   };
 
@@ -133,22 +161,38 @@ function EditCourseForm({ showUpload, courseId, setCourseCodeId }) {
       setError(null);
     }
 
+    // Only add new files to the uploadedFiles state
     setUploadedFiles((prev) => [...prev, ...validFiles]);
   };
 
-  const handleFileDelete = (index) => {
+  const handleExistingFileDelete = (url) => {
+    // Mark file for removal on the server
+    setFilesToRemove((prev) => [...prev, url]);
+    
+    // Remove from displayed files
+    setExistingFiles((prev) => prev.filter((file) => file.url !== url));
+  };
+
+  const handleNewFileDelete = (index) => {
+    // Remove from uploaded files
     setUploadedFiles((prev) => {
       const updatedFiles = prev.filter((_, i) => i !== index);
-
-      // Update the form state with the updated files
-      setValue(
-        "pdfs",
-        updatedFiles.map((file) => file.name)
-      );
-
       return updatedFiles;
     });
   };
+
+  // Combined files for display
+  const allFiles = [
+    ...existingFiles.map((file) => ({
+      ...file,
+      isExisting: true,
+    })),
+    ...uploadedFiles.map((file) => ({
+      name: file.name,
+      isExisting: false,
+      index: uploadedFiles.indexOf(file),
+    })),
+  ];
 
   return (
     <Flex w="100%" pb={8} flexDirection="column">
@@ -191,7 +235,6 @@ function EditCourseForm({ showUpload, courseId, setCourseCodeId }) {
                     type="file"
                     accept="application/pdf, application/vnd.ms-powerpoint, application/vnd.openxmlformats-officedocument.presentationml.presentation"
                     multiple
-                    {...methods.register("pdfs")}
                     onChange={handleFileUpload}
                     style={{
                       position: "absolute",
@@ -213,11 +256,11 @@ function EditCourseForm({ showUpload, courseId, setCourseCodeId }) {
                 )}
 
                 <Box w="100%">
-                  {uploadedFiles.length > 0 && (
+                  {allFiles.length > 0 && (
                     <VStack align="start" spacing={2} w="100%">
-                      {uploadedFiles.map((file, index) => (
+                      {allFiles.map((file, idx) => (
                         <HStack
-                          key={index}
+                          key={idx}
                           w="100%"
                           justify="space-between"
                           bg="gray.100"
@@ -230,7 +273,11 @@ function EditCourseForm({ showUpload, courseId, setCourseCodeId }) {
                           <Button
                             size="sm"
                             colorScheme="red"
-                            onClick={() => handleFileDelete(index)}
+                            onClick={() => 
+                              file.isExisting 
+                                ? handleExistingFileDelete(file.url) 
+                                : handleNewFileDelete(file.index)
+                            }
                           >
                             <Icon as={FiTrash} />
                           </Button>

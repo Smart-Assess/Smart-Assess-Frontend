@@ -68,10 +68,42 @@ const EditAssignment = () => {
     setNewFile(event.target.files[0]);
   };
 
-  const handleRemoveFile = () => {
-    setUploadFileName(null);
-    setNewFile(null);
+  const handleRemoveFile = async () => {
+    try {
+      const token = localStorage.getItem("accessToken");
+  
+      await axios.put(
+        `http://127.0.0.1:8000/teacher/course/${courseId}/assignment/${assignmentId}`,
+        { question_pdf: null }, // Send null to remove the file
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+  
+      setUploadFileName(null);
+      setNewFile(null);
+  
+      toast({
+        title: "File removed successfully!",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+        position: "top-right",
+      });
+    } catch (err) {
+      console.error("Error removing file:", err);
+      toast({
+        title: "Failed to remove file",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+        position: "top-right",
+      });
+    }
   };
+  
 
   const onSubmit = async (data) => {
     try {
@@ -82,25 +114,39 @@ const EditAssignment = () => {
       const formattedDateTime = `${deadline} ${time}`;
       const updatedData = { ...data, deadline: formattedDateTime };
       delete updatedData.time;
-
+  
       formData.append("name", data.name);
       formData.append("description", data.description);
       formData.append("deadline", updatedData.deadline || "");
       formData.append("grade", String(data.grade));
+  
+      if (newFile) {
+        formData.append("question_pdf", newFile);
+      } else if (!uploadFileName) {
+        // If no file is selected and previous file is deleted, send null
+        formData.append("question_pdf", "");
+      }
+  
       const config = {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
         },
       };
-
+  
       const response = await axios.put(
         `http://127.0.0.1:8000/teacher/course/${courseId}/assignment/${assignmentId}`,
         formData,
         config
       );
-
+  
       if (response.status === 200 || response.status === 201) {
+        if (response.data.assignment.question_pdf_url) {
+          setUploadFileName(response.data.assignment.question_pdf_url);
+        } else {
+          setUploadFileName(null);
+        }
+  
         toast({
           title: "Assignment updated successfully!",
           status: "success",
@@ -108,6 +154,7 @@ const EditAssignment = () => {
           isClosable: true,
           position: "top-right",
         });
+  
         navigate(`/teacher/viewAssignments/${courseId}`);
       }
     } catch (err) {
@@ -116,8 +163,6 @@ const EditAssignment = () => {
       setIsSubmitting(false);
     }
   };
-
-
   
 
   return (
