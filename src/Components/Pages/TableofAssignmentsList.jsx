@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Table,
   Thead,
@@ -11,13 +11,21 @@ import {
   Badge,
   Button,
   Icon,
+  IconButton,
   Spinner,
   Box,
+  useToast,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import {  FiEye, FiCheckCircle } from "react-icons/fi";
+import { FiEye, FiCheckCircle } from "react-icons/fi";
+import { EditIcon, DeleteIcon } from "@chakra-ui/icons";
 
-const TableofAssignmentsList = ({ assignments, courseId, loading }) => {
+const TableofAssignmentsList = ({
+  assignments,
+  courseId,
+  loading,
+  setAssignments,
+}) => {
   const nav = useNavigate();
 
   const getBadgeColor = (deadline) => {
@@ -26,8 +34,53 @@ const TableofAssignmentsList = ({ assignments, courseId, loading }) => {
 
     if (dueDate < today) return "red";
     const daysLeft = Math.ceil((dueDate - today) / (1000 * 60 * 60 * 24));
-    if (daysLeft <= 3) return "orange"; // Urgent
-    return "green"; // Safe
+    if (daysLeft <= 3) return "orange";
+    return "green";
+  };
+
+  const toast = useToast();
+
+  const [deleting, setDeleting] = useState({});
+
+  const handleDelete = async (courseId, assignmentId) => {
+    try {
+      setDeleting((prev) => ({ ...prev, [assignmentId]: true }));
+
+      const token = localStorage.getItem("accessToken");
+      const response = await fetch(
+        `http://127.0.0.1:8000/teacher/course/${courseId}/assignment/${assignmentId}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: token ? `Bearer ${token}` : "",
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Error deleting assignment");
+      }
+
+      toast({
+        title: "Assignment deleted successfully.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+
+      setAssignments((prev) => prev.filter((ass) => ass.id !== assignmentId));
+    } catch (err) {
+      console.error("Delete error:", err.message);
+      toast({
+        title: "Failed to delete assignment.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    } finally {
+      setDeleting((prev) => ({ ...prev, [assignmentId]: false }));
+    }
   };
 
   return (
@@ -53,6 +106,7 @@ const TableofAssignmentsList = ({ assignments, courseId, loading }) => {
                 <Th>Description</Th>
                 <Th>Score</Th>
                 <Th></Th>
+                <Th>ACTIONS</Th>
               </Tr>
             </Thead>
             <Tbody>
@@ -66,35 +120,57 @@ const TableofAssignmentsList = ({ assignments, courseId, loading }) => {
                   </Td>
                   <Td>{assignment.description}</Td>
                   <Td>{assignment.grade}</Td>
+                  <Td></Td>
+
                   <Td>
-                    <Box display="flex" justifyContent="flex-end" mt="6" pr="4">
-                      <Button
-                        onClick={() =>
-                          nav(
-                            `/teacher/viewStudentsSubmissions/${courseId}/${assignment.id}`
-                          )
-                        }
-                        variant="outline"
-                        colorScheme="blue"
-                        mr="4"
-                        leftIcon={<Icon as={FiEye} />}
-                      >
-                        View Submissions
-                      </Button>
-                      <Button
-                        isLoading={loading}
-                        type="submit"
-                        colorScheme="blue"
-                        onClick={() =>
-                          nav(
-                            `/teacher/student/grading/${courseId}/${assignment.id}`
-                          )
-                        }
-                        leftIcon={<Icon as={FiCheckCircle} />}
-                      >
-                        Grading
-                      </Button>
-                    </Box>
+                    <Button
+                      onClick={() =>
+                        nav(
+                          `/teacher/viewStudentsSubmissions/${courseId}/${assignment.id}`
+                        )
+                      }
+                      variant="outline"
+                      colorScheme="blue"
+                      mr="4"
+                      leftIcon={<Icon as={FiEye} />}
+                    >
+                      View Submissions
+                    </Button>
+                    <Button
+                      isLoading={loading}
+                      type="submit"
+                      colorScheme="blue"
+                      mr="4"
+                      onClick={() =>
+                        nav(
+                          `/teacher/student/grading/${courseId}/${assignment.id}`
+                        )
+                      }
+                      leftIcon={<Icon as={FiCheckCircle} />}
+                    >
+                      Grading
+                    </Button>
+
+                    <IconButton
+                      aria-label="Edit"
+                      icon={<EditIcon />}
+                      size="sm"
+                      colorScheme="blue"
+                      onClick={() =>
+                        nav(
+                          `/teacher/editAssignments/${courseId}/${assignment.id}`
+                        )
+                      }
+                    />
+                    <IconButton
+                      aria-label="Delete"
+                      ml={2}
+                      icon={<DeleteIcon />}
+                      size="sm"
+                      isLoading={deleting[assignment.id] || false}
+                      onClick={() => handleDelete(courseId, assignment.id)}
+                      colorScheme="blue"
+                    />
                   </Td>
                 </Tr>
               ))}

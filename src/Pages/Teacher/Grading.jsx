@@ -246,6 +246,7 @@ const Grading = () => {
                         isLoading={isSubmitting}
                         type="submit"
                         colorScheme="blue"
+                        disabled={studentsData.length === 0 ? true:false}
                       >
                         Evaluate
                       </Button>

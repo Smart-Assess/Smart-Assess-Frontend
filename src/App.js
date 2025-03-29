@@ -26,6 +26,7 @@ import ViewSubmissions from "./Pages/Teacher/ViewSubmissions";
 import Grading from "./Pages/Teacher/Grading";
 import CourseMaterial from "./Pages/Student/CourseMaterial";
 import Reesults from "./Pages/Student/Reesults";
+import EditAssignment from "./Pages/Teacher/EditAssignment";
 
 const App = () => {
   const navigate = useNavigate();
@@ -112,6 +113,11 @@ const App = () => {
       <Route
         path="/teacher/viewStudentsSubmissions/:courseId/:assignmentId"
         element={<ViewSubmissions />}
+      />
+
+      <Route
+        path="/teacher/editAssignments/:courseId/:assignmentId"
+        element={<EditAssignment />}
       />
       <Route
         path="/teacher/student/grading/:courseId/:assignmentId"

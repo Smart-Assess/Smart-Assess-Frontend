@@ -9,8 +9,10 @@ const Header = ({ role }) => {
   const navigate = useNavigate();
 
   const logout = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem("accessToken");
     localStorage.removeItem("role");
+    localStorage.removeItem("name");
+
     navigate("/login");
   };
 

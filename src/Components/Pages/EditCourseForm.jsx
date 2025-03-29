@@ -12,6 +12,7 @@ import {
   Alert,
   AlertIcon,
   Spinner,
+  useToast,
 } from "@chakra-ui/react";
 import { FiUpload, FiTrash } from "react-icons/fi";
 import FormInput from "./../UI/FormInput";
@@ -21,9 +22,11 @@ import { addCourse } from "../../data/UniversityData";
 
 function EditCourseForm({ showUpload, courseId, setCourseCodeId }) {
   const methods = useForm();
+  const { setValue } = methods;
   const [loading, setLoading] = useState(true);
   const [courses, setCourses] = useState({});
   const [uploadedFiles, setUploadedFiles] = useState([]);
+
   const [error, setError] = useState(null);
   const nav = useNavigate();
 
@@ -62,22 +65,50 @@ function EditCourseForm({ showUpload, courseId, setCourseCodeId }) {
     fetchData();
   }, []);
 
+  const toast = useToast();
+  const [updateLoading, setupdateLaoding] = useState(false);
   const onSubmit = async (data) => {
     try {
+      setupdateLaoding(true);
       const token = localStorage.getItem("accessToken");
-      const config = { headers: { Authorization: `Bearer ${token}` } };
+      const formData = new FormData();
+
+      formData.append("name", data.name);
+      formData.append("batch", data.batch);
+      formData.append("group", data.group || "");
+      formData.append("section", data.section);
+
+      uploadedFiles.forEach((file) => {
+        formData.append("files", file);
+      });
+
+      const config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      };
 
       const response = await axios.put(
         `http://127.0.0.1:8000/teacher/course/${courseId}`,
-        data,
+        formData,
         config
       );
 
-      if (response.status === 200) {
+      if (response.status === 200 || response.status === 201) {
+        setupdateLaoding(false);
+        toast({
+          title: "Course updated successfully!",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+          position: "top-right",
+        });
         nav("/teacher/Dashboard");
       }
     } catch (err) {
       console.error("Error updating course:", err);
+      setupdateLaoding(false);
     }
   };
 
@@ -106,11 +137,17 @@ function EditCourseForm({ showUpload, courseId, setCourseCodeId }) {
   };
 
   const handleFileDelete = (index) => {
-    setUploadedFiles((prev) => prev.filter((_, i) => i !== index));
-    methods.setValue(
-      "pdfs",
-      uploadedFiles.filter((_, i) => i !== index)
-    );
+    setUploadedFiles((prev) => {
+      const updatedFiles = prev.filter((_, i) => i !== index);
+
+      // Update the form state with the updated files
+      setValue(
+        "pdfs",
+        updatedFiles.map((file) => file.name)
+      );
+
+      return updatedFiles;
+    });
   };
 
   return (
@@ -239,7 +276,7 @@ function EditCourseForm({ showUpload, courseId, setCourseCodeId }) {
                       Cancel
                     </Button>
                     <Button
-                      isLoading={loading}
+                      isLoading={updateLoading}
                       type="submit"
                       colorScheme="blue"
                       size={{ base: "sm", md: "md" }}

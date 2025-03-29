@@ -68,6 +68,7 @@ const ViewAssignments = () => {
           loading={loading}
           courseId={courseId}
           assignments={assignments}
+          setAssignments={setAssignments}
         />
       </Box>
       <Footer />

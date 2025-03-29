@@ -17,9 +17,11 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
+  IconButton,
   Spinner,
+  useToast,
 } from "@chakra-ui/react";
-import { ChevronDownIcon } from "@chakra-ui/icons";
+import { ChevronDownIcon, EditIcon, DeleteIcon } from "@chakra-ui/icons";
 import Header from "../../Components/Pages/Header";
 import Footer from "../../Components/Pages/Footer";
 import { useNavigate } from "react-router-dom";
@@ -32,6 +34,9 @@ const Dashboard = () => {
   const [courses, setCourses] = useState([]);
   const [selectedBatch, setSelectedBatch] = useState("");
   const [selectedSection, setSelectedSection] = useState("");
+  const [deleting, setDeleting] = useState(false);
+  const toast = useToast();
+  const name = localStorage.getItem("name");
 
   const fetchData = async () => {
     try {
@@ -67,6 +72,46 @@ const Dashboard = () => {
       (selectedBatch === "" || course.batch === selectedBatch) &&
       (selectedSection === "" || course.section === selectedSection)
   );
+
+  const handleDelete = async (course_id) => {
+    try {
+      setDeleting((prev) => ({ ...prev, [course_id]: true }));
+      const token = localStorage.getItem("accessToken");
+      const response = await fetch(
+        `http://127.0.0.1:8000/teacher/course/${course_id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: token ? `Bearer ${token}` : "",
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Error deleting course");
+      }
+
+      toast({
+        title: "Course deleted successfully.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+
+      setCourses((prev) => prev.filter((course) => course.id !== course_id));
+    } catch (err) {
+      console.error("Delete error:", err.message);
+      toast({
+        title: "Failed to delete course.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    } finally {
+      setDeleting((prev) => ({ ...prev, [course_id]: false })); // Reset only the clicked university
+    }
+  };
 
   return (
     <Flex direction="column" minH="100vh">
@@ -137,7 +182,7 @@ const Dashboard = () => {
             gap={4}
           >
             <Box>
-              <Heading fontSize="2xl">Welcome Back Oliver! 👋</Heading>
+              <Heading fontSize="2xl">Welcome Back {name}! 👋</Heading>
               <Text mt={1} color="gray.600">
                 Track and Manage all your activities in one place
               </Text>
@@ -147,7 +192,7 @@ const Dashboard = () => {
               onClick={() => nav("/teacher/addCourse")}
               alignSelf={{ base: "stretch", md: "auto" }}
             >
-              + Add New Course
+              Add New Course
             </Button>
           </Flex>
 
@@ -167,6 +212,7 @@ const Dashboard = () => {
                 <Tr>
                   <Th>Course Name</Th>
                   <Th>Department</Th>
+                  <Th>ACTIONS</Th>
                 </Tr>
               </Thead>
               <Tbody>
@@ -185,10 +231,29 @@ const Dashboard = () => {
                   filteredCourses.map((course) => (
                     <Tr
                       key={course.id}
-                      onClick={() => nav(`/teacher/editCourse/${course.id}`)}
                     >
                       <Td>{course.name}</Td>
                       <Td>{course.group}</Td>
+                      <Td>
+                        <IconButton
+                          aria-label="Edit"
+                          icon={<EditIcon />}
+                          size="sm"
+                          colorScheme="blue"
+                          onClick={() =>
+                            nav(`/teacher/editCourse/${course.id}`)
+                          }
+                        />
+                        <IconButton
+                          aria-label="Delete"
+                          ml={2}
+                          icon={<DeleteIcon />}
+                          size="sm"
+                          isLoading={deleting[course.id] || false}
+                          onClick={() => handleDelete(course.id)}
+                          colorScheme="blue"
+                        />
+                      </Td>
                     </Tr>
                   ))
                 ) : (

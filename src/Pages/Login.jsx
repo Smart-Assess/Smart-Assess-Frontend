@@ -60,6 +60,7 @@ const Login = () => {
           navigate("/university/student/Dashboard");
         } else if (result.user.role === "teacher") {
           navigate("/teacher/Dashboard");
+          localStorage.setItem("name", result?.user?.name);
         }
       } else {
         if (result.detail) {
@@ -90,7 +91,7 @@ const Login = () => {
         justifyContent={{ base: "center", md: "flex-start" }}
         flexDirection={{ base: "column", md: "row" }}
       >
-        <Image src={logo}/>
+        <Image src={logo} />
         <Text fontSize={{ base: "20px", md: "24px" }} textAlign="center">
           <span style={{ color: "#0D64C1" }}>Smart</span>{" "}
           <span style={{ color: "#B2BBC6" }}>Assess</span>

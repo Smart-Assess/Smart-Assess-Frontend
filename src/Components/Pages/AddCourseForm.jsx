@@ -20,6 +20,8 @@ import { addCourse } from "../../data/UniversityData";
 
 function AddCourseForm({ showUpload }) {
   const methods = useForm();
+  const { setValue } = methods;
+
   const nav = useNavigate();
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [error, setError] = useState(null);
@@ -38,7 +40,7 @@ function AddCourseForm({ showUpload }) {
       formData.append("status", data.status);
 
       uploadedFiles.forEach((file) => {
-        formData.append("pdfs", file);
+        formData.append("files", file);
       });
 
       const config = {
@@ -89,7 +91,13 @@ function AddCourseForm({ showUpload }) {
   };
 
   const handleFileDelete = (index) => {
-    setUploadedFiles((prev) => prev.filter((_, i) => i !== index));
+    setUploadedFiles((prev) => {
+      const updatedFiles = prev.filter((_, i) => i !== index);
+
+      setValue("pdfs", updatedFiles);
+
+      return updatedFiles;
+    });
   };
 
   return (
