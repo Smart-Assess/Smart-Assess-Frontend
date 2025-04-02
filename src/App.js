@@ -73,7 +73,7 @@ const App = () => {
       />
       {/* <Route path="/student/studentProfile" element={<StudentProfile />} /> */}
       <Route
-        path="/student/uploadAssignment/:assignment_id"
+        path="/student/uploadAssignment/:assignment_id/:course_id"
         element={<UploadAssignment />}
       />
       <Route

@@ -60,8 +60,9 @@ const Login = () => {
           navigate("/university/student/Dashboard");
         } else if (result.user.role === "teacher") {
           navigate("/teacher/Dashboard");
-          localStorage.setItem("name", result?.user?.name);
         }
+        localStorage.setItem("name", result?.user?.name);
+
       } else {
         if (result.detail) {
           setError("email", {

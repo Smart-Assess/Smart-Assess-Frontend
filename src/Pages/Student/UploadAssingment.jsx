@@ -8,11 +8,13 @@ import {
   Input,
   Spinner,
   Link,
+  IconButton,
   Badge,
 } from "@chakra-ui/react";
 import Header from "../../Components/Pages/Header";
 import Footer from "../../Components/Pages/Footer";
 import { useNavigate, useParams } from "react-router-dom";
+import { ArrowBackIcon } from "@chakra-ui/icons";
 
 const UploadAssignments = () => {
   const [files, setFiles] = useState([]);
@@ -20,7 +22,7 @@ const UploadAssignments = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const fileInputRef = useRef(null);
-  const { assignment_id } = useParams();
+  const { assignment_id, course_id } = useParams();
   const [postLoading, setPostLoading] = useState(false);
 
   const extractFileName = (url) => {
@@ -114,7 +116,9 @@ const UploadAssignments = () => {
       setFiles([]);
       setError("");
     } catch (err) {
-      setError(err.message || "An error occurred while submitting the assignment.");
+      setError(
+        err.message || "An error occurred while submitting the assignment."
+      );
     } finally {
       setPostLoading(false);
     }
@@ -130,45 +134,90 @@ const UploadAssignments = () => {
   return (
     <Flex direction="column" minH="100vh">
       <Header />
-      <Box flex="1" px={{ base: 4, md: 8, lg: 12 }} py={6}>
+      <Box px={{ base: 6, lg: 12 }} py={6}>
+        <Flex alignItems={"center"} justifyContent={"space-between"}>
+          <IconButton
+            aria-label="Go Back"
+            icon={<ArrowBackIcon />}
+            onClick={() => nav(`/student/allAssignments/${course_id}`)}
+            mr={4}
+          />
+          <Box
+            display={"flex"}
+            borderRadius={"6px"}
+            px={2}
+            py={1}
+            bg="#3182CE"
+            color="white"
+          >
+            <Text fontSize="md">Points</Text>
+            {assignment?.submission?.status === "submitted" ? (
+              <Text ml={2} color="white">
+                {assignment.grade}
+              </Text>
+            ) : (
+              <Text ml={2} color="white">
+                Not Graded Yet
+              </Text>
+            )}
+          </Box>
+        </Flex>
+
         {/* Heading & Actions */}
         <Flex
-          direction={{ base: "column", md: "row" }}
+          direction={{ base: "column-reverse", md: "row" }}
           alignItems={{ base: "flex-start", md: "center" }}
           justifyContent="space-between"
           gap={4}
         >
-          <Box>
+          <Box mt={2} display="flex" flexDirection={"column"}>
             <Heading
               color="#3D4C5E"
               fontSize={{ base: "24px", md: "28px", lg: "32px" }}
               fontWeight="500"
             >
-              {assignment?.name}
+              {assignment?.name?.charAt(0).toUpperCase() +
+                assignment?.name?.slice(1)}
             </Heading>
-            <Badge bg="gray.500" color="white" mt={2} fontSize="sm">
+            <Badge
+              borderRadius={"6px"}
+              px={2}
+              py={1}
+              bg="#3182CE"
+              color="white"
+              mt={2}
+              fontSize="sm"
+            >
               Due {new Date(assignment?.deadline).toLocaleString()}
             </Badge>
+            {assignment?.submission?.status === "submitted" && (
+              <Badge
+                borderRadius={"6px"}
+                px={2}
+                py={1}
+                bg="#3182CE"
+                color="white"
+                mt={2}
+                fontSize="sm"
+              >
+                Submitted at{" "}
+                {new Date(assignment.submission.submitted_at).toLocaleString()}
+              </Badge>
+            )}
           </Box>
 
-          <Flex direction={{ base: "column", sm: "row" }} gap={4} alignItems="center">
-            <Box textAlign={{ base: "left", sm: "center" }}>
-              <Text fontSize="md">Points</Text>
-              {assignment?.submission?.status === "submitted" ? (
-                <Text color="#546881">{assignment.grade}</Text>
-              ) : (
-                <Text color="#546881">Not Graded Yet</Text>
-              )}
-            </Box>
-
+          <Box w={{base:'100%',lg:'auto'}} flex={{base:1,lg:"0"}} mt={{base:4,lg:0}} display={"flex"} alignItems={'flex-end'} flexDirection={"row"}>
             <Button
               isLoading={postLoading}
               colorScheme="blue"
+              mr={2}
               onClick={handleSubmitAssignment}
               isDisabled={assignment?.submission?.status === "submitted"}
               width={{ base: "100%", sm: "auto" }}
             >
-              {assignment?.submission?.status === "submitted" ? "Handed In" : "Hands In"}
+              {assignment?.submission?.status === "submitted"
+                ? "Handed In"
+                : "Hands In"}
             </Button>
 
             <Button
@@ -178,19 +227,14 @@ const UploadAssignments = () => {
             >
               Results
             </Button>
-          </Flex>
+          </Box>
         </Flex>
 
         {/* Submission Status */}
-        {assignment?.submission?.status === "submitted" && (
-          <Badge bg="gray.500" color="white" mt={4} fontSize="sm">
-            Submitted at {new Date(assignment.submission.submitted_at).toLocaleString()}
-          </Badge>
-        )}
 
         {/* Description & Upload Section */}
         <Box mt={6}>
-          <Flex direction="column" gap={4}>
+          <Flex direction="column" gap={{base:2,lg:4}}>
             <Text fontSize="md">{assignment?.description}</Text>
 
             {assignment?.question_pdf_url && (

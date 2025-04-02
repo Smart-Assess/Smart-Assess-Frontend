@@ -24,6 +24,8 @@ const StudentsDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  const name = localStorage.getItem("name");
+
   const handleOpenModal = () => {
     setCourseCode("");
     setModalOpen(true);
@@ -86,7 +88,7 @@ const StudentsDashboard = () => {
           mb={4}
         >
           <Heading fontSize={{ base: "xl", md: "2xl" }}>
-            Welcome Back, Ahsan{" "}
+            Welcome Back {name}{" "}
             <span role="img" aria-label="wave">
               👋
             </span>
@@ -95,7 +97,6 @@ const StudentsDashboard = () => {
             Join Course
           </Button>
         </Flex>
-
 
         <Box mt={8}>
           {loading ? (
@@ -108,7 +109,11 @@ const StudentsDashboard = () => {
             </Text>
           ) : courses.length > 0 ? (
             <Grid
-              templateColumns={{ base: "1fr", sm: "repeat(2, 1fr)", lg: "repeat(3, 1fr)" }}
+              templateColumns={{
+                base: "1fr",
+                sm: "repeat(2, 1fr)",
+                lg: "repeat(3, 1fr)",
+              }}
               gap={8}
               mb={8}
             >
