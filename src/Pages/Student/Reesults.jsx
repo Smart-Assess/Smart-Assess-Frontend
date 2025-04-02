@@ -7,24 +7,27 @@ import {
   Thead,
   Tbody,
   Tr,
+  IconButton,
   Th,
   Td,
   TableContainer,
   Spinner,
-  Text,
   Badge,
+  Tooltip,
 } from "@chakra-ui/react";
+import { ArrowBackIcon } from "@chakra-ui/icons";
+
 import Header from "../../Components/Pages/Header";
 import Footer from "../../Components/Pages/Footer";
 import HeadingButtonSection from "../../Components/Pages/HeadingButtonSection";
-import TableofAssignmentsList from "../../Components/Pages/TableofAssignmentsList";
 import axios from "axios";
-import { useParams } from "react-router-dom";
-import { studentData } from "../../data/studentsData";
+import { useNavigate, useParams } from "react-router-dom";
 
 const Reesults = () => {
   const [resultData, setResultData] = useState([]);
-  const { assignment_id } = useParams();
+  const { assignment_id,course_id } = useParams();
+
+  console.log(resultData);
 
   const [loading, setLoading] = useState(true);
   const fetchData = async () => {
@@ -36,8 +39,6 @@ const Reesults = () => {
         `http://127.0.0.1:8000/student/assignment/${assignment_id}/result`,
         config
       );
-
-      console.log(response);
 
       if (response.status === 200) {
         setResultData(response.data.result);
@@ -59,11 +60,23 @@ const Reesults = () => {
     setExpandedIndex(expandedIndex === index ? null : index);
   };
 
+  const nav = useNavigate();
+
   return (
     <Flex direction="column" minH="100vh">
       <Header />
       <Box flex="1" mx={12} overflowY="auto" paddingBottom="80px">
-        <Flex alignItems={"center"} justifyContent={"space-between"}>
+        <Flex
+          flexWrap={"wrap"}
+          alignItems={"center"}
+          justifyContent={"space-between"}
+        >
+          <IconButton
+            aria-label="Go Back"
+            icon={<ArrowBackIcon />}
+            onClick={() => nav(`/student/uploadAssignment/${assignment_id}/${course_id}`)}
+            mr={4}
+          />
           <Box>
             <HeadingButtonSection
               path="Results"
@@ -71,11 +84,38 @@ const Reesults = () => {
               showButton={false}
             />
           </Box>
+        </Flex>
 
-          <Box mt={"12px"}>
-            <Badge color="white" bg="blue.500">
-              Total Score {resultData.total_score}
-            </Badge>
+        <Flex mb={6}>
+          <Box flexWrap={"wrap"} display={"flex"} gap={2}>
+            <Box>
+              <Badge color="white" bg="blue.500">
+                Total Score {resultData.total_score}
+              </Badge>
+            </Box>
+
+            <Box>
+              <Badge color="white" bg="blue.500">
+                Avg AI Detection {resultData?.scores?.ai_detection}
+              </Badge>
+            </Box>
+            <Box>
+              <Badge color="white" bg="blue.500">
+                Avg Grammar Detection {resultData?.scores?.grammar}
+              </Badge>
+            </Box>
+            <Box>
+              <Badge color="white" bg="blue.500">
+                Avg Plagirism Detection {resultData?.scores?.plagirism}
+              </Badge>
+            </Box>
+            <Box>
+              <Tooltip label={resultData?.feedback} hasArrow>
+                <Badge color="white" bg="blue.500" cursor="pointer">
+                  Overall Feedback
+                </Badge>
+              </Tooltip>
+            </Box>
           </Box>
         </Flex>
 
@@ -106,8 +146,8 @@ const Reesults = () => {
                     <Th>Context Score</Th>
                     <Th>Grammar Score</Th>
                     <Th>Plagirism Score</Th>
-
-                    <Th></Th>
+                    <Th>AI Detection</Th>
+                    <Th>Feedback</Th>
                   </Tr>
                 </Thead>
                 <Tbody>
@@ -140,6 +180,29 @@ const Reesults = () => {
                       <Td>{assignment.context_score}</Td>
                       <Td>{assignment.grammar_score}</Td>
                       <Td>{assignment.plagiarism_score}</Td>
+                      <Td>{assignment.ai_score}</Td>
+
+                      <Td>
+                        <Box
+                          maxW="200px"
+                          cursor="pointer"
+                          overflow="hidden"
+                          textOverflow="ellipsis"
+                          whiteSpace={assignment.showFull ? "normal" : "nowrap"}
+                          onClick={() =>
+                            setResultData((prev) => ({
+                              ...prev,
+                              questions: prev.questions.map((q, i) =>
+                                i === index
+                                  ? { ...q, showFull: !q.showFull }
+                                  : q
+                              ),
+                            }))
+                          }
+                        >
+                          {assignment.feedback}
+                        </Box>
+                      </Td>
                     </Tr>
                   ))}
                 </Tbody>

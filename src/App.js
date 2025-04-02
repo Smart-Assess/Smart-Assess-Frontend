@@ -81,7 +81,7 @@ const App = () => {
         element={<CourseMaterial />}
       />
 
-      <Route path="/student/results/:assignment_id" element={<Reesults />} />
+      <Route path="/student/results/:assignment_id/:course_id" element={<Reesults />} />
 
       {/* UniversityAdmin */}
       <Route path="/university/addStudent" element={<AddStudent />} />

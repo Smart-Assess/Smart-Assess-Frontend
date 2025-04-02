@@ -19,6 +19,7 @@ import { ArrowBackIcon } from "@chakra-ui/icons";
 const UploadAssignments = () => {
   const [files, setFiles] = useState([]);
   const [assignment, setAssignment] = useState(null);
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const fileInputRef = useRef(null);
@@ -31,6 +32,8 @@ const UploadAssignments = () => {
   };
 
   const nav = useNavigate();
+
+  console.log(assignment, "assignment");
 
   useEffect(() => {
     const fetchAssignmentDetails = async () => {
@@ -181,10 +184,8 @@ const UploadAssignments = () => {
             </Heading>
             <Badge
               borderRadius={"6px"}
-              px={2}
-              py={1}
-              bg="#3182CE"
-              color="white"
+              color="gray"
+              bg="transparent"
               mt={2}
               fontSize="sm"
             >
@@ -192,11 +193,9 @@ const UploadAssignments = () => {
             </Badge>
             {assignment?.submission?.status === "submitted" && (
               <Badge
+                color="gray"
+                bg="transparent"
                 borderRadius={"6px"}
-                px={2}
-                py={1}
-                bg="#3182CE"
-                color="white"
                 mt={2}
                 fontSize="sm"
               >
@@ -206,7 +205,14 @@ const UploadAssignments = () => {
             )}
           </Box>
 
-          <Box w={{base:'100%',lg:'auto'}} flex={{base:1,lg:"0"}} mt={{base:4,lg:0}} display={"flex"} alignItems={'flex-end'} flexDirection={"row"}>
+          <Box
+            w={{ base: "100%", lg: "auto" }}
+            flex={{ base: 1, lg: "0" }}
+            mt={{ base: 4, lg: 0 }}
+            display={"flex"}
+            alignItems={"flex-end"}
+            flexDirection={"row"}
+          >
             <Button
               isLoading={postLoading}
               colorScheme="blue"
@@ -222,7 +228,8 @@ const UploadAssignments = () => {
 
             <Button
               colorScheme="blue"
-              onClick={() => nav(`/student/results/${assignment_id}`)}
+              disabled={assignment.submission.evaluation_done ? false : true}
+              onClick={() => nav(`/student/results/${assignment_id}/${course_id}`)}
               width={{ base: "100%", sm: "auto" }}
             >
               Results
@@ -234,11 +241,12 @@ const UploadAssignments = () => {
 
         {/* Description & Upload Section */}
         <Box mt={6}>
-          <Flex direction="column" gap={{base:2,lg:4}}>
+          <Flex direction="column" gap={{ base: 2, lg: 4 }}>
             <Text fontSize="md">{assignment?.description}</Text>
 
             {assignment?.question_pdf_url && (
               <Box
+                w={{ base: "100%", lg: "25%" }}
                 border="1px solid"
                 borderColor="blue.500"
                 borderRadius="8px"
@@ -258,7 +266,11 @@ const UploadAssignments = () => {
 
             <Text fontSize="md">My work:</Text>
 
-            <Button colorScheme="blue" onClick={triggerFileInput}>
+            <Button
+              w={{ base: "100%", lg: "25%" }}
+              colorScheme="blue"
+              onClick={triggerFileInput}
+            >
               Upload Documents
             </Button>
             <Input
@@ -276,7 +288,12 @@ const UploadAssignments = () => {
                 <Text fontSize="md" mb={2}>
                   Submitted File:
                 </Text>
-                <Box border="1px solid #AACCFF" p={2} borderRadius="8px">
+                <Box
+                  w={{ base: "100%", lg: "25%" }}
+                  border="1px solid #AACCFF"
+                  p={2}
+                  borderRadius="8px"
+                >
                   <Link
                     href={assignment.submission.pdf_url}
                     color="blue.500"
