@@ -19,6 +19,10 @@ import { useForm, FormProvider } from "react-hook-form";
 import FormInput from "../../Components/UI/FormInput";
 import { createAssignment } from "../../data/UniversityData";
 import AssignmentsList from "../Student/AssignmentsList";
+import { ChevronDownIcon, EditIcon, DeleteIcon } from "@chakra-ui/icons";
+import Header from "../../Components/Pages/Header";
+import Footer from "../../Components/Pages/Footer";
+
 
 const EditAssignment = () => {
   const { courseId, assignmentId } = useParams();
@@ -167,6 +171,7 @@ const EditAssignment = () => {
 
   return (
     <Flex direction="column" minH="100vh">
+      <Header />
       <Box flex="1" mx={12} overflowY="auto" paddingBottom="80px">
         {isAssignmentLoading ? (
           <Flex height="300px" justifyContent="center" alignItems="center">
@@ -259,6 +264,7 @@ const EditAssignment = () => {
           </>
         )}
       </Box>
+      <Footer mt="auto" />
     </Flex>
   );
 };

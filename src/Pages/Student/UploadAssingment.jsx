@@ -10,6 +10,13 @@ import {
   Link,
   IconButton,
   Badge,
+  useToast,
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay,
 } from "@chakra-ui/react";
 import Header from "../../Components/Pages/Header";
 import Footer from "../../Components/Pages/Footer";
@@ -19,21 +26,31 @@ import { ArrowBackIcon } from "@chakra-ui/icons";
 const UploadAssignments = () => {
   const [files, setFiles] = useState([]);
   const [assignment, setAssignment] = useState(null);
-
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const fileInputRef = useRef(null);
   const { assignment_id, course_id } = useParams();
   const [postLoading, setPostLoading] = useState(false);
+  const cancelRef = useRef();
+  const toast = useToast();
 
   const extractFileName = (url) => {
+    if (!url) return "";
+    // Extract the actual filename from the UUID-based filename
     const urlParts = url.split("/");
-    return urlParts[urlParts.length - 1];
+    const fullFileName = urlParts[urlParts.length - 1];
+    
+    // Try to extract the original filename if it's in the format of UUID_originalName.pdf
+    const nameParts = fullFileName.split("_");
+    if (nameParts.length > 2) {
+      // Return just the last part which might be closer to the original name
+      const dateTimePart = nameParts[nameParts.length - 1];
+      return dateTimePart;
+    }
+    return fullFileName;
   };
 
   const nav = useNavigate();
-
-  console.log(assignment, "assignment");
 
   useEffect(() => {
     const fetchAssignmentDetails = async () => {
@@ -74,7 +91,8 @@ const UploadAssignments = () => {
 
   const handleFileChange = (event) => {
     const selectedFiles = Array.from(event.target.files);
-    setFiles((prevFiles) => [...prevFiles, ...selectedFiles]);
+    setFiles(selectedFiles);
+    setError(""); // Clear any previous errors
   };
 
   const triggerFileInput = () => {
@@ -93,35 +111,57 @@ const UploadAssignments = () => {
     try {
       setPostLoading(true);
       const token = localStorage.getItem("accessToken");
-      const response = await fetch(
-        `http://127.0.0.1:8000/student/assignment/${assignment_id}/submit`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: token ? `Bearer ${token}` : "",
-          },
-          body: formData,
-        }
-      );
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.detail || "Failed to submit assignment.");
-      }
+      
+      // Determine if this is a new submission or an update based on assignment state
+      const endpoint = assignment?.submission?.id 
+        ? `http://127.0.0.1:8000/student/assignment/${assignment_id}/update-submission`
+        : `http://127.0.0.1:8000/student/assignment/${assignment_id}/submit`;
+      
+      const method = assignment?.submission?.id ? "PUT" : "POST";
+      
+      const response = await fetch(endpoint, {
+        method: method,
+        headers: {
+          Authorization: token ? `Bearer ${token}` : "",
+        },
+        body: formData,
+      });
 
       const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.detail || `Failed to ${assignment?.submission?.id ? "update" : "submit"} assignment.`);
+      }
+
       setAssignment((prev) => ({
         ...prev,
         submission: data.submission,
         grade: data.submission.grade,
       }));
 
-      setFiles([]);
+      setFiles([]); // Clear selected files after submission
       setError("");
+      
+      toast({
+        title: assignment?.submission?.id 
+          ? "Assignment resubmitted successfully" 
+          : "Assignment submitted successfully",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
     } catch (err) {
       setError(
         err.message || "An error occurred while submitting the assignment."
       );
+      
+      toast({
+        title: "Error",
+        description: err.message || "Failed to submit assignment.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
     } finally {
       setPostLoading(false);
     }
@@ -133,6 +173,17 @@ const UploadAssignments = () => {
         <Spinner size="xl" color="blue.500" />
       </Flex>
     );
+
+  // Check if the assignment is past due date
+  const isPastDue = new Date() > new Date(assignment?.deadline);
+  const isSubmissionEvaluated = assignment?.submission?.evaluation_done;
+  const isSubmitted = assignment?.submission?.status === "submitted";
+
+  // Extract original file name from the submission URL
+  const submittedFileName = isSubmitted ? 
+    files.length > 0 ? files[0].name : 
+    assignment.submission.original_filename || extractFileName(assignment.submission.pdf_url) :
+    "";
 
   return (
     <Flex direction="column" minH="100vh">
@@ -154,19 +205,19 @@ const UploadAssignments = () => {
             color="white"
           >
             <Text fontSize="md">Points</Text>
-            {assignment?.submission?.status === "submitted" ? (
+            {isSubmitted ? (
               <Text ml={2} color="white">
-                {assignment.grade}
+                {assignment.grade ?? "Not Graded Yet"}
               </Text>
             ) : (
               <Text ml={2} color="white">
-                Not Graded Yet
+                Not Submitted
               </Text>
             )}
           </Box>
         </Flex>
 
-        {/* Heading & Actions */}
+        {/* Heading & Status */}
         <Flex
           direction={{ base: "column-reverse", md: "row" }}
           alignItems={{ base: "flex-start", md: "center" }}
@@ -184,14 +235,15 @@ const UploadAssignments = () => {
             </Heading>
             <Badge
               borderRadius={"6px"}
-              color="gray"
+              color={isPastDue ? "red.500" : "gray"}
               bg="transparent"
               mt={2}
               fontSize="sm"
             >
-              Due {new Date(assignment?.deadline).toLocaleString()}
+              {isPastDue ? "Past Due: " : "Due "} 
+              {new Date(assignment?.deadline).toLocaleString()}
             </Badge>
-            {assignment?.submission?.status === "submitted" && (
+            {isSubmitted && assignment?.submission?.submitted_at && (
               <Badge
                 color="gray"
                 bg="transparent"
@@ -205,6 +257,7 @@ const UploadAssignments = () => {
             )}
           </Box>
 
+          {/* Action Buttons */}
           <Box
             w={{ base: "100%", lg: "auto" }}
             flex={{ base: 1, lg: "0" }}
@@ -212,23 +265,40 @@ const UploadAssignments = () => {
             display={"flex"}
             alignItems={"flex-end"}
             flexDirection={"row"}
+            flexWrap={{ base: "wrap", md: "nowrap" }}
+            gap={2}
           >
-            <Button
-              isLoading={postLoading}
-              colorScheme="blue"
-              mr={2}
-              onClick={handleSubmitAssignment}
-              isDisabled={assignment?.submission?.status === "submitted"}
-              width={{ base: "100%", sm: "auto" }}
-            >
-              {assignment?.submission?.status === "submitted"
-                ? "Handed In"
-                : "Hands In"}
-            </Button>
+            {isSubmitted ? (
+              <>
+                <Button
+                  colorScheme="orange"
+                  mr={2}
+                  onClick={handleSubmitAssignment}
+                  isDisabled={isPastDue || isSubmissionEvaluated || files.length === 0}
+                  width={{ base: "100%", sm: "auto" }}
+                  isLoading={postLoading}
+                  loadingText="Submitting"
+                >
+                  Resubmit
+                </Button>
+              </>
+            ) : (
+              <Button
+                isLoading={postLoading}
+                loadingText="Submitting"
+                colorScheme="blue"
+                mr={2}
+                onClick={handleSubmitAssignment}
+                isDisabled={isPastDue || files.length === 0}
+                width={{ base: "100%", sm: "auto" }}
+              >
+                Hand In
+              </Button>
+            )}
 
             <Button
               colorScheme="blue"
-              disabled={assignment.submission.evaluation_done ? false : true}
+              disabled={!assignment.submission?.evaluation_done}
               onClick={() => nav(`/student/results/${assignment_id}/${course_id}`)}
               width={{ base: "100%", sm: "auto" }}
             >
@@ -236,8 +306,6 @@ const UploadAssignments = () => {
             </Button>
           </Box>
         </Flex>
-
-        {/* Submission Status */}
 
         {/* Description & Upload Section */}
         <Box mt={6}>
@@ -266,25 +334,8 @@ const UploadAssignments = () => {
 
             <Text fontSize="md">My work:</Text>
 
-            <Button
-              w={{ base: "100%", lg: "25%" }}
-              colorScheme="blue"
-              onClick={triggerFileInput}
-            >
-              Upload Documents
-            </Button>
-            <Input
-              ref={fileInputRef}
-              type="file"
-              multiple
-              onChange={handleFileChange}
-              accept=".pdf, .docx, .txt"
-              display="none"
-            />
-
-            {/* Submitted File */}
-            {assignment?.submission?.status === "submitted" && (
-              <Box>
+            {isSubmitted && assignment.submission.pdf_url && (
+              <Box mb={4}>
                 <Text fontSize="md" mb={2}>
                   Submitted File:
                 </Text>
@@ -300,11 +351,28 @@ const UploadAssignments = () => {
                     fontWeight="bold"
                     isExternal
                   >
-                    {extractFileName(assignment.submission.pdf_url)}
+                    {submittedFileName}
                   </Link>
                 </Box>
               </Box>
             )}
+
+            <Button
+              w={{ base: "100%", lg: "25%" }}
+              colorScheme="blue"
+              onClick={triggerFileInput}
+              isDisabled={isPastDue && !isSubmitted}
+              leftIcon={<span>📄</span>}
+            >
+              Upload New File
+            </Button>
+            <Input
+              ref={fileInputRef}
+              type="file"
+              onChange={handleFileChange}
+              accept=".pdf"
+              display="none"
+            />
 
             {/* Error Message */}
             {error && (
@@ -317,19 +385,32 @@ const UploadAssignments = () => {
             {files.length > 0 && (
               <Box>
                 <Text fontSize="md" mb={2}>
-                  Selected files:
+                  {isSubmitted ? "New file to submit:" : "Selected file:"}
                 </Text>
                 {files.map((file, index) => (
-                  <Text
+                  <Box
+                    key={index}
+                    display="flex"
+                    justifyContent="space-between"
+                    alignItems="center"
                     border="1px solid #AACCFF"
-                    p={2}
+                    p={3}
                     borderRadius="8px"
                     mt={2}
-                    key={index}
+                    bg="blue.50"
                   >
-                    {file.name}
-                  </Text>
+                    <Flex align="center">
+                      <Box color="blue.500" mr={2}>📄</Box>
+                      <Text fontWeight="medium">{file.name}</Text>
+                    </Flex>
+                  </Box>
                 ))}
+                
+                {isSubmitted && (
+                  <Text fontSize="sm" mt={2} color="gray.600">
+                    Click the "Resubmit" button at the top to replace your previous submission with this file.
+                  </Text>
+                )}
               </Box>
             )}
           </Flex>
