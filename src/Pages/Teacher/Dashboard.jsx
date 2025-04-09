@@ -196,10 +196,6 @@ const Dashboard = () => {
             </Button>
           </Flex>
 
-          <Box mb={4}>
-            <Input placeholder="Search" size="lg" />
-          </Box>
-
           <Box
             borderWidth="1px"
             borderRadius="lg"
@@ -229,9 +225,7 @@ const Dashboard = () => {
                   </Tr>
                 ) : filteredCourses.length > 0 ? (
                   filteredCourses.map((course) => (
-                    <Tr
-                      key={course.id}
-                    >
+                    <Tr key={course.id}>
                       <Td>{course.name}</Td>
                       <Td>{course.group}</Td>
                       <Td>
@@ -267,16 +261,6 @@ const Dashboard = () => {
             </Table>
           </Box>
 
-          {/* Pagination Buttons (Always Visible) */}
-          <Flex
-            py={2}
-            pb={6}
-            justifyContent={{ base: "center", md: "space-between" }}
-            gap={4}
-          >
-            <Button onClick={() => alert("Previous Page")}>Previous</Button>
-            <Button onClick={() => alert("Next Page")}>Next</Button>
-          </Flex>
           <Box height="80px" />
         </Box>
       </Flex>

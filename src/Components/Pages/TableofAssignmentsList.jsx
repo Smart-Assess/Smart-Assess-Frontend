@@ -176,14 +176,6 @@ const TableofAssignmentsList = ({
               ))}
             </Tbody>
           </Table>
-          <Flex px={6} py={2} pb={6} justifyContent={"space-between"}>
-            <Button mt={4} onClick={() => alert("Previous Page")} mr={2}>
-              Previous
-            </Button>
-            <Button mt={4} onClick={() => alert("Next Page")}>
-              Next
-            </Button>
-          </Flex>
         </>
       )}
     </TableContainer>

@@ -188,8 +188,14 @@ export const addCourse = [
   {
     name: "group",
     label: "Department",
-    type: "text",
-    placeholder: "Enter Department Name",
+    type: "select", // changed from text to select
+    options: [
+      { label: "Computer Science", value: "CSE" },
+      { label: "Information Technology", value: "IT" },
+      { label: "Electronics and Communication", value: "ECE" },
+      { label: "Mechanical Engineering", value: "ME" },
+    ],
+    placeholder: "Select Department",
   },
   {
     name: "section",
@@ -201,6 +207,7 @@ export const addCourse = [
       "Section must be a single capital letter (e.g., A, B, C)",
   },
 ];
+
 
 export const createAssignment = [
   {

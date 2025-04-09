@@ -23,9 +23,9 @@ import HeadingButtonSection from "../../Components/Pages/HeadingButtonSection";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 
-const Reesults = () => {
+const TeacherResults = () => {
   const [resultData, setResultData] = useState([]);
-  const { assignment_id, course_id } = useParams();
+  const { course_id, assignment_id, student_id } = useParams();
 
   console.log(resultData);
 
@@ -36,7 +36,7 @@ const Reesults = () => {
       const config = { headers: { Authorization: `Bearer ${token}` } };
 
       const response = await axios.get(
-        `http://127.0.0.1:8000/student/assignment/${assignment_id}/result`,
+        `http://127.0.0.1:8000/teacher/course/${course_id}/assignment/${assignment_id}/student/${student_id}/evaluation`,
         config
       );
 
@@ -75,7 +75,7 @@ const Reesults = () => {
             aria-label="Go Back"
             icon={<ArrowBackIcon />}
             onClick={() =>
-              nav(`/student/uploadAssignment/${assignment_id}/${course_id}`)
+              nav(`/teacher/student/grading/${course_id}/${assignment_id}`)
             }
             mr={4}
           />
@@ -97,17 +97,23 @@ const Reesults = () => {
                   "This represents your total score achieved out of the maximum possible.",
               },
               {
-                label: `Avg AI Detection ${(resultData?.scores?.ai_detection * 100).toFixed(2)}%`,
+                label: `Avg AI Detection ${(resultData?.ai_score * 100).toFixed(
+                  2
+                )}%`,
                 tooltip:
                   "This score indicates the likelihood of AI-generated content in your answer.",
               },
               {
-                label: `Avg Grammar Detection ${(resultData?.scores?.grammar*100).toFixed(2)}%`,
+                label: `Avg Grammar Detection ${(
+                  resultData?.grammar_score * 100
+                ).toFixed(2)}%`,
                 tooltip:
                   "This score reflects how grammatically accurate your submission is.",
               },
               {
-                label: `Avg Plagiarism Detection ${(resultData?.scores?.plagiarism*100).toFixed(2)}%`,
+                label: `Avg Plagiarism Detection ${(
+                  resultData?.plagiarism_score * 100
+                ).toFixed(2)}%`,
                 tooltip:
                   "This score shows the similarity of your content with existing sources.If plagirism score is greater than 90% then total score will be zero of that question",
               },
@@ -152,7 +158,6 @@ const Reesults = () => {
                     <Th>Question</Th>
                     <Th>Student Answer</Th>
                     <Th>Question Score</Th>
-
                     <Th>Context Score</Th>
                     <Th>Grammar Score</Th>
                     <Th>Plagirism Score</Th>
@@ -187,6 +192,7 @@ const Reesults = () => {
                       >
                         {assignment.student_answer}
                       </Td>
+
                       <Td>
                         {assignment?.question_score != null
                           ? assignment.question_score.toFixed(2)
@@ -240,4 +246,4 @@ const Reesults = () => {
   );
 };
 
-export default Reesults;
+export default TeacherResults;

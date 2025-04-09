@@ -22,7 +22,6 @@ import { addCourse } from "../../data/UniversityData";
 
 function EditCourseForm({ showUpload, courseId, setCourseCodeId }) {
   const methods = useForm();
-  const { setValue } = methods;
   const [loading, setLoading] = useState(true);
   const [courses, setCourses] = useState({});
   const [uploadedFiles, setUploadedFiles] = useState([]);
@@ -31,10 +30,8 @@ function EditCourseForm({ showUpload, courseId, setCourseCodeId }) {
   const [error, setError] = useState(null);
   const nav = useNavigate();
 
-  // Helper function to extract filename from URL
   const getFilenameFromUrl = (url) => {
     if (!url) return "Unknown file";
-    // Get the part after the last slash and remove any query parameters
     const fullName = url.split("/").pop().split("?")[0];
     // If filename has a course ID prefix (e.g., "123_filename.pdf"), remove it
     const parts = fullName.split("_");

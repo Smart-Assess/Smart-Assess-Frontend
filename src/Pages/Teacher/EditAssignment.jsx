@@ -23,7 +23,6 @@ import { ChevronDownIcon, EditIcon, DeleteIcon } from "@chakra-ui/icons";
 import Header from "../../Components/Pages/Header";
 import Footer from "../../Components/Pages/Footer";
 
-
 const EditAssignment = () => {
   const { courseId, assignmentId } = useParams();
   const [assignment, setAssignment] = useState(null);
@@ -75,7 +74,7 @@ const EditAssignment = () => {
   const handleRemoveFile = async () => {
     try {
       const token = localStorage.getItem("accessToken");
-  
+
       await axios.put(
         `http://127.0.0.1:8000/teacher/course/${courseId}/assignment/${assignmentId}`,
         { question_pdf: null }, // Send null to remove the file
@@ -85,10 +84,10 @@ const EditAssignment = () => {
           },
         }
       );
-  
+
       setUploadFileName(null);
       setNewFile(null);
-  
+
       toast({
         title: "File removed successfully!",
         status: "success",
@@ -107,7 +106,6 @@ const EditAssignment = () => {
       });
     }
   };
-  
 
   const onSubmit = async (data) => {
     try {
@@ -118,39 +116,39 @@ const EditAssignment = () => {
       const formattedDateTime = `${deadline} ${time}`;
       const updatedData = { ...data, deadline: formattedDateTime };
       delete updatedData.time;
-  
+
       formData.append("name", data.name);
       formData.append("description", data.description);
       formData.append("deadline", updatedData.deadline || "");
       formData.append("grade", String(data.grade));
-  
+
       if (newFile) {
         formData.append("question_pdf", newFile);
       } else if (!uploadFileName) {
         // If no file is selected and previous file is deleted, send null
         formData.append("question_pdf", "");
       }
-  
+
       const config = {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
         },
       };
-  
+
       const response = await axios.put(
         `http://127.0.0.1:8000/teacher/course/${courseId}/assignment/${assignmentId}`,
         formData,
         config
       );
-  
+
       if (response.status === 200 || response.status === 201) {
         if (response.data.assignment.question_pdf_url) {
           setUploadFileName(response.data.assignment.question_pdf_url);
         } else {
           setUploadFileName(null);
         }
-  
+
         toast({
           title: "Assignment updated successfully!",
           status: "success",
@@ -158,7 +156,7 @@ const EditAssignment = () => {
           isClosable: true,
           position: "top-right",
         });
-  
+
         navigate(`/teacher/viewAssignments/${courseId}`);
       }
     } catch (err) {
@@ -167,15 +165,14 @@ const EditAssignment = () => {
       setIsSubmitting(false);
     }
   };
-  
 
   return (
     <Flex direction="column" minH="100vh">
       <Header />
       <Box flex="1" mx={12} overflowY="auto" paddingBottom="80px">
         {isAssignmentLoading ? (
-          <Flex height="300px" justifyContent="center" alignItems="center">
-            <Spinner size="xl" thickness="4px" speed="0.65s" color="blue.500" />
+          <Flex justifyContent="center" mt="140px" alignItems="center">
+            <Spinner size="lg" thickness="4px" speed="0.65s" color="blue.500" />
           </Flex>
         ) : (
           <>
@@ -218,10 +215,12 @@ const EditAssignment = () => {
                         href={uploadFileName}
                         color="blue.500"
                         fontWeight="medium"
-                        isExternal
+                        target="_blank"
+                        rel="noopener noreferrer"
                       >
                         {uploadFileName.split("/").pop()}
                       </Link>
+
                       <Button
                         ml={4}
                         size="sm"

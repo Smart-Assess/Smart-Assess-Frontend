@@ -34,6 +34,8 @@ const Grading = () => {
   const { courseId, assignmentId } = useParams();
   const [assignment, setAssignment] = useState(null);
   const [studentsData, setStudentsData] = useState([]);
+
+  console.log(studentsData);
   const [uploadFileName, setUploadFileName] = useState(null);
   const [isAssignmentLoading, setIsAssignmentLoading] = useState(true);
   const [isStudentsLoading, setIsStudentsLoading] = useState(true);
@@ -116,7 +118,7 @@ const Grading = () => {
       };
 
       const response = await axios.post(
-        `http://127.0.0.1:8000/teacher/${courseId}/assignment/${assignmentId}/evaluate`,
+        `http://localhost:8000/teacher/${courseId}/assignment/${assignmentId}/evaluate`,
         jsonData,
         config
       );
@@ -294,9 +296,17 @@ const Grading = () => {
                       </Tr>
                     ) : (
                       studentsData.map((student, index) => (
-                        <Tr key={index}>
+                        <Tr
+                          cursor="pointer"
+                          key={index}
+                          onClick={() =>
+                            navigate(
+                              `/student/teacher/results/${courseId}/${assignmentId}/${student.id}`
+                            )
+                          }
+                        >
                           <Td>
-                            <Flex alignItems={'center'}>
+                            <Flex alignItems={"center"}>
                               <Avatar src={student.image} size="sm" mr={3} />
                               {student.name}
                             </Flex>
@@ -304,11 +314,15 @@ const Grading = () => {
                           <Td>{student.batch}</Td>
                           <Td>{student.department}</Td>
                           <Td>{student.section}</Td>
-                          <Td>{student.total_score}</Td>
+                          <Td>
+                            {student.total_score}/
+                            {student.total_assignment_grade}
+                          </Td>
                           <Td>{student.avg_context_score}</Td>
                           <Td>{student.avg_plagiarism_score}</Td>
                           <Td>{student.avg_ai_score}</Td>
                           <Td>{student.avg_grammar_score}</Td>
+
                           <Td>
                             <Box
                               maxW="200px"

@@ -27,6 +27,7 @@ import Grading from "./Pages/Teacher/Grading";
 import CourseMaterial from "./Pages/Student/CourseMaterial";
 import Reesults from "./Pages/Student/Reesults";
 import EditAssignment from "./Pages/Teacher/EditAssignment";
+import TeacherResults from "./Pages/Teacher/TeacherResults";
 
 const App = () => {
   const navigate = useNavigate();
@@ -82,6 +83,10 @@ const App = () => {
       />
 
       <Route path="/student/results/:assignment_id/:course_id" element={<Reesults />} />
+
+
+      <Route path="/student/teacher/results/:course_id/:assignment_id/:student_id" element={<TeacherResults />} />
+
 
       {/* UniversityAdmin */}
       <Route path="/university/addStudent" element={<AddStudent />} />

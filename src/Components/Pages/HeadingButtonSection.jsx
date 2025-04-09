@@ -39,7 +39,6 @@ const HeadingButtonSection = ({
       </Flex>
       {showSearchBar && (
         <Flex>
-          <SearchBar />
         </Flex>
       )}
     </Box>
