@@ -270,7 +270,7 @@ const Grading = () => {
               >
                 <Table variant="simple">
                   <Thead backgroundColor="#EAEEF0">
-                    <Tr>
+                    {/* <Tr>
                       <Th>Name</Th>
                       <Th>Batch</Th>
                       <Th>Department</Th>
@@ -281,6 +281,64 @@ const Grading = () => {
                       <Th>Avg AI Score</Th>
                       <Th>Avg Grammar Score</Th>
                       <Th>Feedback</Th>
+                    </Tr> */}
+
+                    <Tr>
+                      {[
+                        {
+                          name: "Name",
+                          tooltip: "This column displays the student's name.",
+                        },
+                        {
+                          name: "Batch",
+                          tooltip: "This column shows the student's batch.",
+                        },
+                        {
+                          name: "Department",
+                          tooltip: "This column displays the department.",
+                        },
+                        {
+                          name: "Section",
+                          tooltip:
+                            "This column shows the section of the student.",
+                        },
+                        {
+                          name: "Total Score",
+                          tooltip:
+                            "This represents your total score achieved out of the maximum possible.",
+                        },
+                        {
+                          name: "Avg Context Score",
+                          tooltip:
+                            "This is the average context score of the student.",
+                        },
+                        {
+                          name: "Avg Plagiarism Score",
+                          tooltip:
+                            "This score shows the similarity of your content with existing sources.If plagirism score is greater than 90% then total score will be zero of that question",
+                        },
+                        {
+                          name: "Avg AI Score",
+                          tooltip:
+                            "This score shows the similarity of your content with existing sources.If plagirism score is greater than 90% then total score will be zero of that question",
+                        },
+                        {
+                          name: "Avg Grammar Score",
+                          tooltip:
+                            "This score reflects how grammatically accurate your submission is.",
+                        },
+                        {
+                          name: "Feedback",
+                          tooltip:
+                            "This column contains feedback for the student.",
+                        },
+                      ].map((header, idx) => (
+                        <Th key={idx}>
+                          <Tooltip label={header.tooltip} hasArrow>
+                            {header.name}
+                          </Tooltip>
+                        </Th>
+                      ))}
                     </Tr>
                   </Thead>
                   <Tbody>
@@ -296,33 +354,101 @@ const Grading = () => {
                       </Tr>
                     ) : (
                       studentsData.map((student, index) => (
-                        <Tr
-                          cursor="pointer"
-                          key={index}
-                          onClick={() =>
-                            navigate(
-                              `/student/teacher/results/${courseId}/${assignmentId}/${student.id}`
-                            )
-                          }
-                        >
-                          <Td>
+                        <Tr key={index}>
+                          <Td
+                            cursor={"pointer"}
+                            onClick={() =>
+                              navigate(
+                                `/student/teacher/results/${courseId}/${assignmentId}/${student.id}`
+                              )
+                            }
+                          >
                             <Flex alignItems={"center"}>
                               <Avatar src={student.image} size="sm" mr={3} />
                               {student.name}
                             </Flex>
                           </Td>
-                          <Td>{student.batch}</Td>
-                          <Td>{student.department}</Td>
-                          <Td>{student.section}</Td>
-                          <Td>
+                          <Td
+                            cursor={"pointer"}
+                            onClick={() =>
+                              navigate(
+                                `/student/teacher/results/${courseId}/${assignmentId}/${student.id}`
+                              )
+                            }
+                          >
+                            {student.batch}
+                          </Td>
+                          <Td
+                            cursor={"pointer"}
+                            onClick={() =>
+                              navigate(
+                                `/student/teacher/results/${courseId}/${assignmentId}/${student.id}`
+                              )
+                            }
+                          >
+                            {student.department}
+                          </Td>
+                          <Td
+                            cursor={"pointer"}
+                            onClick={() =>
+                              navigate(
+                                `/student/teacher/results/${courseId}/${assignmentId}/${student.id}`
+                              )
+                            }
+                          >
+                            {student.section}
+                          </Td>
+                          <Td
+                            cursor={"pointer"}
+                            onClick={() =>
+                              navigate(
+                                `/student/teacher/results/${courseId}/${assignmentId}/${student.id}`
+                              )
+                            }
+                          >
                             {student.total_score}/
                             {student.total_assignment_grade}
                           </Td>
-                          <Td>{student.avg_context_score}</Td>
-                          <Td>{student.avg_plagiarism_score}</Td>
-                          <Td>{student.avg_ai_score}</Td>
-                          <Td>{student.avg_grammar_score}</Td>
-
+                          <Td
+                            cursor={"pointer"}
+                            onClick={() =>
+                              navigate(
+                                `/student/teacher/results/${courseId}/${assignmentId}/${student.id}`
+                              )
+                            }
+                          >
+                            {student.avg_context_score}
+                          </Td>
+                          <Td
+                            cursor={"pointer"}
+                            onClick={() =>
+                              navigate(
+                                `/student/teacher/results/${courseId}/${assignmentId}/${student.id}`
+                              )
+                            }
+                          >
+                            {student.avg_plagiarism_score}
+                          </Td>
+                          <Td
+                            cursor={"pointer"}
+                            onClick={() =>
+                              navigate(
+                                `/student/teacher/results/${courseId}/${assignmentId}/${student.id}`
+                              )
+                            }
+                          >
+                            {student.avg_ai_score}
+                          </Td>
+                          <Td
+                            cursor={"pointer"}
+                            onClick={() =>
+                              navigate(
+                                `/student/teacher/results/${courseId}/${assignmentId}/${student.id}`
+                              )
+                            }
+                          >
+                            {student.avg_grammar_score}
+                          </Td>
                           <Td>
                             <Box
                               maxW="200px"
@@ -332,15 +458,16 @@ const Grading = () => {
                               whiteSpace={
                                 student.showFull ? "normal" : "nowrap"
                               }
-                              onClick={() =>
+                              onClick={(e) => {
+                                e.stopPropagation(); // Prevent navigation
                                 setStudentsData((prev) =>
                                   prev.map((s, i) =>
                                     i === index
                                       ? { ...s, showFull: !s.showFull }
                                       : s
                                   )
-                                )
-                              }
+                                );
+                              }}
                             >
                               {student.feedback}
                             </Box>
