@@ -51,7 +51,7 @@ const App = () => {
   }, [navigate, location.pathname]);
   return (
     <Routes>
-      <Route path="/login" element={<Login />} />
+      <Route path="/*" element={<Login />} />
 
       {/* SuperAdmin */}
       <Route path="/superadmin/dashboard" element={<Dashboard />} />
@@ -82,11 +82,15 @@ const App = () => {
         element={<CourseMaterial />}
       />
 
-      <Route path="/student/results/:assignment_id/:course_id" element={<Reesults />} />
+      <Route
+        path="/student/results/:assignment_id/:course_id"
+        element={<Reesults />}
+      />
 
-
-      <Route path="/student/teacher/results/:course_id/:assignment_id/:student_id" element={<TeacherResults />} />
-
+      <Route
+        path="/student/teacher/results/:course_id/:assignment_id/:student_id"
+        element={<TeacherResults />}
+      />
 
       {/* UniversityAdmin */}
       <Route path="/university/addStudent" element={<AddStudent />} />
