@@ -190,7 +190,7 @@ export const addCourse = [
     label: "Department",
     type: "select", // changed from text to select
     options: [
-      { label: "Computer Science", value: "CSE" },
+      { label: "Computer Science", value: "CS" },
       { label: "Information Technology", value: "IT" },
       { label: "Electronics and Communication", value: "ECE" },
       { label: "Mechanical Engineering", value: "ME" },
