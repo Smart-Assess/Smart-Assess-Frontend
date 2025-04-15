@@ -211,7 +211,7 @@ const UploadAssignments = () => {
               </Text>
             ) : (
               <Text ml={2} color="white">
-                Not Submitted
+                {assignment?.grade}
               </Text>
             )}
           </Box>
@@ -398,6 +398,7 @@ const UploadAssignments = () => {
                     borderRadius="8px"
                     mt={2}
                     bg="blue.50"
+                    w={{ base: "100%", lg: "25%" }} 
                   >
                     <Flex align="center">
                       <Box color="blue.500" mr={2}>📄</Box>
