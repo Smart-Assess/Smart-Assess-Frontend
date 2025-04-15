@@ -199,7 +199,7 @@ const TeacherResults = () => {
                           : "0.00"}
                         /{resultData?.question_total_marks}
                       </Td>
-                      <Td>{assignment.context_score}</Td>
+                      <Td>{(assignment.context_score * 100).toFixed(2)}%</Td>
                       <Td>{(assignment.grammar_score * 100).toFixed(2)}%</Td>
                       <Td>{(assignment.plagiarism_score*100).toFixed(2)}%</Td>
                       <Td>{(assignment.ai_score*100).toFixed(2)}%</Td>

@@ -443,7 +443,10 @@ const Grading = () => {
                               )
                             }
                           >
-                            {student.avg_context_score}
+                            {student.avg_context_score
+                              ? (student.avg_context_score * 100).toFixed(2) +
+                                "%"
+                              : "0.00%"}
                           </Td>
                           <Td
                             cursor={"pointer"}
@@ -453,7 +456,11 @@ const Grading = () => {
                               )
                             }
                           >
-                            {student.avg_plagiarism_score}
+                            {student.avg_plagiarism_score
+                              ? (student.avg_plagiarism_score * 100).toFixed(
+                                  2
+                                ) + "%"
+                              : "0.00%"}
                           </Td>
                           <Td
                             cursor={"pointer"}
@@ -463,7 +470,9 @@ const Grading = () => {
                               )
                             }
                           >
-                            {student.avg_ai_score}
+                            {student.avg_ai_score
+                              ? (student.avg_ai_score * 100).toFixed(2) + "%"
+                              : "0.00%"}
                           </Td>
                           <Td
                             cursor={"pointer"}
@@ -473,7 +482,10 @@ const Grading = () => {
                               )
                             }
                           >
-                            {student.avg_grammar_score}
+                            {student.avg_grammar_score
+                              ? (student.avg_grammar_score * 100).toFixed(2) +
+                                "%"
+                              : "0.00%"}
                           </Td>
                           <Td>
                             <Box
