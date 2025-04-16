@@ -178,7 +178,7 @@ const Grading = () => {
                 <Heading color="#3D4C5E" fontSize="32px" fontWeight="500">
                   Assignment
                 </Heading>
-                <Text color="#546881">Add the required information below</Text>
+                {/* <Text color="#546881">Add the required information below</Text> */}
               </Box>
             </Flex>
 
