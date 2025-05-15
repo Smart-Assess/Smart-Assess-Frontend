@@ -1,70 +1,82 @@
-# Getting Started with Create React App
+# Smart-Assess: AI-Powered Assignment Evaluation System 🎓🤖
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Smart-Assess is an innovative AI-powered automated grading system designed to revolutionize academic assignment evaluation. Our platform leverages advanced natural language processing models to provide comprehensive, fair, and efficient assessment of textual assignments.
 
-## Available Scripts
+![GitHub license](https://img.shields.io/github/license/Smart-Assess/Smart-Assess-Frontend) ![GitHub stars](https://img.shields.io/github/stars/Smart-Assess/Smart-Assess-Frontend) ![GitHub forks](https://img.shields.io/github/forks/Smart-Assess/Smart-Assess-Frontend)
 
-In the project directory, you can run:
+## About Smart-Assess 📚
 
-### `npm start`
+Smart-Assess addresses key challenges in educational assessment through cutting-edge technology:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **Time-efficient grading** that reduces educator workload by up to 50%.
+- **Consistent evaluation standards** across all submissions.
+- **Personalized feedback** to help students improve their work.
+- **Academic integrity protection** through advanced plagiarism and AI-content detection.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Our system contributes to multiple Sustainable Development Goals (SDGs), including:
+- **Quality Education (SDG 4)**
+- **Decent Work and Economic Growth (SDG 8)**
+- **Innovation and Infrastructure (SDG 9)**
+- **Reduced Inequalities (SDG 10)**
 
-### `npm test`
+## Key Features ✨
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### For Teachers
+- **Automated Assignment Evaluation** with customizable assessment criteria.
+- **Multi-dimensional Scoring** based on:
+    - Context relevance (using RAG technology).
+    - Grammar and writing quality.
+    - Plagiarism detection.
+    - AI-generated content identification.
+- **Performance Analytics** for individual students and class-wide trends.
+- **Time-saving Workflow** that reduces grading time while maintaining quality.
 
-### `npm run build`
+### For Students
+- **Instant, Detailed Feedback** on submissions.
+- **Personalized Improvement Suggestions** based on individual performance.
+- **Transparency in Assessment** with clear scoring breakdowns.
+- **Learning Opportunity** through constructive criticism.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Technology 🛠️
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Smart-Assess is built on advanced NLP technologies:
+- **Transformer Models** like T5 and BART for semantic understanding.
+- **BLEURT Metrics** for human-like evaluation of text quality.
+- **Retrieval-Augmented Generation (RAG)** for context-aware assessment.
+- **Modern React Frontend** with Chakra UI for an intuitive user experience.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Getting Started 🚀
 
-### `npm run eject`
+```bash
+# Clone the repository
+git clone https://github.com/Smart-Assess/Smart-Assess-Frontend.git
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+# Navigate to project directory
+cd Smart-Assess-Frontend
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+# Install dependencies
+npm install
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+# Start development server
+npm start
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## User Roles 👥
 
-## Learn More
+- **Super Administrator**: Manages the entire system and university administrators.
+- **University Administrator**: Manages teachers and students within their institution.
+- **Teacher**: Creates courses, assigns work, and reviews automated assessments.
+- **Student**: Submits assignments and receives detailed feedback.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Project Objectives 🎯
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- Achieve **85% grading accuracy** compared to human evaluation.
+- Reduce grading time by at least **50%**.
+- Maintain user satisfaction rates above **75%**.
+- Provide comprehensive, context-aware feedback for student improvement.
 
-### Code Splitting
+## License 📄
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+This project is licensed under the MIT License - see the [LICENSE][def] file for details.
 
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+[def]: ./LICENSE
