@@ -1,7 +1,6 @@
 import React from "react";
 import { Box, Heading, Text, Button, Flex } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
-import SearchBar from "../../Components/UI/SearchBar";
 import { useNavigate } from "react-router-dom";
 
 const HeadingButtonSection = ({
@@ -10,7 +9,7 @@ const HeadingButtonSection = ({
   buttonText,
   headingText,
   showButton = true,
-  content,
+  onBulkAddClick, // New prop for Bulk Add button
   showSearchBar = true,
   showIcon = true,
 }) => {
@@ -25,20 +24,31 @@ const HeadingButtonSection = ({
           </Heading>
           <Text color="#546881">{bodyText}</Text>
         </Box>
-        {showButton && (
+        <Flex gap={4}>
+          {showButton && (
+            <Button
+              color="white"
+              onClick={() => nav(path)}
+              bg="#0D64C1"
+              _hover={{ bg: "#0D64C8" }}
+              leftIcon={showIcon ? <AddIcon /> : null}
+            >
+              {buttonText}
+            </Button>
+          )}
           <Button
             color="white"
-            onClick={() => nav(path)}
+            onClick={onBulkAddClick} // Trigger the modal
             bg="#0D64C1"
             _hover={{ bg: "#0D64C8" }}
-            leftIcon={showIcon ? <AddIcon /> : null} // Conditionally render the icon
           >
-            {buttonText}
+            Bulk Add
           </Button>
-        )}
+        </Flex>
       </Flex>
       {showSearchBar && (
         <Flex>
+          {/* Add SearchBar or other content here */}
         </Flex>
       )}
     </Box>
