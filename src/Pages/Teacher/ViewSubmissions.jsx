@@ -33,7 +33,7 @@ const ViewSubmissions = () => {
       };
 
       const response = await axios.get(
-        `https://134.209.110.162:8000/teacher/course/${courseId}/assignment/${assignmentId}/submissions`,
+        `http://134.209.110.162:8000/teacher/course/${courseId}/assignment/${assignmentId}/submissions`,
         config
       );
 

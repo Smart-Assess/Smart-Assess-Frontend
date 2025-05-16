@@ -43,7 +43,7 @@ function EditCourseForm({ showUpload, courseId, setCourseCodeId }) {
       const token = localStorage.getItem("accessToken");
       const config = { headers: { Authorization: `Bearer ${token}` } };
       const response = await axios.get(
-        `https://134.209.110.162:8000/teacher/course/${courseId}`,
+        `http://134.209.110.162:8000/teacher/course/${courseId}`,
         config
       );
 
@@ -107,7 +107,7 @@ function EditCourseForm({ showUpload, courseId, setCourseCodeId }) {
       };
 
       const response = await axios.put(
-        `https://134.209.110.162:8000/teacher/course/${courseId}`,
+        `http://134.209.110.162:8000/teacher/course/${courseId}`,
         formData,
         config
       );

@@ -30,7 +30,7 @@ const StudentTable = ({ data }) => {
       setLoading(true);
       const token = localStorage.getItem("accessToken");
       const response = await fetch(
-        "https://134.209.110.162:8000/universityadmin/students",
+        "http://134.209.110.162:8000/universityadmin/students",
         {
           method: "GET",
           headers: {
@@ -62,7 +62,7 @@ const StudentTable = ({ data }) => {
       setDeleting((prev) => ({ ...prev, [std_id]: true }));
       const token = localStorage.getItem("accessToken");
       const response = await fetch(
-        `https://134.209.110.162:8000/universityadmin/student/${std_id}`,
+        `http://134.209.110.162:8000/universityadmin/student/${std_id}`,
         {
           method: "DELETE",
           headers: {

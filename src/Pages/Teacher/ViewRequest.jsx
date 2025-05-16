@@ -25,7 +25,7 @@ const ViewRequest = () => {
       };
 
       const response = await axios.get(
-        `https://134.209.110.162:8000/teacher/course/${courseId}/requests`,
+        `http://134.209.110.162:8000/teacher/course/${courseId}/requests`,
         config
       );
 

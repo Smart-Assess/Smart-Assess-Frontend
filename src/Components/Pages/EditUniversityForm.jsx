@@ -64,7 +64,7 @@ function EditUniversityForm({
       };
 
       const response = await axios.put(
-        `https://134.209.110.162:8000/superadmin/university/${id}`,
+        `http://134.209.110.162:8000/superadmin/university/${id}`,
         formData,
         config
       );

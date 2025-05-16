@@ -28,7 +28,7 @@ const ViewAssignments = () => {
       };
 
       const response = await axios.get(
-        `https://134.209.110.162:8000/teacher/course/${courseId}/assignments`,
+        `http://134.209.110.162:8000/teacher/course/${courseId}/assignments`,
         config
       );
 

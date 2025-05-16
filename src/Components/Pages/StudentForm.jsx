@@ -64,7 +64,7 @@ function StudentForm({ show }) {
       };
 
       const response = await axios.post(
-        "https://134.209.110.162:8000/universityadmin/student",
+        "http://134.209.110.162:8000/universityadmin/student",
         formData,
         config
       );
