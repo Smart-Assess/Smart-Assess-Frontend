@@ -88,8 +88,8 @@ const TeacherResults = () => {
           </Box>
         </Flex>
 
-        <Flex mb={6}>
-          <Box flexWrap={"wrap"} display={"flex"} gap={2}>
+        <Flex mb={6} gap={6} justifyContent={"space-between"} flexWrap={"wrap"}>
+          <Box flexWrap={"wrap"}  display={"flex"} alignItems={"center"} gap={2}>
             {[
               {
                 label: `Total Score ${resultData.total_score}/${resultData.total_assignment_grade}`,
@@ -130,6 +130,19 @@ const TeacherResults = () => {
                 </Badge>
               </Tooltip>
             ))}
+          </Box>
+          <Box>
+            <Button
+              colorScheme="blue"
+              onClick={() => {
+                const link = document.createElement("a");
+                link.href = resultData?.report_url; // Use report_url here
+                link.download = "Report.pdf";
+                link.click();
+              }}
+            >
+              Download Report
+            </Button>
           </Box>
         </Flex>
 
@@ -201,8 +214,8 @@ const TeacherResults = () => {
                       </Td>
                       <Td>{(assignment.context_score * 100).toFixed(2)}%</Td>
                       <Td>{(assignment.grammar_score * 100).toFixed(2)}%</Td>
-                      <Td>{(assignment.plagiarism_score*100).toFixed(2)}%</Td>
-                      <Td>{(assignment.ai_score*100).toFixed(2)}%</Td>
+                      <Td>{(assignment.plagiarism_score * 100).toFixed(2)}%</Td>
+                      <Td>{(assignment.ai_score * 100).toFixed(2)}%</Td>
 
                       <Td>
                         <Box

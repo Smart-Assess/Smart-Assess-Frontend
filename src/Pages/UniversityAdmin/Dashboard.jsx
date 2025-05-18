@@ -206,8 +206,21 @@ const Dashboard = () => {
           headingText={headingText}
           bodyText={bodyText}
           buttonText={`Add ${headingText}`}
+          showBulkAddButton={true} // Set to false if you don't want to show the Bulk Add button
+
           onBulkAddClick={onOpen} // Open modal on Bulk Add click
         />
+        {/* <Box mt={4}>
+          {isStudentPage ? (
+            <Button colorScheme="blue" onClick={onOpen}>
+              Bulk Add Students
+            </Button>
+          ) : (
+            <Button colorScheme="blue" onClick={onOpen}>
+              Bulk Add Teachers
+            </Button>
+          )}
+        </Box> */}
 
         {isStudentPage ? (
           <StudentTable data={data} />

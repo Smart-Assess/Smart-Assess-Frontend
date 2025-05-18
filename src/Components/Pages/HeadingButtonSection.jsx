@@ -9,22 +9,23 @@ const HeadingButtonSection = ({
   buttonText,
   headingText,
   showButton = true,
-  onBulkAddClick, // New prop for Bulk Add button
   showSearchBar = true,
   showIcon = true,
+  showBulkAddButton = true, // New prop to control Bulk Add button visibility
+  onBulkAddClick, // Callback for Bulk Add button
 }) => {
   const nav = useNavigate();
 
   return (
     <Box my={6}>
-      <Flex alignItems="center" justifyContent="space-between" my={6}>
+      <Flex alignItems="center" gap={4} justifyContent="space-between" flexWrap={'wrap'} my={6}>
         <Box>
           <Heading color="#3D4C5E" fontSize="32px" fontWeight="500">
             {headingText}
           </Heading>
           <Text color="#546881">{bodyText}</Text>
         </Box>
-        <Flex gap={4}>
+        <Flex gap={4} flexWrap={'wrap'}>
           {showButton && (
             <Button
               color="white"
@@ -36,20 +37,20 @@ const HeadingButtonSection = ({
               {buttonText}
             </Button>
           )}
-          <Button
-            color="white"
-            onClick={onBulkAddClick} // Trigger the modal
-            bg="#0D64C1"
-            _hover={{ bg: "#0D64C8" }}
-          >
-            Bulk Add
-          </Button>
+          {showBulkAddButton && (
+            <Button
+              bg="#0D64C1"
+              color="white"
+              _hover={{ bg: "#0D64C8" }}
+              onClick={onBulkAddClick} // Trigger the callback when clicked
+            >
+              Bulk Add {headingText}s
+            </Button>
+          )}
         </Flex>
       </Flex>
       {showSearchBar && (
-        <Flex>
-          {/* Add SearchBar or other content here */}
-        </Flex>
+        <Flex>{/* Add SearchBar or other content here */}</Flex>
       )}
     </Box>
   );
