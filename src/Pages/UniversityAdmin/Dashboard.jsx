@@ -110,7 +110,7 @@ const Dashboard = () => {
     setLoading(true); // Start spinner
 
     try {
-      const baseURL = "http://134.209.110.162:8000"; // Set the base URL here
+      const baseURL = "//134.209.110.162:8000"; // Set the base URL here
       const endpoint = isStudentPage
         ? `${baseURL}/universityadmin/students/bulk-import`
         : `${baseURL}/universityadmin/teachers/bulk-import`;

@@ -43,7 +43,7 @@ const EditAssignment = () => {
         const config = { headers: { Authorization: `Bearer ${token}` } };
 
         const response = await axios.get(
-          `http://134.209.110.162:8000/teacher/course/${courseId}/assignment/${assignmentId}`,
+          `//134.209.110.162:8000/teacher/course/${courseId}/assignment/${assignmentId}`,
           config
         );
 
@@ -76,7 +76,7 @@ const EditAssignment = () => {
       const token = localStorage.getItem("accessToken");
 
       await axios.put(
-        `http://134.209.110.162:8000/teacher/course/${courseId}/assignment/${assignmentId}`,
+        `//134.209.110.162:8000/teacher/course/${courseId}/assignment/${assignmentId}`,
         { question_pdf: null }, // Send null to remove the file
         {
           headers: {
@@ -137,7 +137,7 @@ const EditAssignment = () => {
       };
 
       const response = await axios.put(
-        `http://134.209.110.162:8000/teacher/course/${courseId}/assignment/${assignmentId}`,
+        `//134.209.110.162:8000/teacher/course/${courseId}/assignment/${assignmentId}`,
         formData,
         config
       );

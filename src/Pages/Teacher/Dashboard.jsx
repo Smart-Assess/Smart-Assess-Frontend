@@ -50,7 +50,7 @@ const Dashboard = () => {
       };
 
       const response = await axios.get(
-        "http://134.209.110.162:8000/teacher/courses",
+        "//134.209.110.162:8000/teacher/courses",
         config
       );
 
@@ -79,7 +79,7 @@ const Dashboard = () => {
       setDeleting((prev) => ({ ...prev, [course_id]: true }));
       const token = localStorage.getItem("accessToken");
       const response = await fetch(
-        `http://134.209.110.162:8000/teacher/course/${course_id}`,
+        `//134.209.110.162:8000/teacher/course/${course_id}`,
         {
           method: "DELETE",
           headers: {

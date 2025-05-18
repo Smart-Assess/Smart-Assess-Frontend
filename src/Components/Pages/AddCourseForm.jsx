@@ -51,7 +51,7 @@ function AddCourseForm({ showUpload }) {
       };
 
       const response = await axios.post(
-        "http://134.209.110.162:8000/teacher/course",
+        "//134.209.110.162:8000/teacher/course",
         formData,
         config
       );

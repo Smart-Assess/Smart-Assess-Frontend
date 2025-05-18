@@ -61,7 +61,7 @@ function TeacherForm({ show }) {
       };
 
       const response = await axios.post(
-        "http://134.209.110.162:8000/universityadmin/teacher",
+        "//134.209.110.162:8000/universityadmin/teacher",
         formData,
         config
       );

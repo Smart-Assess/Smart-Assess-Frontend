@@ -31,7 +31,7 @@ const AdminTable = () => {
       setLoading(true);
       const token = localStorage.getItem("accessToken");
       const response = await fetch(
-        "http://134.209.110.162:8000/superadmin/universities",
+        "//134.209.110.162:8000/superadmin/universities",
         {
           method: "GET",
           headers: {
@@ -63,7 +63,7 @@ const AdminTable = () => {
       setDeleting((prev) => ({ ...prev, [uni_id]: true }));
       const token = localStorage.getItem("accessToken");
       const response = await fetch(
-        `http://134.209.110.162:8000/superadmin/university/${uni_id}`,
+        `//134.209.110.162:8000/superadmin/university/${uni_id}`,
         {
           method: "DELETE",
           headers: {
