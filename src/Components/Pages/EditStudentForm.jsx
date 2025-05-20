@@ -45,11 +45,7 @@ function EditStudentForm({ student, fileName, file, setFile, setFileName }) {
       };
 
       const response = await axios.put(
-<<<<<<< HEAD
         `http://134.209.110.162:8000/universityadmin/student/${id}`,
-=======
-        `//134.209.110.162:8000/universityadmin/student/${id}`,
->>>>>>> 0c2f1e87b816dd7105e09900e7812b70ed5c116f
         formData,
         config
       );
