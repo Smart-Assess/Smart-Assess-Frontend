@@ -18,6 +18,7 @@
     "react-icons": "^5.3.0",
     "react-router-dom": "^6.27.0",
     "react-scripts": "5.0.1",
+    "serve": "^14.2.1",
     "web-vitals": "^2.1.4",
     "xlsx": "^0.18.5"
   },
@@ -25,13 +26,18 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "start:prod": "serve -s build"
   },
   "eslintConfig": {
     "extends": [
       "react-app",
       "react-app/jest"
     ]
+  },
+  "engines": {
+    "node": "18.x",
+    "npm": "9.x"
   },
   "browserslist": {
     "production": [
@@ -44,5 +50,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
   }
 }

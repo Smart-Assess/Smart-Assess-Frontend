@@ -39,7 +39,11 @@ const JoinCourseModal = ({ isOpen, onClose,setCourseCode,courseCode}) => {
       formData.append("course_code", courseCode);
 
       const response = await axios.post(
+<<<<<<< HEAD
         "http://134.209.110.162:8000/student/course/join",
+=======
+        "//134.209.110.162:8000/student/course/join",
+>>>>>>> 0c2f1e87b816dd7105e09900e7812b70ed5c116f
         formData,
         config
       );

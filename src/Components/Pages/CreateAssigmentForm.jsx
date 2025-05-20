@@ -50,7 +50,11 @@ function CreateAssignmentForm({ showUpload, courseId }) {
       };
 
       const response = await axios.post(
+<<<<<<< HEAD
         `http://134.209.110.162:8000/teacher/course/${courseId}/assignment`,
+=======
+        `//134.209.110.162:8000/teacher/course/${courseId}/assignment`,
+>>>>>>> 0c2f1e87b816dd7105e09900e7812b70ed5c116f
         formData,
         config
       );

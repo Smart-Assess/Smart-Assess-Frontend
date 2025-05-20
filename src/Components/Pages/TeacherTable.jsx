@@ -31,7 +31,11 @@ const TeacherTable = ({ data }) => {
       setLoading(true);
       const token = localStorage.getItem("accessToken");
       const response = await fetch(
+<<<<<<< HEAD
         "http://134.209.110.162:8000/universityadmin/teachers",
+=======
+        "//134.209.110.162:8000/universityadmin/teachers",
+>>>>>>> 0c2f1e87b816dd7105e09900e7812b70ed5c116f
         {
           method: "GET",
           headers: {
@@ -63,7 +67,11 @@ const TeacherTable = ({ data }) => {
       setDeleting((prev) => ({ ...prev, [tch_id]: true }));
       const token = localStorage.getItem("accessToken");
       const response = await fetch(
+<<<<<<< HEAD
         `http://134.209.110.162:8000/universityadmin/teacher/${tch_id}`,
+=======
+        `//134.209.110.162:8000/universityadmin/teacher/${tch_id}`,
+>>>>>>> 0c2f1e87b816dd7105e09900e7812b70ed5c116f
         {
           method: "DELETE",
           headers: {

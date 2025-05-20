@@ -31,7 +31,11 @@ const AdminTable = () => {
       setLoading(true);
       const token = localStorage.getItem("accessToken");
       const response = await fetch(
+<<<<<<< HEAD
         "http://134.209.110.162:8000/superadmin/universities",
+=======
+        "//134.209.110.162:8000/superadmin/universities",
+>>>>>>> 0c2f1e87b816dd7105e09900e7812b70ed5c116f
         {
           method: "GET",
           headers: {
@@ -63,7 +67,11 @@ const AdminTable = () => {
       setDeleting((prev) => ({ ...prev, [uni_id]: true }));
       const token = localStorage.getItem("accessToken");
       const response = await fetch(
+<<<<<<< HEAD
         `http://134.209.110.162:8000/superadmin/university/${uni_id}`,
+=======
+        `//134.209.110.162:8000/superadmin/university/${uni_id}`,
+>>>>>>> 0c2f1e87b816dd7105e09900e7812b70ed5c116f
         {
           method: "DELETE",
           headers: {
