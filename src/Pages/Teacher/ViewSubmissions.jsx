@@ -33,7 +33,7 @@ const ViewSubmissions = () => {
       };
 
       const response = await axios.get(
-        `http://134.209.110.162:8000/teacher/course/${courseId}/assignment/${assignmentId}/submissions`,
+        `https://134.209.110.162:8000/teacher/course/${courseId}/assignment/${assignmentId}/submissions`,
         config
       );
 
@@ -61,6 +61,8 @@ const ViewSubmissions = () => {
           path="Submissions"
           content="Submissions"
           showButton={false}
+          showBulkAddButton={false}
+
         />
         <IconButton
           aria-label="Go Back"

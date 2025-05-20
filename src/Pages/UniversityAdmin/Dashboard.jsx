@@ -110,7 +110,7 @@ const Dashboard = () => {
     setLoading(true); // Start spinner
 
     try {
-      const baseURL = "http://134.209.110.162:8000"; // Set the base URL here
+      const baseURL = "https://134.209.110.162:8000"; // Set the base URL here
       const endpoint = isStudentPage
         ? `${baseURL}/universityadmin/students/bulk-import`
         : `${baseURL}/universityadmin/teachers/bulk-import`;
@@ -180,7 +180,7 @@ const Dashboard = () => {
   return (
     <Flex direction="column">
       <Header />
-      <Box flex="1" mx={12} overflowY="auto" mt={8}>
+      <Box flex="1" pb={12} mx={{base:6,lg:12}} overflowY="auto" mt={8}>
         {/* Tabs for Navigation */}
         <Tabs
           variant="soft-rounded"
@@ -207,20 +207,8 @@ const Dashboard = () => {
           bodyText={bodyText}
           buttonText={`Add ${headingText}`}
           showBulkAddButton={true} // Set to false if you don't want to show the Bulk Add button
-
           onBulkAddClick={onOpen} // Open modal on Bulk Add click
         />
-        {/* <Box mt={4}>
-          {isStudentPage ? (
-            <Button colorScheme="blue" onClick={onOpen}>
-              Bulk Add Students
-            </Button>
-          ) : (
-            <Button colorScheme="blue" onClick={onOpen}>
-              Bulk Add Teachers
-            </Button>
-          )}
-        </Box> */}
 
         {isStudentPage ? (
           <StudentTable data={data} />

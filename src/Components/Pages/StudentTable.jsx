@@ -30,7 +30,7 @@ const StudentTable = ({ data }) => {
       setLoading(true);
       const token = localStorage.getItem("accessToken");
       const response = await fetch(
-        "http://134.209.110.162:8000/universityadmin/students",
+        "https://134.209.110.162:8000/universityadmin/students",
         {
           method: "GET",
           headers: {
@@ -62,7 +62,7 @@ const StudentTable = ({ data }) => {
       setDeleting((prev) => ({ ...prev, [std_id]: true }));
       const token = localStorage.getItem("accessToken");
       const response = await fetch(
-        `http://134.209.110.162:8000/universityadmin/student/${std_id}`,
+        `https://134.209.110.162:8000/universityadmin/student/${std_id}`,
         {
           method: "DELETE",
           headers: {
@@ -101,6 +101,7 @@ const StudentTable = ({ data }) => {
     <TableContainer
       mb={12}
       height="100%"
+      
       border="1px solid #e0e0e0"
       boxShadow="lg"
       borderRadius="xl"
@@ -157,7 +158,6 @@ const StudentTable = ({ data }) => {
           </Tbody>
         </Table>
       )}
-     
     </TableContainer>
   );
 };

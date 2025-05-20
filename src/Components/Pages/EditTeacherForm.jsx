@@ -40,7 +40,7 @@ function EditTeacherForm({ teacher }) {
       };
 
       const response = await axios.put(
-        `http://134.209.110.162:8000/universityadmin/teacher/${id}`,
+        `https://134.209.110.162:8000/universityadmin/teacher/${id}`,
         formData,
         config
       );

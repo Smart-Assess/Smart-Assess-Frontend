@@ -50,7 +50,7 @@ const Dashboard = () => {
       };
 
       const response = await axios.get(
-        "http://134.209.110.162:8000/teacher/courses",
+        "https://134.209.110.162:8000/teacher/courses",
         config
       );
 
@@ -79,7 +79,7 @@ const Dashboard = () => {
       setDeleting((prev) => ({ ...prev, [course_id]: true }));
       const token = localStorage.getItem("accessToken");
       const response = await fetch(
-        `http://134.209.110.162:8000/teacher/course/${course_id}`,
+        `https://134.209.110.162:8000/teacher/course/${course_id}`,
         {
           method: "DELETE",
           headers: {
@@ -230,24 +230,26 @@ const Dashboard = () => {
                       <Td>{course.name}</Td>
                       <Td>{course.group}</Td>
                       <Td>
-                        <IconButton
-                          aria-label="Edit"
-                          icon={<EditIcon />}
-                          size="sm"
-                          colorScheme="blue"
-                          onClick={() =>
-                            nav(`/teacher/editCourse/${course.id}`)
-                          }
-                        />
-                        <IconButton
-                          aria-label="Delete"
-                          ml={2}
-                          icon={<DeleteIcon />}
-                          size="sm"
-                          isLoading={deleting[course.id] || false}
-                          onClick={() => handleDelete(course.id)}
-                          colorScheme="blue"
-                        />
+                        <Flex>
+                          <IconButton
+                            aria-label="Edit"
+                            icon={<EditIcon />}
+                            size="sm"
+                            colorScheme="blue"
+                            onClick={() =>
+                              nav(`/teacher/editCourse/${course.id}`)
+                            }
+                          />
+                          <IconButton
+                            aria-label="Delete"
+                            ml={2}
+                            icon={<DeleteIcon />}
+                            size="sm"
+                            isLoading={deleting[course.id] || false}
+                            onClick={() => handleDelete(course.id)}
+                            colorScheme="blue"
+                          />
+                        </Flex>
                       </Td>
                     </Tr>
                   ))

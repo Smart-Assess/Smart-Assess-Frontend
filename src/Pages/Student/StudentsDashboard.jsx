@@ -42,7 +42,7 @@ const StudentsDashboard = () => {
           Authorization: token ? `Bearer ${token}` : "",
         };
 
-        const response = await fetch("http://134.209.110.162:8000/student/courses", {
+        const response = await fetch("https://134.209.110.162:8000/student/courses", {
           method: "GET",
           headers,
         });

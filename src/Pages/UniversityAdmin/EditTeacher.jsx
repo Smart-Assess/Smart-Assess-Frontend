@@ -20,7 +20,7 @@ const EditTeacher = () => {
       setLoading(true);
       const token = localStorage.getItem("accessToken");
       const response = await fetch(
-        `http://134.209.110.162:8000/universityadmin/teacher/${id}`,
+        `https://134.209.110.162:8000/universityadmin/teacher/${id}`,
         {
           method: "GET",
           headers: {
@@ -50,7 +50,7 @@ const EditTeacher = () => {
   return (
     <Flex direction="column">
       <Header />
-      <Box flex="1" mx={12} overflowY="auto" paddingBottom="80px">
+      <Box flex="1" mb={6}  mx={{base:6,lg:12}} overflowY="auto" paddingBottom="80px">
         <Flex alignItems="center" justifyContent="space-between" my={6}></Flex>
         <EditButtonSection
           image={teacher?.image_url}
