@@ -21,7 +21,7 @@ const EditStudent = () => {
       setLoading(true);
       const token = localStorage.getItem("accessToken");
       const response = await fetch(
-        `https://134.209.110.162:8000/universityadmin/student/${id}`,
+        `http://134.209.110.162:8000/universityadmin/student/${id}`,
         {
           method: "GET",
           headers: {

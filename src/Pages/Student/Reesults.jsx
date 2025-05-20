@@ -36,7 +36,7 @@ const Reesults = () => {
       const config = { headers: { Authorization: `Bearer ${token}` } };
 
       const response = await axios.get(
-        `https://134.209.110.162:8000/student/assignment/${assignment_id}/result`,
+        `http://134.209.110.162:8000/student/assignment/${assignment_id}/result`,
         config
       );
 

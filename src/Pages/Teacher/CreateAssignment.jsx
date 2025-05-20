@@ -11,7 +11,7 @@ const CreateAssignment = () => {
   return (
     <Flex direction="column">
       <Header />
-      <Box flex="1" mx={12} overflowY="auto" paddingBottom="80px">
+      <Box flex="1" mx={{base:6,lg:12}} mb={6} overflowY="auto" paddingBottom="80px">
         <Flex alignItems="center" justifyContent="space-between" my={6}>
           <Box>
             <Heading color="#3D4C5E" fontSize="32px" fontWeight="500">

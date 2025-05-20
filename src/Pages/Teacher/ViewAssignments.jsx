@@ -28,7 +28,7 @@ const ViewAssignments = () => {
       };
 
       const response = await axios.get(
-        `https://134.209.110.162:8000/teacher/course/${courseId}/assignments`,
+        `http://134.209.110.162:8000/teacher/course/${courseId}/assignments`,
         config
       );
 
@@ -49,7 +49,7 @@ const ViewAssignments = () => {
   return (
     <Flex direction="column" minH="100vh">
       <Header />
-      <Box flex="1" mx={12} overflowY="auto" paddingBottom="80px">
+      <Box flex="1" mx={{base:6,lg:12}} overflowY="auto" paddingBottom="80px">
         <HeadingButtonSection
           path="Assignments"
           content="Marketing"

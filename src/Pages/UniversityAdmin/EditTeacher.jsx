@@ -20,7 +20,7 @@ const EditTeacher = () => {
       setLoading(true);
       const token = localStorage.getItem("accessToken");
       const response = await fetch(
-        `https://134.209.110.162:8000/universityadmin/teacher/${id}`,
+        `http://134.209.110.162:8000/universityadmin/teacher/${id}`,
         {
           method: "GET",
           headers: {

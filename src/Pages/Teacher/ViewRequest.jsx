@@ -25,7 +25,7 @@ const ViewRequest = () => {
       };
 
       const response = await axios.get(
-        `https://134.209.110.162:8000/teacher/course/${courseId}/requests`,
+        `http://134.209.110.162:8000/teacher/course/${courseId}/requests`,
         config
       );
 
@@ -47,7 +47,7 @@ const ViewRequest = () => {
   return (
     <Flex direction="column">
       <Header />
-      <Box flex="1" mx={12} overflowY="auto" paddingBottom="80px">
+      <Box flex="1" mx={{base:6,lg:12}} overflowY="auto" paddingBottom="80px">
         <Flex alignItems="center" justifyContent="space-between" my={6}>
           <Box>
             <Heading color="#3D4C5E" fontSize="32px" fontWeight="500">

@@ -28,6 +28,7 @@ const EditCourse = () => {
           maxW={{ base: "360px", md: "100%" }}  // Match Header width on mobile
           mx="auto"
           px={{ base: 4, md: 12 }}
+          mb={6}
         >
           <Flex
             direction={{ base: "column", md: "row" }}

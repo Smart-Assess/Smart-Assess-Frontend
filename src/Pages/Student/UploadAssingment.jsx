@@ -34,6 +34,8 @@ const UploadAssignments = () => {
   const cancelRef = useRef();
   const toast = useToast();
 
+
+
   const extractFileName = (url) => {
     if (!url) return "";
     // Extract the actual filename from the UUID-based filename
@@ -57,7 +59,7 @@ const UploadAssignments = () => {
       try {
         const token = localStorage.getItem("accessToken");
         const response = await fetch(
-          `https://134.209.110.162:8000/student/assignment/${assignment_id}`,
+          `http://134.209.110.162:8000/student/assignment/${assignment_id}`,
           {
             method: "GET",
             headers: {
@@ -114,8 +116,8 @@ const UploadAssignments = () => {
       
       // Determine if this is a new submission or an update based on assignment state
       const endpoint = assignment?.submission?.id 
-        ? `https://134.209.110.162:8000/student/assignment/${assignment_id}/update-submission`
-        : `https://134.209.110.162:8000/student/assignment/${assignment_id}/submit`;
+        ? `http://134.209.110.162:8000/student/assignment/${assignment_id}/update-submission`
+        : `http://134.209.110.162:8000/student/assignment/${assignment_id}/submit`;
       
       const method = assignment?.submission?.id ? "PUT" : "POST";
       
@@ -141,6 +143,7 @@ const UploadAssignments = () => {
 
       setFiles([]); // Clear selected files after submission
       setError("");
+      nav(`/student/allAssignments/${course_id}`);
       
       toast({
         title: assignment?.submission?.id 
@@ -184,6 +187,10 @@ const UploadAssignments = () => {
     files.length > 0 ? files[0].name : 
     assignment.submission.original_filename || extractFileName(assignment.submission.pdf_url) :
     "";
+
+    console.log(isPastDue)
+    console.log(isSubmitted)
+    console.log(files.length==0)
 
   return (
     <Flex direction="column" minH="100vh">
@@ -272,9 +279,9 @@ const UploadAssignments = () => {
               <>
                 <Button
                   colorScheme="orange"
-                  mr={2}
+                  mr={{base:0,lg:2}}
                   onClick={handleSubmitAssignment}
-                  isDisabled={isPastDue || isSubmissionEvaluated || files.length === 0}
+                  isDisabled={isPastDue  || assignment.submission.pdf_url === null}
                   width={{ base: "100%", sm: "auto" }}
                   isLoading={postLoading}
                   loadingText="Submitting"

@@ -34,7 +34,7 @@ const CourseMaterial = () => {
         }
 
         const response = await fetch(
-          `https://134.209.110.162:8000/student/course/${course_id}/materials`,
+          `http://134.209.110.162:8000/student/course/${course_id}/materials`,
           {
             method: "GET",
             headers: {
@@ -82,6 +82,7 @@ const CourseMaterial = () => {
             <HeadingButtonSection
               path="Course Materials"
               content="Uploaded Course Materials"
+              showBulkAddButton={false}
               showButton={false}
             />
           </Box>

@@ -33,7 +33,7 @@ const AllAssignments = () => {
         if (!course_id) throw new Error("Invalid Course ID.");
 
         const response = await fetch(
-          `https://134.209.110.162:8000/student/course/${course_id}/assignments`,
+          `http://134.209.110.162:8000/student/course/${course_id}/assignments`,
           {
             method: "GET",
             headers: {
@@ -84,6 +84,7 @@ const AllAssignments = () => {
           content="View Assignments"
           showButton={false}
           showSearchBar={false}
+          showBulkAddButton={false}
         />
 
         {loading ? (
@@ -100,7 +101,7 @@ const AllAssignments = () => {
               <Tab>Forthcoming</Tab>
               <Tab>Submitted</Tab>
             </TabList>
-            <TabPanels >
+            <TabPanels>
               {/* Upcoming Assignments */}
               <TabPanel px={0}>
                 {upcomingAssignments.length === 0 ? (
