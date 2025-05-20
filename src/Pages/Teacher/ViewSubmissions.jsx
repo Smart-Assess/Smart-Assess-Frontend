@@ -1,9 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Box, Flex, IconButton, Text, Spinner } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  IconButton,
+  Text,
+  Spinner,
+  useToast,
+} from "@chakra-ui/react";
 import Header from "../../Components/Pages/Header";
 import Footer from "../../Components/Pages/Footer";
 import HeadingButtonSection from "../../Components/Pages/HeadingButtonSection";
-import { ArrowBackIcon } from "@chakra-ui/icons";
+import { ArrowBackIcon, DeleteIcon } from "@chakra-ui/icons";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import {
@@ -53,16 +60,65 @@ const ViewSubmissions = () => {
 
   const nav = useNavigate();
 
+  const [deleting, setDeleting] = useState({});
+  const toast = useToast();
+
+  const handleDelete = async (submission_id) => {
+    try {
+      setDeleting((prev) => ({ ...prev, [submission_id]: true }));
+      const token = localStorage.getItem("accessToken");
+      const response = await fetch(
+        `http://134.209.110.162:8000/teacher/course/${courseId}/assignment/${assignmentId}/submission/${submission_id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: token ? `Bearer ${token}` : "",
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Error deleting university");
+      }
+
+      toast({
+        title: "University deleted successfully.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+
+      setAssignments((prev) =>
+        prev.filter((uni) => uni.submission_id !== submission_id)
+      );
+    } catch (err) {
+      console.error("Delete error:", err.message);
+      toast({
+        title: "Failed to delete university.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    } finally {
+      setDeleting((prev) => ({ ...prev, [submission_id]: false })); // Reset only the clicked university
+    }
+  };
+
   return (
     <Flex direction="column" minH="100vh">
       <Header />
-      <Box flex="1" mx={12} overflowY="auto" paddingBottom="80px">
+      <Box
+        flex="1"
+        mx={{ base: 6, lg: 12 }}
+        overflowY="auto"
+        paddingBottom="80px"
+      >
         <HeadingButtonSection
           path="Submissions"
           content="Submissions"
           showButton={false}
           showBulkAddButton={false}
-
         />
         <IconButton
           aria-label="Go Back"
@@ -99,6 +155,7 @@ const ViewSubmissions = () => {
                   <Th>Section</Th>
                   <Th>Batch</Th>
                   <Th></Th>
+                  <Th></Th>
                 </Tr>
               </Thead>
               <Tbody>
@@ -121,6 +178,17 @@ const ViewSubmissions = () => {
                           View PDF
                         </Button>
                       ) : null}
+                    </Td>
+                    <Td>
+                      <IconButton
+                        aria-label="Delete"
+                        ml={2}
+                        icon={<DeleteIcon />}
+                        size="sm"
+                        isLoading={deleting[assignment.submission_id] || false}
+                        onClick={() => handleDelete(assignment.submission_id)}
+                        colorScheme="blue"
+                      />
                     </Td>
                   </Tr>
                 ))}
