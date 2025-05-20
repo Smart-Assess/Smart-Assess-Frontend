@@ -28,7 +28,7 @@ const ViewAssignments = () => {
       };
 
       const response = await axios.get(
-        `http://127.0.0.1:8000/teacher/course/${courseId}/assignments`,
+        `http://134.209.110.162:8000/teacher/course/${courseId}/assignments`,
         config
       );
 
@@ -54,6 +54,8 @@ const ViewAssignments = () => {
           path="Assignments"
           content="Marketing"
           showButton={false}
+          showBulkAddButton={false}
+
         />
 
         <IconButton

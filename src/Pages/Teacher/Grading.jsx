@@ -58,7 +58,7 @@ const Grading = () => {
       const config = { headers: { Authorization: `Bearer ${token}` } };
 
       const response = await axios.get(
-        `http://127.0.0.1:8000/teacher/course/${courseId}/assignment/${assignmentId}`,
+        `http://134.209.110.162:8000/teacher/course/${courseId}/assignment/${assignmentId}`,
         config
       );
 
@@ -85,7 +85,7 @@ const Grading = () => {
       const config = { headers: { Authorization: `Bearer ${token}` } };
 
       const response = await axios.get(
-        `http://127.0.0.1:8000/teacher/course/${courseId}/assignment/${assignmentId}/total-scores`,
+        `http://134.209.110.162:8000/teacher/course/${courseId}/assignment/${assignmentId}/total-scores`,
         config
       );
 
@@ -106,7 +106,7 @@ const Grading = () => {
       const config = { headers: { Authorization: `Bearer ${token}` } };
 
       const response = await axios.get(
-        `http://127.0.0.1:8000/teacher/course/${courseId}/assignment/${assignmentId}/submissions?page=1&limit=1`,
+        `http://134.209.110.162:8000/teacher/course/${courseId}/assignment/${assignmentId}/submissions?page=1&limit=1`,
         config
       );
 
@@ -142,7 +142,7 @@ const Grading = () => {
       };
 
       const response = await axios.post(
-        `http://localhost:8000/teacher/${courseId}/assignment/${assignmentId}/evaluate`,
+        `http://134.209.110.162:8000/teacher/${courseId}/assignment/${assignmentId}/evaluate`,
         jsonData,
         config
       );

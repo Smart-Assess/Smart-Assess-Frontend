@@ -57,7 +57,7 @@ const UploadAssignments = () => {
       try {
         const token = localStorage.getItem("accessToken");
         const response = await fetch(
-          `http://127.0.0.1:8000/student/assignment/${assignment_id}`,
+          `http://134.209.110.162:8000/student/assignment/${assignment_id}`,
           {
             method: "GET",
             headers: {
@@ -114,8 +114,8 @@ const UploadAssignments = () => {
       
       // Determine if this is a new submission or an update based on assignment state
       const endpoint = assignment?.submission?.id 
-        ? `http://127.0.0.1:8000/student/assignment/${assignment_id}/update-submission`
-        : `http://127.0.0.1:8000/student/assignment/${assignment_id}/submit`;
+        ? `http://134.209.110.162:8000/student/assignment/${assignment_id}/update-submission`
+        : `http://134.209.110.162:8000/student/assignment/${assignment_id}/submit`;
       
       const method = assignment?.submission?.id ? "PUT" : "POST";
       

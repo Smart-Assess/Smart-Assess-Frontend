@@ -32,6 +32,7 @@ const Dashboard = () => {
 
   const [loading, setLoading] = useState(true);
   const [courses, setCourses] = useState([]);
+  console.log(courses);
   const [selectedBatch, setSelectedBatch] = useState("");
   const [selectedSection, setSelectedSection] = useState("");
   const [deleting, setDeleting] = useState(false);
@@ -49,7 +50,7 @@ const Dashboard = () => {
       };
 
       const response = await axios.get(
-        "http://127.0.0.1:8000/teacher/courses",
+        "http://134.209.110.162:8000/teacher/courses",
         config
       );
 
@@ -78,7 +79,7 @@ const Dashboard = () => {
       setDeleting((prev) => ({ ...prev, [course_id]: true }));
       const token = localStorage.getItem("accessToken");
       const response = await fetch(
-        `http://127.0.0.1:8000/teacher/course/${course_id}`,
+        `http://134.209.110.162:8000/teacher/course/${course_id}`,
         {
           method: "DELETE",
           headers: {

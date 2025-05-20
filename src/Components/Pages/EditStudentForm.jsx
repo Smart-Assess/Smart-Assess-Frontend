@@ -45,7 +45,7 @@ function EditStudentForm({ student, fileName, file, setFile, setFileName }) {
       };
 
       const response = await axios.put(
-        `http://127.0.0.1:8000/universityadmin/student/${id}`,
+        `http://134.209.110.162:8000/universityadmin/student/${id}`,
         formData,
         config
       );

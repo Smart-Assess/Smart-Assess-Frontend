@@ -34,7 +34,7 @@ const CourseMaterial = () => {
         }
 
         const response = await fetch(
-          `http://127.0.0.1:8000/student/course/${course_id}/materials`,
+          `http://134.209.110.162:8000/student/course/${course_id}/materials`,
           {
             method: "GET",
             headers: {

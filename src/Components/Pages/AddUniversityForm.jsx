@@ -68,7 +68,7 @@ function AddUniversityForm({ showUpload }) {
       };
 
       const response = await axios.post(
-        "http://127.0.0.1:8000/superadmin/university",
+        "http://134.209.110.162:8000/superadmin/university",
         formData,
         config
       );

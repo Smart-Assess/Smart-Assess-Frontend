@@ -48,7 +48,7 @@ const TableofAssignmentsList = ({
 
       const token = localStorage.getItem("accessToken");
       const response = await fetch(
-        `http://127.0.0.1:8000/teacher/course/${courseId}/assignment/${assignmentId}`,
+        `http://134.209.110.162:8000/teacher/course/${courseId}/assignment/${assignmentId}`,
         {
           method: "DELETE",
           headers: {
