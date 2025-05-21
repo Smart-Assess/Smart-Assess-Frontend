@@ -6,11 +6,15 @@ import FormInput from "./../UI/FormInput";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { editTeacher } from "../../data/TeacherData";
+import ConfirmModal from "./ConfirmationModal";
+
 function EditTeacherForm({ teacher }) {
   const methods = useForm();
   const { handleSubmit } = methods;
   const nav = useNavigate();
   const toast = useToast();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [pendingAction, setPendingAction] = useState(null);
 
   useEffect(() => {
     if (teacher) {
@@ -22,6 +26,16 @@ function EditTeacherForm({ teacher }) {
 
   const [updateLoading, setupdateLaoding] = useState();
   const { id } = useParams();
+  useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      if (methods.formState.isDirty) {
+        e.preventDefault();
+        e.returnValue = "";
+      }
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [methods.formState.isDirty]);
 
   const onSubmit = async (data) => {
     try {
@@ -86,7 +100,16 @@ function EditTeacherForm({ teacher }) {
 
                 <Box display="flex" justifyContent="flex-end" mt="6">
                   <Button
-                    onClick={() => nav("/university/teacher/Dashboard")}
+                    onClick={() => {
+                      if (methods.formState.isDirty) {
+                        setPendingAction(
+                          () => () => nav("/university/teacher/Dashboard")
+                        );
+                        setIsModalOpen(true);
+                      } else {
+                        nav("/university/teacher/Dashboard");
+                      }
+                    }}
                     variant="outline"
                     colorScheme="gray"
                     mr="4"
@@ -104,6 +127,17 @@ function EditTeacherForm({ teacher }) {
               </form>
             </FormProvider>
           </Box>
+          <ConfirmModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            onConfirm={() => {
+              setIsModalOpen(false);
+              methods.reset();
+              if (pendingAction) pendingAction();
+            }}
+            title="Discard changes?"
+            message="You have unsaved changes. Are you sure you want to leave? Changes will be lost."
+          />
         </Flex>
       </Box>
     </Flex>

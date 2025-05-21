@@ -18,14 +18,16 @@ import axios from "axios";
 import { useForm, FormProvider } from "react-hook-form";
 import FormInput from "../../Components/UI/FormInput";
 import { createAssignment } from "../../data/UniversityData";
-import AssignmentsList from "../Student/AssignmentsList";
-import { ChevronDownIcon, EditIcon, DeleteIcon } from "@chakra-ui/icons";
+
 import Header from "../../Components/Pages/Header";
 import Footer from "../../Components/Pages/Footer";
+import ConfirmModal from "../../Components/Pages/ConfirmationModal";
 
 const EditAssignment = () => {
   const { courseId, assignmentId } = useParams();
   const [assignment, setAssignment] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [pendingAction, setPendingAction] = useState(null);
   const [uploadFileName, setUploadFileName] = useState(null);
   const [newFile, setNewFile] = useState(null);
   const [isAssignmentLoading, setIsAssignmentLoading] = useState(true);
@@ -35,6 +37,16 @@ const EditAssignment = () => {
   const navigate = useNavigate();
 
   const toast = useToast();
+  useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      if (methods.formState.isDirty) {
+        e.preventDefault();
+        e.returnValue = "";
+      }
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [methods.formState.isDirty]);
 
   useEffect(() => {
     const fetchAssignmentData = async () => {
@@ -241,9 +253,17 @@ const EditAssignment = () => {
 
                 <Box display="flex" justifyContent="flex-end" mt="6">
                   <Button
-                    onClick={() =>
-                      navigate(`/teacher/viewAssignments/${courseId}`)
-                    }
+                    onClick={() => {
+                      if (methods.formState.isDirty) {
+                        setPendingAction(
+                          () => () =>
+                            navigate(`/teacher/viewAssignments/${courseId}`)
+                        );
+                        setIsModalOpen(true);
+                      } else {
+                        navigate(`/teacher/viewAssignments/${courseId}`);
+                      }
+                    }}
                     variant="outline"
                     colorScheme="gray"
                     mr="4"
@@ -259,6 +279,17 @@ const EditAssignment = () => {
                   </Button>
                 </Box>
               </form>
+              <ConfirmModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                onConfirm={() => {
+                  setIsModalOpen(false);
+                  methods.reset();
+                  if (pendingAction) pendingAction();
+                }}
+                title="Discard changes?"
+                message="You have unsaved changes. Are you sure you want to leave? Changes will be lost."
+              />
             </FormProvider>
           </>
         )}

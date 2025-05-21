@@ -19,6 +19,7 @@ import FormInput from "./../UI/FormInput";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { addCourse } from "../../data/UniversityData";
+import ConfirmModal from "./ConfirmationModal";
 
 function EditCourseForm({ showUpload, courseId, setCourseCodeId }) {
   const methods = useForm();
@@ -27,6 +28,10 @@ function EditCourseForm({ showUpload, courseId, setCourseCodeId }) {
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [existingFiles, setExistingFiles] = useState([]);
   const [filesToRemove, setFilesToRemove] = useState([]);
+  // ...existing code...
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [pendingAction, setPendingAction] = useState(null);
+  // ...existing code...
   const [error, setError] = useState(null);
   const nav = useNavigate();
 
@@ -38,6 +43,18 @@ function EditCourseForm({ showUpload, courseId, setCourseCodeId }) {
     return parts.length > 1 ? parts.slice(1).join("_") : fullName;
   };
 
+  // ...existing code...
+  useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      if (methods.formState.isDirty) {
+        e.preventDefault();
+        e.returnValue = "";
+      }
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [methods.formState.isDirty]);
+  // ...existing code...
   const fetchData = async () => {
     try {
       const token = localStorage.getItem("accessToken");
@@ -60,10 +77,12 @@ function EditCourseForm({ showUpload, courseId, setCourseCodeId }) {
         methods.setValue("pdfs", courseData.pdf_urls || []);
 
         if (courseData.pdf_urls && courseData.pdf_urls.length > 0) {
-          setExistingFiles(courseData.pdf_urls.map(url => ({
-            name: getFilenameFromUrl(url),
-            url: url
-          })));
+          setExistingFiles(
+            courseData.pdf_urls.map((url) => ({
+              name: getFilenameFromUrl(url),
+              url: url,
+            }))
+          );
         }
       }
     } catch (err) {
@@ -165,7 +184,7 @@ function EditCourseForm({ showUpload, courseId, setCourseCodeId }) {
   const handleExistingFileDelete = (url) => {
     // Mark file for removal on the server
     setFilesToRemove((prev) => [...prev, url]);
-    
+
     // Remove from displayed files
     setExistingFiles((prev) => prev.filter((file) => file.url !== url));
   };
@@ -270,9 +289,9 @@ function EditCourseForm({ showUpload, courseId, setCourseCodeId }) {
                           <Button
                             size="sm"
                             colorScheme="red"
-                            onClick={() => 
-                              file.isExisting 
-                                ? handleExistingFileDelete(file.url) 
+                            onClick={() =>
+                              file.isExisting
+                                ? handleExistingFileDelete(file.url)
                                 : handleNewFileDelete(file.index)
                             }
                           >
@@ -312,7 +331,16 @@ function EditCourseForm({ showUpload, courseId, setCourseCodeId }) {
                     gap={4}
                   >
                     <Button
-                      onClick={() => nav("/teacher/Dashboard")}
+                      onClick={() => {
+                        if (methods.formState.isDirty) {
+                          setPendingAction(
+                            () => () => nav("/teacher/Dashboard")
+                          );
+                          setIsModalOpen(true);
+                        } else {
+                          nav("/teacher/Dashboard");
+                        }
+                      }}
                       variant="outline"
                       colorScheme="gray"
                       size={{ base: "sm", md: "md" }}
@@ -333,6 +361,17 @@ function EditCourseForm({ showUpload, courseId, setCourseCodeId }) {
             </Box>
           </Flex>
         )}
+        <ConfirmModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          onConfirm={() => {
+            setIsModalOpen(false);
+            methods.reset(); // Reset form to initial values
+            if (pendingAction) pendingAction();
+          }}
+          title="Discard changes?"
+          message="You have unsaved changes. Are you sure you want to leave? Changes will be lost."
+        />
       </Box>
     </Flex>
   );
