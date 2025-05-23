@@ -38,7 +38,7 @@ const ViewRequestTable = ({ data, courses, courseId, loading }) => {
       };
 
       const response = await axios.put(
-        `http://134.209.110.162:8000/teacher/course/${courseId}/request/${requestId}`,
+        `https://smartassess-backend-t3l93.ondigitalocean.app/teacher/course/${courseId}/request/${requestId}`,
         payload,
         config
       );

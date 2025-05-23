@@ -68,7 +68,7 @@ function AddUniversityForm({ showUpload }) {
       };
 
       const response = await axios.post(
-        "http://134.209.110.162:8000/superadmin/university",
+        "https://smartassess-backend-t3l93.ondigitalocean.app/superadmin/university",
         formData,
         config
       );

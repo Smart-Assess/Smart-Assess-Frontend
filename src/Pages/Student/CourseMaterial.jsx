@@ -34,7 +34,7 @@ const CourseMaterial = () => {
         }
 
         const response = await fetch(
-          `http://134.209.110.162:8000/student/course/${course_id}/materials`,
+          `https://smartassess-backend-t3l93.ondigitalocean.app/student/course/${course_id}/materials`,
           {
             method: "GET",
             headers: {

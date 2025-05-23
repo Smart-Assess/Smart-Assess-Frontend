@@ -36,7 +36,7 @@ const TeacherResults = () => {
       const config = { headers: { Authorization: `Bearer ${token}` } };
 
       const response = await axios.get(
-        `http://134.209.110.162:8000/teacher/course/${course_id}/assignment/${assignment_id}/student/${student_id}/evaluation`,
+        `https://smartassess-backend-t3l93.ondigitalocean.app/teacher/course/${course_id}/assignment/${assignment_id}/student/${student_id}/evaluation`,
         config
       );
 

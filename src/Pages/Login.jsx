@@ -38,7 +38,7 @@ const Login = () => {
         client_secret: "",
       }).toString();
 
-      const response = await fetch("http://134.209.110.162:8000/login", {
+      const response = await fetch("https://smartassess-backend-t3l93.ondigitalocean.app/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",

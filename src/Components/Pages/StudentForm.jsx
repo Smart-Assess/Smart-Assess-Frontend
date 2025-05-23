@@ -64,7 +64,7 @@ function StudentForm({ show }) {
       };
 
       const response = await axios.post(
-        "http://134.209.110.162:8000/universityadmin/student",
+        "https://smartassess-backend-t3l93.ondigitalocean.app/universityadmin/student",
         formData,
         config
       );

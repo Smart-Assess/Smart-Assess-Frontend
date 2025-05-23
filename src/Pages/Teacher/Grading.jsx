@@ -58,7 +58,7 @@ const Grading = () => {
       const config = { headers: { Authorization: `Bearer ${token}` } };
 
       const response = await axios.get(
-        `http://134.209.110.162:8000/teacher/course/${courseId}/assignment/${assignmentId}`,
+        `https://smartassess-backend-t3l93.ondigitalocean.app/teacher/course/${courseId}/assignment/${assignmentId}`,
         config
       );
 
@@ -85,7 +85,7 @@ const Grading = () => {
       const config = { headers: { Authorization: `Bearer ${token}` } };
 
       const response = await axios.get(
-        `http://134.209.110.162:8000/teacher/course/${courseId}/assignment/${assignmentId}/total-scores`,
+        `https://smartassess-backend-t3l93.ondigitalocean.app/teacher/course/${courseId}/assignment/${assignmentId}/total-scores`,
         config
       );
 
@@ -106,7 +106,7 @@ const Grading = () => {
       const config = { headers: { Authorization: `Bearer ${token}` } };
 
       const response = await axios.get(
-        `http://134.209.110.162:8000/teacher/course/${courseId}/assignment/${assignmentId}/submissions?page=1&limit=1`,
+        `https://smartassess-backend-t3l93.ondigitalocean.app/teacher/course/${courseId}/assignment/${assignmentId}/submissions?page=1&limit=1`,
         config
       );
 
@@ -142,7 +142,7 @@ const Grading = () => {
       };
 
       const response = await axios.post(
-        `http://134.209.110.162:8000/teacher/${courseId}/assignment/${assignmentId}/evaluate`,
+        `https://smartassess-backend-t3l93.ondigitalocean.app/teacher/${courseId}/assignment/${assignmentId}/evaluate`,
         jsonData,
         config
       );

@@ -60,7 +60,7 @@ function EditCourseForm({ showUpload, courseId, setCourseCodeId }) {
       const token = localStorage.getItem("accessToken");
       const config = { headers: { Authorization: `Bearer ${token}` } };
       const response = await axios.get(
-        `http://134.209.110.162:8000/teacher/course/${courseId}`,
+        `https://smartassess-backend-t3l93.ondigitalocean.app/teacher/course/${courseId}`,
         config
       );
 
@@ -126,7 +126,7 @@ function EditCourseForm({ showUpload, courseId, setCourseCodeId }) {
       };
 
       const response = await axios.put(
-        `http://134.209.110.162:8000/teacher/course/${courseId}`,
+        `https://smartassess-backend-t3l93.ondigitalocean.app/teacher/course/${courseId}`,
         formData,
         config
       );

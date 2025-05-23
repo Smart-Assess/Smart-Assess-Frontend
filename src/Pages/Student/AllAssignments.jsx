@@ -33,7 +33,7 @@ const AllAssignments = () => {
         if (!course_id) throw new Error("Invalid Course ID.");
 
         const response = await fetch(
-          `http://134.209.110.162:8000/student/course/${course_id}/assignments`,
+          `https://smartassess-backend-t3l93.ondigitalocean.app/student/course/${course_id}/assignments`,
           {
             method: "GET",
             headers: {

@@ -50,7 +50,7 @@ const Dashboard = () => {
       };
 
       const response = await axios.get(
-        "http://134.209.110.162:8000/teacher/courses",
+        "https://smartassess-backend-t3l93.ondigitalocean.app/teacher/courses",
         config
       );
 
@@ -79,7 +79,7 @@ const Dashboard = () => {
       setDeleting((prev) => ({ ...prev, [course_id]: true }));
       const token = localStorage.getItem("accessToken");
       const response = await fetch(
-        `http://134.209.110.162:8000/teacher/course/${course_id}`,
+        `https://smartassess-backend-t3l93.ondigitalocean.app/teacher/course/${course_id}`,
         {
           method: "DELETE",
           headers: {

@@ -54,7 +54,7 @@ function EditTeacherForm({ teacher }) {
       };
 
       const response = await axios.put(
-        `http://134.209.110.162:8000/universityadmin/teacher/${id}`,
+        `https://smartassess-backend-t3l93.ondigitalocean.app/universityadmin/teacher/${id}`,
         formData,
         config
       );

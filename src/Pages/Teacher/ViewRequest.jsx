@@ -25,7 +25,7 @@ const ViewRequest = () => {
       };
 
       const response = await axios.get(
-        `http://134.209.110.162:8000/teacher/course/${courseId}/requests`,
+        `https://smartassess-backend-t3l93.ondigitalocean.app/teacher/course/${courseId}/requests`,
         config
       );
 

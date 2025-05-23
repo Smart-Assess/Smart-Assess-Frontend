@@ -20,7 +20,7 @@ const EditTeacher = () => {
       setLoading(true);
       const token = localStorage.getItem("accessToken");
       const response = await fetch(
-        `http://134.209.110.162:8000/universityadmin/teacher/${id}`,
+        `https://smartassess-backend-t3l93.ondigitalocean.app/universityadmin/teacher/${id}`,
         {
           method: "GET",
           headers: {

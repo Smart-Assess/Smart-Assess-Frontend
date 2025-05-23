@@ -40,7 +40,7 @@ const ViewSubmissions = () => {
       };
 
       const response = await axios.get(
-        `http://134.209.110.162:8000/teacher/course/${courseId}/assignment/${assignmentId}/submissions`,
+        `https://smartassess-backend-t3l93.ondigitalocean.app/teacher/course/${courseId}/assignment/${assignmentId}/submissions`,
         config
       );
 
@@ -68,7 +68,7 @@ const ViewSubmissions = () => {
       setDeleting((prev) => ({ ...prev, [submission_id]: true }));
       const token = localStorage.getItem("accessToken");
       const response = await fetch(
-        `http://134.209.110.162:8000/teacher/course/${courseId}/assignment/${assignmentId}/submission/${submission_id}`,
+        `https://smartassess-backend-t3l93.ondigitalocean.app/teacher/course/${courseId}/assignment/${assignmentId}/submission/${submission_id}`,
         {
           method: "DELETE",
           headers: {

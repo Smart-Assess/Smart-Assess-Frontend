@@ -39,7 +39,7 @@ const JoinCourseModal = ({ isOpen, onClose,setCourseCode,courseCode}) => {
       formData.append("course_code", courseCode);
 
       const response = await axios.post(
-        "http://134.209.110.162:8000/student/course/join",
+        "https://smartassess-backend-t3l93.ondigitalocean.app/student/course/join",
         formData,
         config
       );

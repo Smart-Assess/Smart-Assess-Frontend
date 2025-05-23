@@ -74,7 +74,7 @@ function EditUniversityForm({ university, file, setFileName }) {
       };
 
       const response = await axios.put(
-        `http://134.209.110.162:8000/superadmin/university/${id}`,
+        `https://smartassess-backend-t3l93.ondigitalocean.app/superadmin/university/${id}`,
         formData,
         config
       );

@@ -50,7 +50,7 @@ function CreateAssignmentForm({ showUpload, courseId }) {
       };
 
       const response = await axios.post(
-        `http://134.209.110.162:8000/teacher/course/${courseId}/assignment`,
+        `https://smartassess-backend-t3l93.ondigitalocean.app/teacher/course/${courseId}/assignment`,
         formData,
         config
       );
