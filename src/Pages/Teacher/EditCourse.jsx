@@ -1,9 +1,18 @@
 import React, { useState } from "react";
-import { Box, Flex, Heading, Text, Button, Stack } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Heading,
+  Text,
+  Button,
+  Stack,
+  IconButton,
+} from "@chakra-ui/react";
 import Header from "../../Components/Pages/Header";
 import Footer from "../../Components/Pages/Footer";
 import { useNavigate, useParams } from "react-router-dom";
 import EditCourseForm from "../../Components/Pages/EditCourseForm";
+import { ArrowBackIcon } from "@chakra-ui/icons";
 
 const EditCourse = () => {
   const { courseId } = useParams();
@@ -22,14 +31,26 @@ const EditCourse = () => {
   return (
     <Flex direction="column" minH="100vh">
       <Header />
+
       <Box flex="1" pb="80px">
         <Box
           w="100%"
-          maxW={{ base: "360px", md: "100%" }}  // Match Header width on mobile
+          maxW={{ base: "360px", md: "100%" }} // Match Header width on mobile
           mx="auto"
           px={{ base: 4, md: 12 }}
           mb={6}
         >
+          <Box mt={6}>
+            <IconButton
+              aria-label="Go Back"
+              icon={<ArrowBackIcon />}
+              onClick={() =>
+              nav("/teacher/Dashboard")
+              }
+              mr={4}
+            />
+          </Box>
+
           <Flex
             direction={{ base: "column", md: "row" }}
             alignItems={{ base: "flex-start", md: "center" }}

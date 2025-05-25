@@ -11,6 +11,7 @@ import {
   TabList,
   TabPanels,
   Tab,
+  IconButton,
   TabPanel,
 } from "@chakra-ui/react";
 import Header from "../../Components/Pages/Header";
@@ -18,6 +19,7 @@ import Footer from "../../Components/Pages/Footer";
 import HeadingButtonSection from "../../Components/Pages/HeadingButtonSection";
 import { useNavigate, useParams } from "react-router-dom";
 import Math from "./../../assets/images/Math.png";
+import { ArrowBackIcon } from "@chakra-ui/icons";
 
 const AllAssignments = () => {
   const [assignments, setAssignments] = useState([]);
@@ -79,6 +81,14 @@ const AllAssignments = () => {
         overflowY="auto"
         paddingBottom="80px"
       >
+        <Box>
+          <IconButton
+            aria-label="Go Back"
+            icon={<ArrowBackIcon />}
+            mt={6}
+            onClick={() => nav(`/student/courseMaterial/${course_id}`)}
+          />
+        </Box>
         <HeadingButtonSection
           path="Assignments"
           content="View Assignments"

@@ -10,13 +10,14 @@ import {
   Td,
   Link,
   Spinner,
-  Text,
   Button,
+  IconButton,
 } from "@chakra-ui/react";
 import { useNavigate, useParams } from "react-router-dom";
 import Header from "../../Components/Pages/Header";
 import Footer from "../../Components/Pages/Footer";
 import HeadingButtonSection from "../../Components/Pages/HeadingButtonSection";
+import { ArrowBackIcon } from "@chakra-ui/icons";
 
 const CourseMaterial = () => {
   const { course_id } = useParams();
@@ -79,12 +80,15 @@ const CourseMaterial = () => {
       <Box flex="1" mx={12} overflowY="auto" paddingBottom="80px">
         <Flex alignItems={"center"} justifyContent={"space-between"}>
           <Box>
-            <HeadingButtonSection
-              path="Course Materials"
-              content="Uploaded Course Materials"
-              showBulkAddButton={false}
-              showButton={false}
+            <IconButton
+              aria-label="Go Back"
+              icon={<ArrowBackIcon />}
+              mt={6}
+              onClick={() =>
+                nav("/student/Dashboard")
+              }
             />
+           
           </Box>
           <Box mt={6}>
             <Button

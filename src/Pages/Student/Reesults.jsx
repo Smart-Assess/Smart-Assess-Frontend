@@ -84,6 +84,7 @@ const Reesults = () => {
               path="Results"
               content="Marketing"
               showButton={false}
+              showBulkAddButton={false}
             />
           </Box>
         </Flex>
@@ -182,14 +183,18 @@ const Reesults = () => {
                   {resultData?.questions?.map((assignment, index) => (
                     <Tr key={index}>
                       <Td
-                        isTruncated
+                        onClick={() => toggleExpand(index)}
                         maxW="300px"
                         overflow="hidden"
-                        whiteSpace="nowrap"
+                        whiteSpace={
+                          expandedIndex === index ? "normal" : "nowrap"
+                        }
                         textOverflow="ellipsis"
+                        cursor="pointer"
+                        title={assignment.question_text}
                       >
-                        Q#{assignment.question_number}{" "}
-                        {assignment.question_text}
+                        Q#
+                        {assignment.question_number} {assignment.question_text}
                       </Td>
 
                       <Td

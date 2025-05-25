@@ -19,7 +19,6 @@ import axios from "axios";
 
 
 
-// sdfdsfs
 
 function AddUniversityForm({ showUpload }) {
   const methods = useForm();

@@ -135,41 +135,65 @@ const Dashboard = () => {
           boxShadow="md"
         >
           <VStack align="stretch" spacing={4}>
+            {/* Batch Dropdown */}
             <Menu>
               <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
                 {selectedBatch || "Select Batch"}
               </MenuButton>
               <MenuList>
-                {Array.from(new Set(courses.map((course) => course.batch))).map(
-                  (batch) => (
+                {Array.from(new Set(courses.map((course) => course.batch)))
+                  .length === 0 ? (
+                  <MenuItem isDisabled>No batches found</MenuItem>
+                ) : (
+                  Array.from(
+                    new Set(courses.map((course) => course.batch))
+                  ).map((batch) => (
                     <MenuItem
                       key={batch}
                       onClick={() => setSelectedBatch(batch)}
                     >
                       {batch}
                     </MenuItem>
-                  )
+                  ))
                 )}
               </MenuList>
             </Menu>
 
+            {/* Section Dropdown */}
             <Menu>
               <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
                 {selectedSection || "Select Section"}
               </MenuButton>
               <MenuList>
-                {Array.from(
-                  new Set(courses.map((course) => course.section))
-                ).map((section) => (
-                  <MenuItem
-                    key={section}
-                    onClick={() => setSelectedSection(section)}
-                  >
-                    {section}
-                  </MenuItem>
-                ))}
+                {Array.from(new Set(courses.map((course) => course.section)))
+                  .length === 0 ? (
+                  <MenuItem isDisabled>No sections found</MenuItem>
+                ) : (
+                  Array.from(
+                    new Set(courses.map((course) => course.section))
+                  ).map((section) => (
+                    <MenuItem
+                      key={section}
+                      onClick={() => setSelectedSection(section)}
+                    >
+                      {section}
+                    </MenuItem>
+                  ))
+                )}
               </MenuList>
             </Menu>
+
+            {/* Reset Filters Button */}
+            <Button
+              colorScheme="gray"
+              variant="outline"
+              onClick={() => {
+                setSelectedBatch("");
+                setSelectedSection("");
+              }}
+            >
+              Reset Filters
+            </Button>
           </VStack>
         </Box>
 

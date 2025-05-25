@@ -84,12 +84,13 @@ const TeacherResults = () => {
               path="Results"
               content="Marketing"
               showButton={false}
+              showBulkAddButton={false}
             />
           </Box>
         </Flex>
 
         <Flex mb={6} gap={6} justifyContent={"space-between"} flexWrap={"wrap"}>
-          <Box flexWrap={"wrap"}  display={"flex"} alignItems={"center"} gap={2}>
+          <Box flexWrap={"wrap"} display={"flex"} alignItems={"center"} gap={2}>
             {[
               {
                 label: `Total Score ${resultData.total_score}/${resultData.total_assignment_grade}`,
@@ -182,14 +183,18 @@ const TeacherResults = () => {
                   {resultData?.questions?.map((assignment, index) => (
                     <Tr key={index}>
                       <Td
-                        isTruncated
+                        onClick={() => toggleExpand(index)}
                         maxW="300px"
                         overflow="hidden"
-                        whiteSpace="nowrap"
+                        whiteSpace={
+                          expandedIndex === index ? "normal" : "nowrap"
+                        }
                         textOverflow="ellipsis"
+                        cursor="pointer"
+                        title={assignment.question_text}
                       >
-                        Q#{assignment.question_number}{" "}
-                        {assignment.question_text}
+                        Q#
+                        {assignment.question_number} {assignment.question_text}
                       </Td>
 
                       <Td
