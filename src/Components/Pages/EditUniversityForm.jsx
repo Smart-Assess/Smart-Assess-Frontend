@@ -1,6 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { useForm, FormProvider } from "react-hook-form";
-import { Box, Button, useToast, SimpleGrid, Flex } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  useToast,
+  SimpleGrid,
+  Flex,
+  InputGroup,
+  InputRightElement,
+  IconButton,
+  Tooltip,
+  Input,
+  Text,
+  FormControl,
+  FormLabel,
+} from "@chakra-ui/react";
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 
 import FormInput from "./../UI/FormInput";
 import { useNavigate, useParams } from "react-router-dom";
@@ -8,13 +23,14 @@ import axios from "axios";
 import { editUniversity } from "../../data/UniversityData";
 import ConfirmModal from "./ConfirmationModal";
 
-function EditUniversityForm({ university, file, setFileName }) {
+function EditUniversityForm({ university, file, setFile, fileName, setFileName }) {
   const methods = useForm();
-  const { handleSubmit } = methods;
+  const { handleSubmit, register } = methods;
   const nav = useNavigate();
   const toast = useToast();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [pendingAction, setPendingAction] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     const handleBeforeUnload = (e) => {
@@ -26,6 +42,7 @@ function EditUniversityForm({ university, file, setFileName }) {
     window.addEventListener("beforeunload", handleBeforeUnload);
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [methods.formState.isDirty]);
+
   useEffect(() => {
     if (university) {
       methods.setValue("city", university?.university?.city);
@@ -37,7 +54,7 @@ function EditUniversityForm({ university, file, setFileName }) {
       methods.setValue("streetAddress", university?.university?.street_address);
       methods.setValue("state", university?.university?.state);
       methods.setValue("zipcode", university?.university?.zipcode);
-      if (university.university) {
+      if (university.university?.image_url) {
         setFileName(university.university.image_url);
       }
     }
@@ -100,7 +117,6 @@ function EditUniversityForm({ university, file, setFileName }) {
     <Flex w="100%" pb={8}>
       <Box w="100%">
         <Flex align="flex-start">
-          {/* Form Section */}
           <Box w="100%">
             <FormProvider {...methods}>
               <form onSubmit={handleSubmit(onSubmit)}>
@@ -116,15 +132,61 @@ function EditUniversityForm({ university, file, setFileName }) {
                       validationMessage={field.validationMessage}
                     />
                   ))}
+
+                  {/* Updated Password Field */}
+                  <FormControl>
+                    <FormLabel>New Password</FormLabel>
+                    <Tooltip label="Password must be at least 6 characters" hasArrow>
+                      <InputGroup>
+                        <Input
+                          type={showPassword ? "text" : "password"}
+                          placeholder="Enter new password"
+                          {...register("password")}
+                        />
+                        <InputRightElement>
+                          <IconButton
+                            variant="ghost"
+                            aria-label="Toggle password visibility"
+                            icon={showPassword ? <ViewOffIcon /> : <ViewIcon />}
+                            onClick={() => setShowPassword(!showPassword)}
+                          />
+                        </InputRightElement>
+                      </InputGroup>
+                    </Tooltip>
+                    <Text fontSize="sm" color="gray.500" mt={1}>
+                      Leave empty to keep the current password
+                    </Text>
+                  </FormControl>
+
+                  {/* Updated Image Upload Field */}
+                  <FormControl>
+                    <FormLabel>Upload New University Image</FormLabel>
+                    <Input
+                      type="file"
+                      accept="image/*"
+                      padding="1"
+                      height="auto"
+                      onChange={(e) => {
+                        const selectedFile = e.target.files[0];
+                        if (selectedFile) {
+                          setFile(selectedFile);
+                          setFileName(selectedFile.name);
+                        }
+                      }}
+                    />
+                    {fileName && (
+                      <Text fontSize="sm" mt={2} color="gray.600">
+                        Selected: {fileName}
+                      </Text>
+                    )}
+                  </FormControl>
                 </SimpleGrid>
 
                 <Box display="flex" justifyContent="flex-end" mt="6">
                   <Button
                     onClick={() => {
                       if (methods.formState.isDirty) {
-                        setPendingAction(
-                          () => () => nav("/superadmin/Dashboard")
-                        );
+                        setPendingAction(() => () => nav("/superadmin/Dashboard"));
                         setIsModalOpen(true);
                       } else {
                         nav("/superadmin/Dashboard");
@@ -136,11 +198,7 @@ function EditUniversityForm({ university, file, setFileName }) {
                   >
                     Cancel
                   </Button>
-                  <Button
-                    isLoading={updateLoading}
-                    type="submit"
-                    colorScheme="blue"
-                  >
+                  <Button isLoading={updateLoading} type="submit" colorScheme="blue">
                     Update
                   </Button>
                 </Box>

@@ -1,46 +1,70 @@
 import React, { useEffect, useState } from "react";
+import {
+  Box,
+  Button,
+  useToast,
+  SimpleGrid,
+  Flex,
+  FormControl,
+  FormLabel,
+  Input,
+  InputGroup,
+  InputRightElement,
+  IconButton,
+  Tooltip,
+} from "@chakra-ui/react";
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { useForm, FormProvider } from "react-hook-form";
-import { Box, Button, useToast, SimpleGrid, Flex } from "@chakra-ui/react";
-
-import FormInput from "./../UI/FormInput";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+
+import FormInput from "./../UI/FormInput";
 import { editStudent } from "../../data/studentsData";
 import ConfirmModal from "./ConfirmationModal";
-function EditStudentForm({ student, fileName, file, setFile, setFileName }) {
+
+function EditStudentForm({ student }) {
   const methods = useForm();
-  const { handleSubmit } = methods;
+  const {
+    handleSubmit,
+    register,
+    setValue,
+    formState,
+    reset,
+  } = methods;
   const nav = useNavigate();
   const toast = useToast();
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [pendingAction, setPendingAction] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const [updateLoading, setupdateLoading] = useState(false);
+
+  const { id } = useParams();
 
   useEffect(() => {
     if (student) {
-      methods.setValue("fullName", student?.full_name);
-      methods.setValue("studentDepartment", student?.department);
-      methods.setValue("email", student?.email);
-      methods.setValue("batch", student?.batch);
-      methods.setValue("section", student?.section);
+      setValue("fullName", student?.full_name || "");
+      setValue("studentDepartment", student?.department || "");
+      setValue("email", student?.email || "");
+      setValue("batch", student?.batch || "");
+      setValue("section", student?.section || "");
     }
-  }, [student, methods.setValue]);
+  }, [student, setValue]);
 
-  const [updateLoading, setupdateLaoding] = useState();
-  const { id } = useParams();
   useEffect(() => {
     const handleBeforeUnload = (e) => {
-      if (methods.formState.isDirty) {
+      if (formState.isDirty) {
         e.preventDefault();
         e.returnValue = "";
       }
     };
     window.addEventListener("beforeunload", handleBeforeUnload);
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
-  }, [methods.formState.isDirty]);
+  }, [formState.isDirty]);
 
   const onSubmit = async (data) => {
     try {
-      setupdateLaoding(true);
+      setupdateLoading(true);
       const token = localStorage.getItem("accessToken");
       const formData = new FormData();
 
@@ -49,6 +73,14 @@ function EditStudentForm({ student, fileName, file, setFile, setFileName }) {
       formData.append("email", data.email);
       formData.append("batch", data.batch);
       formData.append("section", data.section);
+
+      if (data.password) {
+        formData.append("password", data.password);
+      }
+
+      if (data.image && data.image[0]) {
+        formData.append("image", data.image[0]);
+      }
 
       const config = {
         headers: {
@@ -64,7 +96,6 @@ function EditStudentForm({ student, fileName, file, setFile, setFileName }) {
       );
 
       if (response.status === 200 || response.status === 201) {
-        setupdateLaoding(false);
         toast({
           title: "Student updated successfully!",
           status: "success",
@@ -75,8 +106,9 @@ function EditStudentForm({ student, fileName, file, setFile, setFileName }) {
         nav("/university/student/Dashboard");
       }
     } catch (err) {
-      console.error("Error updating university:", err);
-      setupdateLaoding(false);
+      console.error("Error updating student:", err);
+    } finally {
+      setupdateLoading(false);
     }
   };
 
@@ -84,7 +116,6 @@ function EditStudentForm({ student, fileName, file, setFile, setFileName }) {
     <Flex w="100%" pb={8}>
       <Box w="100%">
         <Flex align="flex-start">
-          {/* Form Section */}
           <Box w="100%">
             <FormProvider {...methods}>
               <form onSubmit={handleSubmit(onSubmit)}>
@@ -100,15 +131,47 @@ function EditStudentForm({ student, fileName, file, setFile, setFileName }) {
                       validationMessage={field.validationMessage}
                     />
                   ))}
+
+                  {/* Password Field */}
+                  <FormControl>
+                    <FormLabel>New Password</FormLabel>
+                    <Tooltip label="Password must be at least 6 characters" hasArrow>
+                      <InputGroup>
+                        <Input
+                          type={showPassword ? "text" : "password"}
+                          placeholder="Enter new password"
+                          {...register("password")}
+                        />
+                        <InputRightElement>
+                          <IconButton
+                            variant="ghost"
+                            aria-label="Toggle password visibility"
+                            icon={showPassword ? <ViewOffIcon /> : <ViewIcon />}
+                            onClick={() => setShowPassword(!showPassword)}
+                          />
+                        </InputRightElement>
+                      </InputGroup>
+                    </Tooltip>
+                  </FormControl>
+
+                  {/* Image Upload Field */}
+                  <FormControl>
+                    <FormLabel>Upload New Profile Image</FormLabel>
+                    <Input
+                      type="file"
+                      accept="image/*"
+                      {...register("image")}
+                      padding="1"
+                      height="auto"
+                    />
+                  </FormControl>
                 </SimpleGrid>
 
                 <Box display="flex" justifyContent="flex-end" mt="6">
                   <Button
                     onClick={() => {
-                      if (methods.formState.isDirty) {
-                        setPendingAction(
-                          () => () => nav("/university/student/Dashboard")
-                        );
+                      if (formState.isDirty) {
+                        setPendingAction(() => () => nav("/university/student/Dashboard"));
                         setIsModalOpen(true);
                       } else {
                         nav("/university/student/Dashboard");
@@ -136,7 +199,7 @@ function EditStudentForm({ student, fileName, file, setFile, setFileName }) {
             onClose={() => setIsModalOpen(false)}
             onConfirm={() => {
               setIsModalOpen(false);
-              methods.reset();
+              reset();
               if (pendingAction) pendingAction();
             }}
             title="Discard changes?"
