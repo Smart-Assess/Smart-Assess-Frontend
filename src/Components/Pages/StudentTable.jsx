@@ -31,7 +31,7 @@ const StudentTable = ({ data }) => {
       setLoading(true);
       const token = localStorage.getItem("accessToken");
       const response = await fetch(
-        "https://smartassess-backend-t3l93.ondigitalocean.app/universityadmin/students",
+        "https://smartassess-backend-t3l93.ondigitalocean.app/universityadmin/students?limit=200",
         {
           method: "GET",
           headers: {

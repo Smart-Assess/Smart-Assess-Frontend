@@ -32,7 +32,7 @@ const TeacherTable = ({ data }) => {
       setLoading(true);
       const token = localStorage.getItem("accessToken");
       const response = await fetch(
-        "https://smartassess-backend-t3l93.ondigitalocean.app/universityadmin/teachers",
+        "https://smartassess-backend-t3l93.ondigitalocean.app/universityadmin/teachers?limit=200",
         {
           method: "GET",
           headers: {
@@ -162,7 +162,6 @@ const TeacherTable = ({ data }) => {
           </Tbody>
         </Table>
       )}
-    
     </TableContainer>
   );
 };
