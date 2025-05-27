@@ -20,25 +20,53 @@ import {
   IconButton,
   Spinner,
   useToast,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { ChevronDownIcon, EditIcon, DeleteIcon } from "@chakra-ui/icons";
 import Header from "../../Components/Pages/Header";
 import Footer from "../../Components/Pages/Footer";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import UpdateTeacherModal from "../../Components/Pages/UpdateTeacherModal";
 
 const Dashboard = () => {
   const nav = useNavigate();
 
   const [loading, setLoading] = useState(true);
   const [courses, setCourses] = useState([]);
-  console.log(courses);
   const [selectedBatch, setSelectedBatch] = useState("");
   const [selectedSection, setSelectedSection] = useState("");
   const [deleting, setDeleting] = useState(false);
   const toast = useToast();
-  const name = localStorage.getItem("name");
+  // const name = localStorage.getItem("name");
 
+  const [named, setName] = useState("");
+  const fetchTeacher = async () => {
+    try {
+      setLoading(true);
+      const token = localStorage.getItem("accessToken");
+      const response = await fetch(
+        "https://smartassess-backend-t3l93.ondigitalocean.app/teacher/profile",
+        {
+          method: "GET",
+          headers: {
+            Authorization: token ? `Bearer ${token}` : "",
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (!response.ok) throw new Error("Error fetching teacher");
+      const data = await response.json();
+      setName(data?.teacher?.full_name || "");
+    } catch (err) {
+      console.error("Fetch error:", err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchTeacher();
+  }, []);
   const fetchData = async () => {
     try {
       const token = localStorage.getItem("accessToken");
@@ -113,6 +141,7 @@ const Dashboard = () => {
       setDeleting((prev) => ({ ...prev, [course_id]: false })); // Reset only the clicked university
     }
   };
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <Flex direction="column" minH="100vh">
@@ -207,18 +236,28 @@ const Dashboard = () => {
             gap={4}
           >
             <Box>
-              <Heading fontSize="2xl">Welcome Back {name}! 👋</Heading>
+              <Heading fontSize="2xl">Welcome Back {named}! 👋</Heading>
               <Text mt={1} color="gray.600">
                 Track and Manage all your activities in one place
               </Text>
             </Box>
-            <Button
-              colorScheme="blue"
-              onClick={() => nav("/teacher/addCourse")}
-              alignSelf={{ base: "stretch", md: "auto" }}
-            >
-              Add New Course
-            </Button>
+            <Box display="flex" gap={2}>
+              <Button
+                colorScheme="blue"
+                onClick={() => nav("/teacher/addCourse")}
+                alignSelf={{ base: "stretch", md: "auto" }}
+              >
+                Add New Course
+              </Button>
+              <Button
+                colorScheme="blue"
+                onClick={onOpen}
+                alignSelf={{ base: "stretch", md: "auto" }}
+              >
+                Update Profile
+              </Button>
+            </Box>
+            <UpdateTeacherModal fetchTeacher={fetchTeacher} isOpen={isOpen} onClose={onClose} />
           </Flex>
 
           <Box
