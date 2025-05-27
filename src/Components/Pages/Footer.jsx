@@ -26,22 +26,16 @@ const Footer = () => {
         gap={4}
         width={"100%"}
       >
-        <Box display="flex" alignItems={"center"} gap={4}>
-          <Image src={logo} />
-          <Text fontSize={"24px"}>
+        <Box display="flex" alignItems={"center"} gap={2}>
+          <Image src={logo} w={{base: "32px", lg: "auto"}} h={{base: "32px", lg: "auto"}} alt="Logo" style={{ borderRadius: "8px"
+          }} />
+        <Text fontSize={{ base: "md", lg: "24px" }} fontWeight="bold">
             <span style={{ color: "#0D64C1", fontWeight: "500" }}>Smart</span>{" "}
             <span style={{ color: "#B2BBC6" }}>Assess</span>
           </Text>
         </Box>
 
-        <Box display={"flex"} gap={2} marginLeft={"auto"}>
-          <Text fontSize={"14px"} fontWeight={"450"} color="#555555">
-            Terms of Service
-          </Text>
-          <Text fontSize={"14px"} fontWeight={"450"} color="#555555">
-            Privacy Policy
-          </Text>
-        </Box>
+     
       </Flex>
     </Box>
   );

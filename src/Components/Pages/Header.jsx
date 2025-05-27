@@ -24,10 +24,10 @@ const Header = ({ role }) => {
       display={"flex"}
       justifyContent={"space-between"}
       position="sticky"
-      top={8}
       zIndex={1}
+      top={0}
       alignItems={"center"}
-      mx={{ base: 6, lg: 12 }}
+      mx={{ base: 4, lg: 12 }}
       p={3}
       mt={8}
       border="1px solid #e0e0e0"
@@ -35,9 +35,9 @@ const Header = ({ role }) => {
       borderRadius="xl"
       bg="white"
     >
-      <Box display="flex" alignItems={"center"} gap={4}>
-        <Image src={logo} />
-        <Text fontSize={"24px"}>
+      <Box display="flex" alignItems={"center"} gap={2}>
+        <Image src={logo}  w={{base: "32px", lg: "auto"}} h={{base: "32px", lg: "auto"}}  />
+        <Text fontSize={{ base: "md", lg: "24px" }}>
           <span style={{ color: "#0D64C1", fontWeight: "500" }}>Smart</span>{" "}
           <span style={{ color: "#B2BBC6" }}>Assess</span>
         </Text>
