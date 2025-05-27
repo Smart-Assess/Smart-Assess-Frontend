@@ -15,13 +15,15 @@ const EditStudent = () => {
   const [loading, setLoading] = useState(false);
 
   const [student, setStudent] = useState({});
+  console.log(student);
 
   const fetchStudent = async () => {
     try {
       setLoading(true);
       const token = localStorage.getItem("accessToken");
       const response = await fetch(
-        `http://127.0.0.1:8000/universityadmin/student/${id}`,
+        `https://smartassess-backend-t3l93.ondigitalocean.app/universityadmin/student/${id}`,
+
         {
           method: "GET",
           headers: {

@@ -41,6 +41,7 @@ function EditTeacherForm({ teacher }) {
     }
   }, [teacher, setValue]);
 
+  console.log("Edit Teacher Data:", teacher);
   useEffect(() => {
     const handleBeforeUnload = (e) => {
       if (formState.isDirty) {
@@ -116,6 +117,7 @@ function EditTeacherForm({ teacher }) {
                       type={field.type}
                       placeholder={field.placeholder}
                       pattern={field.pattern}
+                      options={field.options} // <-- Add this line
                       validationMessage={field.validationMessage}
                     />
                   ))}
@@ -125,12 +127,23 @@ function EditTeacherForm({ teacher }) {
                 <SimpleGrid columns={[1, null, 3]} spacing="8" mt={6}>
                   <FormControl>
                     <FormLabel>New Password</FormLabel>
-                    <Tooltip label="Password must be at least 6 characters" hasArrow>
+                    <Tooltip hasArrow>
                       <InputGroup>
                         <Input
                           type={showPassword ? "text" : "password"}
                           placeholder="Enter new password"
-                          {...register("password")}
+                          {...register("password", {
+                            minLength: {
+                              value: 8,
+                              message: "Password must be at least 8 characters",
+                            },
+                            pattern: {
+                              value:
+                                /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+                              message:
+                                "Password must include uppercase, lowercase, number, and special character",
+                            },
+                          })}
                         />
                         <InputRightElement>
                           <IconButton
@@ -142,6 +155,11 @@ function EditTeacherForm({ teacher }) {
                         </InputRightElement>
                       </InputGroup>
                     </Tooltip>
+                    {formState.errors.password && (
+                      <Box color="red.500" fontSize="sm" mt={1}>
+                        {formState.errors.password.message}
+                      </Box>
+                    )}
                   </FormControl>
 
                   <FormControl>
@@ -164,8 +182,8 @@ function EditTeacherForm({ teacher }) {
                   <Button
                     onClick={() => {
                       if (formState.isDirty) {
-                        setPendingAction(() => () =>
-                          nav("/university/teacher/Dashboard")
+                        setPendingAction(
+                          () => () => nav("/university/teacher/Dashboard")
                         );
                         setIsModalOpen(true);
                       } else {

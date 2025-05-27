@@ -91,11 +91,24 @@ export const addStudent = [
     validationMessage: " Name must be between 3 to 20 characters.",
   },
 
-  {
+  // {
+  //   name: "studentDepartment",
+  //   label: "Department",
+  //   type: "text",
+  //   placeholder: "Enter Department",
+  // },
+
+   {
     name: "studentDepartment",
     label: "Department",
-    type: "text",
-    placeholder: "Enter Department",
+    type: "select", // changed from text to select
+    options: [
+      { label: "Computer Science", value: "CS" },
+      { label: "Information Technology", value: "IT" },
+      { label: "Electronics and Communication", value: "ECE" },
+      { label: "Mechanical Engineering", value: "ME" },
+    ],
+    placeholder: "Select Department",
   },
   {
     name: "email",
@@ -228,11 +241,23 @@ export const editStudent = [
     validationMessage: " Name must be between 3 to 20 characters.",
   },
 
-  {
+  // {
+  //   name: "studentDepartment",
+  //   label: "Department",
+  //   type: "text",
+  //   placeholder: "Enter Department",
+  // },
+   {
     name: "studentDepartment",
     label: "Department",
-    type: "text",
-    placeholder: "Enter Department",
+    type: "select", // changed from text to select
+    options: [
+      { label: "Computer Science", value: "CS" },
+      { label: "Information Technology", value: "IT" },
+      { label: "Electronics and Communication", value: "ECE" },
+      { label: "Mechanical Engineering", value: "ME" },
+    ],
+    placeholder: "Select Department",
   },
   {
     name: "email",

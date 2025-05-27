@@ -159,7 +159,7 @@ const UpdateTeacherModal = ({ isOpen, onClose, fetchTeacher }) => {
                 {errors.email && errors.email.message}
               </FormErrorMessage>
             </FormControl>
-            <FormControl mb={3}>
+            <FormControl mb={3} isInvalid={!!errors.password}>
               <FormLabel>
                 New Password{" "}
                 <span style={{ color: "#888", fontSize: "0.9em" }}>
@@ -169,9 +169,28 @@ const UpdateTeacherModal = ({ isOpen, onClose, fetchTeacher }) => {
               <Input
                 placeholder="Enter your Password"
                 type="password"
-                {...register("password")}
+                {...register("password", {
+                  validate: (value) => {
+                    if (!value) return true; // Optional field
+                    if (value.length < 8)
+                      return "Password must be at least 8 characters";
+                    if (!/[A-Z]/.test(value))
+                      return "Must include an uppercase letter";
+                    if (!/[a-z]/.test(value))
+                      return "Must include a lowercase letter";
+                    if (!/[0-9]/.test(value)) return "Must include a number";
+                    if (
+                      !/[!@#$%^&*(),.?":{}|<>]/.test(value)
+                    )
+                      return "Must include a special character";
+                    return true;
+                  },
+                })}
                 isDisabled={loading}
               />
+              <FormErrorMessage>
+                {errors.password && errors.password.message}
+              </FormErrorMessage>
             </FormControl>
           </ModalBody>
           <ModalFooter>

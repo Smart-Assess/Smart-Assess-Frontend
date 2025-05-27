@@ -23,6 +23,7 @@ const TeacherTable = ({ data }) => {
   const [teachers, setTeachers] = useState([]);
   const [deleting, setDeleting] = useState({});
 
+  console.log("Teachers Data:", data);
   const [loading, setLoading] = useState(true);
 
   const toast = useToast();

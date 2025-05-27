@@ -24,13 +24,7 @@ import ConfirmModal from "./ConfirmationModal";
 
 function EditStudentForm({ student }) {
   const methods = useForm();
-  const {
-    handleSubmit,
-    register,
-    setValue,
-    formState,
-    reset,
-  } = methods;
+  const { handleSubmit, register, setValue, formState, reset } = methods;
   const nav = useNavigate();
   const toast = useToast();
 
@@ -128,19 +122,37 @@ function EditStudentForm({ student }) {
                       type={field.type}
                       placeholder={field.placeholder}
                       pattern={field.pattern}
+                      options={field.options} // <-- Add this line
                       validationMessage={field.validationMessage}
                     />
                   ))}
 
                   {/* Password Field */}
                   <FormControl>
-                    <FormLabel>New Password</FormLabel>
-                    <Tooltip label="Password must be at least 6 characters" hasArrow>
+                    <FormLabel>
+                      New Password{" "}
+                      <span style={{ fontSize: "12px", color: "gray" }}>
+                        (Optional)
+                      </span>
+                    </FormLabel>
+                    <Tooltip
+                      hasArrow
+                    >
                       <InputGroup>
                         <Input
                           type={showPassword ? "text" : "password"}
                           placeholder="Enter new password"
-                          {...register("password")}
+                          {...register("password", {
+                            minLength: {
+                              value: 8,
+                              message: "Password must be at least 8 characters",
+                            },
+                            pattern: {
+                              value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+                              message:
+                                "Password must include uppercase, lowercase, number, and special character",
+                            },
+                          })}
                         />
                         <InputRightElement>
                           <IconButton
@@ -152,6 +164,11 @@ function EditStudentForm({ student }) {
                         </InputRightElement>
                       </InputGroup>
                     </Tooltip>
+                    {formState.errors.password && (
+                      <Box color="red.500" fontSize="sm" mt={1}>
+                        {formState.errors.password.message}
+                      </Box>
+                    )}
                   </FormControl>
 
                   {/* Image Upload Field */}
@@ -171,7 +188,9 @@ function EditStudentForm({ student }) {
                   <Button
                     onClick={() => {
                       if (formState.isDirty) {
-                        setPendingAction(() => () => nav("/university/student/Dashboard"));
+                        setPendingAction(
+                          () => () => nav("/university/student/Dashboard")
+                        );
                         setIsModalOpen(true);
                       } else {
                         nav("/university/student/Dashboard");

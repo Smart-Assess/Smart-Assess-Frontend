@@ -71,11 +71,18 @@ export const addTeacher = [
     pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
     validationMessage: "Enter a valid email address.",
   },
+
   {
     name: "department",
     label: "Department",
-    type: "text",
-    placeholder: "Enter Department",
+    type: "select", // changed from text to select
+    options: [
+      { label: "Computer Science", value: "CS" },
+      { label: "Information Technology", value: "IT" },
+      { label: "Electronics and Communication", value: "ECE" },
+      { label: "Mechanical Engineering", value: "ME" },
+    ],
+    placeholder: "Select Department",
   },
   {
     name: "password",
@@ -88,8 +95,6 @@ export const addTeacher = [
       "Password must be at least 8 characters and contain at least one uppercase letter, one lowercase letter, one number, and one special character.",
   },
 ];
-
-
 
 export const editTeacher = [
   {
@@ -108,11 +113,17 @@ export const editTeacher = [
     pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
     validationMessage: "Enter a valid email address.",
   },
+  
   {
     name: "department",
     label: "Department",
-    type: "text",
-    placeholder: "Enter Department",
+    type: "select", // changed from text to select
+    options: [
+      { label: "Computer Science", value: "CS" },
+      { label: "Information Technology", value: "IT" },
+      { label: "Electronics and Communication", value: "ECE" },
+      { label: "Mechanical Engineering", value: "ME" },
+    ],
+    placeholder: "Select Department",
   },
-
 ];

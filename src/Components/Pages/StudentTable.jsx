@@ -25,6 +25,7 @@ const StudentTable = ({ data }) => {
   const toast = useToast();
   const [deleting, setDeleting] = useState({});
 
+  console.log(students);
   const fetchStudents = async () => {
     try {
       setLoading(true);
@@ -101,7 +102,6 @@ const StudentTable = ({ data }) => {
     <TableContainer
       mb={12}
       height="100%"
-      
       border="1px solid #e0e0e0"
       boxShadow="lg"
       borderRadius="xl"
