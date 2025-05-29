@@ -77,7 +77,7 @@ const CourseMaterial = () => {
     <Flex direction="column" minH="100vh">
       <Header />
 
-      <Box flex="1" mx={12} overflowY="auto" paddingBottom="80px">
+      <Box flex="1" mx={{base:6,lg:12}} overflowY="auto" paddingBottom="80px">
         <Flex alignItems={"center"} justifyContent={"space-between"}>
           <Box>
             <IconButton

@@ -62,10 +62,12 @@ const Reesults = () => {
 
   const nav = useNavigate();
 
+  console.log(resultData);
+
   return (
     <Flex direction="column" minH="100vh">
       <Header />
-      <Box flex="1" mx={12} overflowY="auto" paddingBottom="80px">
+      <Box flex="1" mx={{base:6,lg:12}} overflowY="auto" paddingBottom="80px">
         <Flex
           flexWrap={"wrap"}
           alignItems={"center"}
@@ -135,10 +137,7 @@ const Reesults = () => {
             <Button
               colorScheme="blue"
               onClick={() => {
-                const link = document.createElement("a");
-                link.href = resultData?.report_url; // Use report_url here
-                link.download = "Report.pdf";
-                link.click();
+                window.open(resultData?.report_url, "_blank");
               }}
             >
               Download Report

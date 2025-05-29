@@ -136,10 +136,7 @@ const TeacherResults = () => {
             <Button
               colorScheme="blue"
               onClick={() => {
-                const link = document.createElement("a");
-                link.href = resultData?.report_url; // Use report_url here
-                link.download = "Report.pdf";
-                link.click();
+                window.open(resultData?.report_url, "_blank");
               }}
             >
               Download Report
@@ -247,7 +244,6 @@ const TeacherResults = () => {
                   ))}
                 </Tbody>
               </Table>
-            
             </>
           )}
         </TableContainer>

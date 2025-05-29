@@ -53,7 +53,7 @@ const EditStudent = () => {
   return (
     <Flex direction="column">
       <Header />
-      <Box flex="1" mx={12} overflowY="auto" paddingBottom="80px">
+      <Box flex="1" mx={{base:6,lg:12}} overflowY="auto" paddingBottom="80px">
         <Flex alignItems="center" justifyContent="space-between" my={6}></Flex>
         <EditButtonSection
           image={student?.image_url}
